@@ -9,7 +9,7 @@
 	const app = {
 		init: function() {
 			console.log("Initializing app");
-			configs.allRoutes = helpers.getElements('section');
+			configs.allRoutes = helpers.getElements('section'); // Needs a better way for scalability (screen/route class?)
 			routes.init();
 		}
 	};
@@ -17,12 +17,16 @@
 	const routes = {
 		init: function() {
 			console.log('Initializing the routes');
+			if (helpers.getHash().length) {
+				sections.toggle(helpers.getHash());
+			}
+			
 			window.addEventListener('hashchange', function(e) {
 				sections.toggle(helpers.getHash());
 				// sections.toggle(e.newURL);
 			});
 		}
-	}
+	};
 
 	const sections = {
 		toggle: function(route) {
@@ -37,9 +41,9 @@
 				} else {
 					configs.allRoutes[i].classList.add('inactive');
 				}
-			}
+			};
 		}
-	}
+	};
 
 	const helpers = {
 		getHash: function() { return window.location.hash; },
@@ -47,7 +51,7 @@
 		getElements: function(element) { return document.querySelectorAll(element); },
 		// getAllRoutes: function () { return helpers.getElements('section') },
 		shortenString: function(text, start, end) { return end ? text.substr(start, end) : text.substr(start); }
-	}
+	};
 
 	app.init();
 })();
