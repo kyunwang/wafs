@@ -7,9 +7,9 @@
 	};
 
 	const app = {
-		init: function() {
+		init: async function() {
 			console.log("Initializing app");
-			configs.allRoutes = helpers.getElements('section'); // Needs a better way for scalability (screen/route class?)
+			configs.allRoutes = await helpers.getElements('section'); // Needs a better way for scalability (screen/route class?)
 			routes.init();
 		}
 	};
