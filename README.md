@@ -2,7 +2,7 @@
 The course repo for 'Web App From Scratch' which has a duration of 3 weeks.
 
 ## Advantages and disadvantages of JavaScript libraries/frameworks
-###Pro:
+### Pro:
 - Frameworks/Libraries make development quicker and usually easier
 - Efficiency. Doing a lot with just a few lines code
 - Some frameworks, which are strict/opinionated, set practices you have to keep. This way you will have consistent codebases
