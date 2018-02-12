@@ -1,5 +1,5 @@
 # Web App From Scratch
-The course repo for 'Web App From Scratch'
+The course repo for 'Web App From Scratch' which has a duration of 3 weeks.
 
 ## Advantages and disadvantages of JavaScript libraries/frameworks
 ###Pro:
@@ -66,3 +66,11 @@ The course repo for 'Web App From Scratch'
 - Indent your code
 - Always code comment
 - Share and show off your work!
+
+## PR 
+We had to make PR's for each other (People from the minor)
+Here I will list the PR's I have made.
+
+Week 1:
+- https://github.com/baskager/wafs/pull/5
+- https://github.com/IIYAMA12/wafs/pull/2
