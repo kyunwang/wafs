@@ -16,14 +16,14 @@
 
 	const routes = {
 		init: function() {
+			const getHash = helpers.getHash();
 			console.log('Initializing the routes');
-			if (helpers.getHash().length) {
-				sections.toggle(helpers.getHash());
+			if (getHash.length) {
+				sections.toggle(getHash);
 			}
 			
 			window.addEventListener('hashchange', function(e) {
 				sections.toggle(helpers.getHash());
-				// sections.toggle(e.newURL);
 			});
 		}
 	};
@@ -46,7 +46,7 @@
 	};
 
 	const helpers = {
-		getHash: function() { return window.location.hash; },
+		getHash: function() { return location.hash; },
 		getElement: function(element) { return document.querySelector(element); },
 		getElements: function(element) { return document.querySelectorAll(element); },
 		// getAllRoutes: function () { return helpers.getElements('section') },
