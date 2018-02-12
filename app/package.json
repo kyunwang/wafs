@@ -1,0 +1,16 @@
+{
+  "name": "kitsu-listing",
+  "version": "1.0.0",
+  "description": "Listing anime using Kitsu API",
+  "main": "index.js",
+  "scripts": {
+    "start": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kang Yun Wang (Kevin Wang)",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.23.6",
+    "gulp": "^3.9.1"
+  }
+}
