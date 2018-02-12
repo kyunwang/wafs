@@ -5,7 +5,6 @@
 	=== All the configs/helpers ect. first
 	===========================*/
 	const configs = {
-		// allRoutes: $$('section'),
 		allRoutes: [],
 	};
 
@@ -32,84 +31,10 @@
 
 
 	/*==========================
-	=== 
+	=== Api
 	===========================*/
-	const app = {
-		init: async function() {
-			console.log('Initializing app');
-			let initialData;
-
-			// Set our initial routes and animedata in a promise
-			[configs.allRoutes, initialData] = await Promise.all([
-				helpers.getElements('section'),
-				api.get('anime', 20)
-			]);
-
-			routes.init();
-
-
-			// api.getAnime(20);
-			// api.get('anime', 20);
-			// Setting our anime data in localstorage
-			helpers.setData('animeData', helpers.stringify(initialData));
-			// console.log(helpers.getData('animeData'))
-		}
-	};
-
-	const routes = {
-		init() {
-			routie({
-				'home': function() {
-
-					var hello = {
-						hello:      'Hello',
-						goodbye:    '<i>Goodbye!</i>',
-						greeting:   'Howdy!',
-						// 'hi-label': 'Terve!' // Finnish i18n
-					 };
-
-					console.log('home');
-
-					// Transparency.render(document.getElementById('home'), hello);
-					helpers.renderTemplate('home', hello);
-				},
-				'anime': function() {
-					
-					console.log('anime');
-					Transparency.render()
-				},
-				'anime/:slug': function(slug) {
-					console.log('anime, ', slug);
-				},
-				'manga': function() {
-					console.log('manga');
-				},
-				'profile': function() {
-					console.log('profile');
-				},
-		  });
-		}
-	};
-
-	const sections = {
-		toggle(route) {
-			console.log('Change route');
-			const currentId = helpers.shortenString(route, 1);
-
-			// Need a better way
-			// Will probably screw up with many routes
-			for(let i = 0; configs.allRoutes.length > i; i++) {
-				if (configs.allRoutes[i].id === currentId) {
-					configs.allRoutes[i].classList.remove('inactive');
-				} else {
-					configs.allRoutes[i].classList.add('inactive');
-				}
-			};
-		}
-	};
-
 	const api = {
-		animData: helpers.getData('animData'),
+		animeData: helpers.getData('animeData'),
 		baseUrl: 'https://kitsu.io/api/edge',
 		baseHeader: {
 			'Accept': 'application/vnd.api+json',
@@ -148,6 +73,92 @@
 			return data;
 		}
 	}
+
+
+	/*==========================
+	=== Application and Routes
+	===========================*/
+	const app = {
+		init: async function() {
+			helpers.deleteData('animeData');
+
+			console.log('Initializing app');
+			let initialData;
+
+			// Set our initial routes and animedata in a promise
+			[configs.allRoutes, initialData] = await Promise.all([
+				helpers.getElements('section'),
+				api.get('anime', 20)
+			]);
+
+			// Setting our anime data in localstorage
+			helpers.setData('animeData', helpers.stringify(initialData));
+
+			routes.init();
+		}
+	};
+
+	const routes = {
+		init() {
+			this.routes();
+		},
+		routes() {
+			routie({
+				'home': function() {
+
+					var hello = {
+						hello:      'Hello',
+						goodbye:    '<i>Goodbye!</i>',
+						greeting:   'Howdy!',
+						// 'hi-label': 'Terve!' // Finnish i18n
+						};
+
+					console.log('home');
+
+					helpers.renderTemplate('home', hello);
+				},
+				'anime': function() {
+					const animeData = helpers.parse(helpers.getData('animeData'));
+
+					// Return a template in a array for Transparency
+					let overview = animeData.data.map(item => ({
+						item__name: item.attributes.canonicalTitle
+					}))
+					
+					console.log('anime', animeData, overview);
+					// Transparency.render('overview', overview);
+					helpers.renderTemplate('overview', overview);
+				},
+				'anime/:slug': function(slug) {
+					console.log('anime, ', slug);
+				},
+				'manga': function() {
+					console.log('manga');
+				},
+				'profile': function() {
+					console.log('profile');
+				},
+			});
+		}
+	};
+
+	const sections = {
+		toggle(route) {
+			console.log('Change route');
+			const currentId = helpers.shortenString(route, 1);
+
+			// Need a better way
+			// Will probably screw up with many routes
+			for(let i = 0; configs.allRoutes.length > i; i++) {
+				if (configs.allRoutes[i].id === currentId) {
+					configs.allRoutes[i].classList.remove('inactive');
+				} else {
+					configs.allRoutes[i].classList.add('inactive');
+				}
+			};
+		}
+	};
+
 
 	const storage = {
 		getData() {},
