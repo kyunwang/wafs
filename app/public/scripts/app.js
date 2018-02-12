@@ -1,11 +1,39 @@
 'use strict';
 
 (function () {
+	/*==========================
+	=== All the configs/helpers ect. first
+	===========================*/
 	const configs = {
 		// allRoutes: $$('section'),
 		allRoutes: [],
 	};
 
+	const helpers = {
+		getHash() { return location.hash; },
+		getElement(element) { return document.querySelector(element); },
+		getElements(element) { return document.querySelectorAll(element); },
+		// getAllRoutes () { return helpers.getElements('section') },
+		shortenString(text, start, end) { return end ? text.substr(start, end) : text.substr(start); },
+
+		setData(key, data) { return localStorage.setItem(key, data); },
+		getData(key) { return localStorage.getItem(key); },
+		deleteData(key) { return localStorage.removeItem(key); },
+		stringify(data) { return JSON.stringify(data); },
+		parse(data) { return JSON.parse(data); },
+
+		renderTemplate(id, template) { return Transparency.render(helpers.getElement(`#${id}`), template); }
+	};
+
+	const debug = {
+		error(err) { console.log('Oops a error: ', err); return err; }
+	}
+
+
+
+	/*==========================
+	=== 
+	===========================*/
 	const app = {
 		init: async function() {
 			console.log('Initializing app');
@@ -24,21 +52,42 @@
 			// api.get('anime', 20);
 			// Setting our anime data in localstorage
 			helpers.setData('animeData', helpers.stringify(initialData));
-			console.log(helpers.getData('animeData'))
+			// console.log(helpers.getData('animeData'))
 		}
 	};
 
 	const routes = {
 		init() {
-			const getHash = helpers.getHash();
-			console.log('Initializing the routes');
-			if (getHash.length) {
-				sections.toggle(getHash);
-			}
-			
-			window.addEventListener('hashchange', function(e) {
-				sections.toggle(helpers.getHash());
-			});
+			routie({
+				'home': function() {
+
+					var hello = {
+						hello:      'Hello',
+						goodbye:    '<i>Goodbye!</i>',
+						greeting:   'Howdy!',
+						// 'hi-label': 'Terve!' // Finnish i18n
+					 };
+
+					console.log('home');
+
+					// Transparency.render(document.getElementById('home'), hello);
+					helpers.renderTemplate('home', hello);
+				},
+				'anime': function() {
+					
+					console.log('anime');
+					Transparency.render()
+				},
+				'anime/:slug': function(slug) {
+					console.log('anime, ', slug);
+				},
+				'manga': function() {
+					console.log('manga');
+				},
+				'profile': function() {
+					console.log('profile');
+				},
+		  });
 		}
 	};
 
@@ -59,16 +108,19 @@
 		}
 	};
 
-	// Max limit for the api is 20
 	const api = {
+		animData: helpers.getData('animData'),
 		baseUrl: 'https://kitsu.io/api/edge',
 		baseHeader: {
 			'Accept': 'application/vnd.api+json',
 			'Content-Type': 'application/vnd.api+json'
 		},
+		// Max limit for the api is 20
 		get: async function(route = '', limit = 10, offset = 0) {
+
+			// Get the data based on the params given
 			const data = await fetch(`${this.baseUrl}/${route}?page[limit]=${limit}&page[offset]=${offset}`, {
-				headers: this.baseHeader
+				headers: this.baseHeader // Is required for the api
 			})
 			.then((res, err) => res.json())
 			.catch(err => debug.error(err));
@@ -76,6 +128,10 @@
 			console.log(data)
 			return data;
 		},
+
+		
+
+
 
 		getAnime: async function(limit = 10, offset = 0) {
 			const data = await fetch(`${this.baseUrl}/anime?page[limit]=${limit}&page[offset]=${offset}`, {
@@ -96,23 +152,6 @@
 	const storage = {
 		getData() {},
 		storeData() {}
-	}
-
-	const helpers = {
-		getHash() { return location.hash; },
-		getElement(element) { return document.querySelector(element); },
-		getElements(element) { return document.querySelectorAll(element); },
-		// getAllRoutes () { return helpers.getElements('section') },
-		shortenString(text, start, end) { return end ? text.substr(start, end) : text.substr(start); },
-		setData(key, data) { return localStorage.setItem(key, data); },
-		getData(key) { return localStorage.getItem(key); },
-		deleteData(key) { return localStorage.removeItem(key); },
-		stringify(data) { return JSON.stringify(data); },
-		parse(data) { return JSON.parse(data); },
-	};
-
-	const debug = {
-		error(err) { console.log('Oops a error: ', err); return err; }
 	}
 
 	app.init();
