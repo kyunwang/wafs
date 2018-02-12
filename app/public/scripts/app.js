@@ -15,7 +15,7 @@
 	};
 
 	const routes = {
-		init: function() {
+		init() {
 			const getHash = helpers.getHash();
 			console.log('Initializing the routes');
 			if (getHash.length) {
@@ -29,7 +29,7 @@
 	};
 
 	const sections = {
-		toggle: function(route) {
+		toggle(route) {
 			console.log('Change route');
 			const currentId = helpers.shortenString(route, 1);
 
@@ -45,12 +45,19 @@
 		}
 	};
 
+	const api = {
+		baseUrl: 'https://kitsu.io/api/edge',
+		get: {
+			// return fetch()
+		}
+	}
+
 	const helpers = {
-		getHash: function() { return location.hash; },
-		getElement: function(element) { return document.querySelector(element); },
-		getElements: function(element) { return document.querySelectorAll(element); },
-		// getAllRoutes: function () { return helpers.getElements('section') },
-		shortenString: function(text, start, end) { return end ? text.substr(start, end) : text.substr(start); }
+		getHash() { return location.hash; },
+		getElement(element) { return document.querySelector(element); },
+		getElements(element) { return document.querySelectorAll(element); },
+		// getAllRoutes () { return helpers.getElements('section') },
+		shortenString(text, start, end) { return end ? text.substr(start, end) : text.substr(start); }
 	};
 
 	app.init();
