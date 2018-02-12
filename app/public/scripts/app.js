@@ -21,7 +21,7 @@
 		stringify(data) { return JSON.stringify(data); },
 		parse(data) { return JSON.parse(data); },
 
-		renderTemplate(id, template) { return Transparency.render(helpers.getElement(`#${id}`), template); }
+		renderTemplate(id, template, directives = {}) { return Transparency.render(helpers.getElement(`#${id}`), template, directives); }
 	};
 
 	const debug = {
@@ -87,7 +87,7 @@
 
 			// Set our initial routes and animedata in a promise
 			[configs.allRoutes, initialData] = await Promise.all([
-				helpers.getElements('section'),
+				helpers.getElements('main > section'),
 				api.get('anime', 20)
 			]);
 
@@ -122,15 +122,36 @@
 
 					// Return a template in a array for Transparency
 					let overview = animeData.data.map(item => ({
+						item__type: item.type,
+						item__link: item.attributes.slug,
 						item__name: item.attributes.canonicalTitle
-					}))
+					}));
+
+					let directives = {
+						item__link: {
+							href: function() { return `#${this.item__type}/${this.item__link}` }
+						}
+					}
+
+					// let directives= animeData.data.map(item => ({
+					// 	item__link: {
+					// 		href: function(params) {
+					// 			console.log(params)
+					// 			return '#' + item.attributes.slug;
+					// 		}
+					// 	},
+					// }));
+
+
 					
-					console.log('anime', animeData, overview);
-					// Transparency.render('overview', overview);
-					helpers.renderTemplate('overview', overview);
+					// console.log('anime', animeData, overview);
+					// console.dir(animeData.data[0].attributes);
+					console.dir(overview[0]);
+					console.dir(directives);
+					helpers.renderTemplate('overview', overview, directives);
 				},
 				'anime/:slug': function(slug) {
-					console.log('anime, ', slug);
+					console.log('anime slug, ',);
 				},
 				'manga': function() {
 					console.log('manga');
