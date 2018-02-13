@@ -19,5 +19,5 @@ gulp.task('browser-sync', function() {
 });
 
 gulp.task('default', ['sass', 'browser-sync'], function() {
-	gulp.watch('./public/styles/**/*.css');
+	gulp.watch('./public/styles/**/*.scss', ['sass']);
 });
