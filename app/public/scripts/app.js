@@ -91,24 +91,38 @@
 	===========================*/
 	const app = {
 		init: async function() {
-			helpers.deleteData('animeData');
+
+			let devAnime = helpers.getData('animeData');
+			let devManga = helpers.getData('mangaData');
+			// console.log((devAnime), (devManga))
+			// // console.log(helpers.parse(devAnime), helpers.parse(devManga))
+			// helpers.deleteData('animeData');
 
 			console.log('Initializing app');
-			let initialData;
+			let animeData, mangaData;
 
-			// Set our initial routes and animedata in a promise
-			[configs.allRoutes, initialData] = await Promise.all([
-				helpers.getElements('main > section'),
-				api.get('anime', 20)
-			]);
+			console.log(!devAnime);
+			// For dev purposes to prevent mass api calls
+			if (devAnime === undefined && devManga === undefined) {
+				console.log('No anime data so set');
+				// Set our initial routes and animedata in a promise
+				[configs.allRoutes, animeData, mangaData] = await Promise.all([
+					helpers.getElements('main > section'),
+					api.get('anime', 20),
+					api.get('manga', 20)
+				]);
+				helpers.setData('animeData', helpers.stringify(animeData));
+				helpers.setData('mangaData', helpers.stringify(mangaData));
+			}
+
+
 
 			// Setting our anime data in localstorage
-			helpers.setData('animeData', helpers.stringify(initialData));
-
+			
 			routes.init();
 		}
 	};
-
+	
 	const routes = {
 		init() {
 			this.routes();
@@ -132,35 +146,10 @@
 					console.log('Anime overview')
 					const animeData = helpers.parse(helpers.getData('animeData'));
 
-					// Return a template in a array for Transparency
-					let overview = animeData.data.map(item => ({
-						id: item.id,
-						slug: item.attributes.slug,
-						item__type: item.type,
-						item__link: {
-							item__name: item.attributes.canonicalTitle,
-							item__image: '',
-						},
-						...item.attributes,
-					}));
-
-					let directives = {
-						item__link: {
-							href: function() { return `#${this.item__type}/${this.id}` },
-							// href: function() { return `#${this.item__type}/${this.slug}` },
-						},
-						item__image: {
-							src: function() {
-								if (this.posterImage) {
-									// console.log(this.posterImage.tiny)
-									return this.posterImage.small;
-								}
-								// Return a default image
-								// return 
-							}
-						}
-					}
-
+					const {
+						overview,
+						directives
+					} = template.overview(animeData.data);
 					
 					helpers.renderTemplate('overview', overview, directives);
 				},
@@ -173,7 +162,19 @@
 
 				},
 				'manga': function() {
-					console.log('manga');
+					console.log('Manga Overview');
+
+					const mangaData = helpers.parse(helpers.getData('mangaData'));
+
+					const {
+						overview,
+						directives
+					} = template.overview(mangaData.data);
+					
+					helpers.renderTemplate('overview', overview, directives);
+				},
+				'manga/:slug': function(slug) {
+					console.log('Manga slug: ', slug)
 				},
 				'profile': function() {
 					console.log('profile');
@@ -181,6 +182,44 @@
 			});
 		}
 	};
+
+	const template = {
+		overview(data) {
+			// Return a template in a array for Transparency
+			let overview = data.map(item => ({
+				id: item.id,
+				slug: item.attributes.slug,
+				item__type: item.type,
+				item__link: {
+					item__name: item.attributes.canonicalTitle,
+					item__image: '',
+				},
+				...item.attributes,
+			}));
+
+			let directives = {
+				item__link: {
+					href: function() { return `#${this.item__type}/${this.id}` },
+					// href: function() { return `#${this.item__type}/${this.slug}` },
+				},
+				item__image: {
+					src: function() {
+						if (this.posterImage) {
+							// console.log(this.posterImage.tiny)
+							return this.posterImage.small;
+						}
+						// Return a default image
+						// return 
+					}
+				}
+			};
+
+			return {
+				overview,
+				directives
+			};
+		}
+	}
 
 	const sections = {
 		toggle(route) {

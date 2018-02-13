@@ -6,11 +6,20 @@ html {
 	font-family: 'Work Sans', sans-serif;
 }
 
+/*==========================
+=== Header /' Nav
+===========================*/
+
 nav ul {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	justify-items: center;
 }
+
+
+/*==========================
+=== 
+===========================*/
 
 section ul {
 	display: grid;
