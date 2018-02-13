@@ -53,7 +53,18 @@
 			console.log(data)
 			return data;
 		},
+		getOne: async function(route = '', searchText = '') {
+			// Get the data based on the params given
+			// const data = await fetch(`${this.baseUrl}/${route}??filter[slug]=${searchText}`, {
+			const data = await fetch(`${this.baseUrl}/${route}??filter[id]=${searchText}`, {
+				headers: this.baseHeader // Is required for the api
+			})
+			.then((res, err) => res.json())
+			.catch(err => debug.error(err));
 
+			console.log(data)
+			return data;
+		},
 		
 
 
@@ -118,40 +129,48 @@
 					helpers.renderTemplate('home', hello);
 				},
 				'anime': function() {
+					console.log('Anime overview')
 					const animeData = helpers.parse(helpers.getData('animeData'));
 
 					// Return a template in a array for Transparency
 					let overview = animeData.data.map(item => ({
+						id: item.id,
+						slug: item.attributes.slug,
 						item__type: item.type,
-						item__link: item.attributes.slug,
-						item__name: item.attributes.canonicalTitle
+						item__link: {
+							item__name: item.attributes.canonicalTitle,
+							item__image: '',
+						},
+						...item.attributes,
 					}));
 
 					let directives = {
 						item__link: {
-							href: function() { return `#${this.item__type}/${this.item__link}` }
+							href: function() { return `#${this.item__type}/${this.id}` },
+							// href: function() { return `#${this.item__type}/${this.slug}` },
+						},
+						item__image: {
+							src: function() {
+								if (this.posterImage) {
+									// console.log(this.posterImage.tiny)
+									return this.posterImage.small;
+								}
+								// Return a default image
+								// return 
+							}
 						}
 					}
 
-					// let directives= animeData.data.map(item => ({
-					// 	item__link: {
-					// 		href: function(params) {
-					// 			console.log(params)
-					// 			return '#' + item.attributes.slug;
-					// 		}
-					// 	},
-					// }));
-
-
 					
-					// console.log('anime', animeData, overview);
-					// console.dir(animeData.data[0].attributes);
-					console.dir(overview[0]);
-					console.dir(directives);
 					helpers.renderTemplate('overview', overview, directives);
 				},
 				'anime/:slug': function(slug) {
-					console.log('anime slug, ',);
+					let singleAnime = helpers.parse(helpers.getData('animeData')).data
+					.filter(item => item.id === slug)
+
+					console.log('Anime slug', slug, singleAnime);
+					// api.getOne('anime', slug);
+
 				},
 				'manga': function() {
 					console.log('manga');
