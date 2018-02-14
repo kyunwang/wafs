@@ -35,26 +35,35 @@ li {
 }
 
 /*==========================
-=== Header /' Nav
+=== Header / Nav
 ===========================*/
 body > header {
-  color: var(--white);
-  background: var(--primary-color); }
-  body > header h1 {
-    margin: 0; }
-  body > header a {
-    color: var(--white); }
+    color: var(--white);
+    background: var(--primary-color);
+}
+
+body > header h1 {
+    margin: 0;
+}
+
+body > header a {
+    color: var(--white);
+}
 
 nav {
-  padding: 0.5rem var(--def-margin-hor); }
-  nav ul {
-    display: flex; }
+    padding: 0.5rem var(--def-margin-hor);
+}
+
+nav ul {
+    display: flex;
+}
 
 /*==========================
 === Container
 ===========================*/
 main > section {
-  margin: 0 var(--def-margin-hor); }
+    margin: 0 var(--def-margin-hor);
+}
 
 /*==========================
 === Views
@@ -65,21 +74,17 @@ main > section {
 /*==========================
 === Home
 ===========================*/
+.items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));
+  grid-gap: 1rem; }
+  .items img {
+    width: 100%; }
+
+@media all and (min-width: 30rem) {
+  .items {
+    grid-template-columns: repeat(auto-fit, minmax(10em, 1fr)); } }
+
 /*==========================
 === Overview
 ===========================*/
-.view__overview .items {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));
-    grid-gap: 1rem;
-}
-
-.view__overview img {
-    width: 100%;
-}
-
-@media all and (min-width: 30rem) {
-    .view__overview .items {
-        grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
-    }
-}

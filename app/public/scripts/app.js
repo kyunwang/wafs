@@ -1,3 +1,5 @@
+// @ts-check
+// ts-check is a build in vscode checker
 'use strict';
 
 (function () {
@@ -69,7 +71,6 @@
 		},
 		/**
 		 * 
-		 * 
 		 * @param {number} The  
 		 * @param {string} 'anime' OR 'manga'
 		 * @returns 
@@ -99,9 +100,9 @@
 			&page[offset]=0
 			&page[limit]=${limit || 20}
 			&sort=
-			status,
-			-progressed_at
+			status
 			`)
+			// -progressed_at
 			.then((res, err) => res.json())
 			.catch(err => debug.error(err));
 
@@ -155,10 +156,12 @@
 
 				if (user.data.length) {
 					let userData = await api.getUserData(helpers.toInt(user.data[0].id), null, 40);
+					helpers.setData('userData', helpers.stringify(userData));
 
-					console.log(userData);
+					const { overview, directives
+					} = template.userOverview(userData);
 
-
+					helpers.renderTemplate('.view__home--user', overview, directives);
 				} else {
 					console.log('no user found');
 				}
@@ -263,7 +266,8 @@
 
 					console.log(123, overview)
 
-					helpers.renderTemplate('.view__home--user', overview, directives);
+					helpers.renderTemplate('.view__home--user .items', overview, directives);
+					// helpers.renderTemplate('#home', overview, directives);
 				},
 				'anime': function() {
 					console.log('Anime overview');
@@ -273,9 +277,10 @@
 
 					const { overview, directives
 					} = template.overview(animeData.data);
+
 					
 					// helpers.renderTemplate('#overview', overview, directives);
-					helpers.renderTemplate('.items', overview, directives);
+					helpers.renderTemplate('.view__overview .items', overview, directives);
 				},
 				'anime/:slug': function(slug) {
 					console.log('Anime slug: ', slug)
@@ -304,7 +309,7 @@
 						directives
 					} = template.overview(mangaData.data);
 					
-					helpers.renderTemplate('.items', overview, directives);
+					helpers.renderTemplate('.view__overview .items', overview, directives);
 				},
 				'manga/:slug': function(slug) {
 					console.log('Manga slug: ', slug);
@@ -321,7 +326,6 @@
 					} = template.detail(singleManga[0]);
 					
 					helpers.renderTemplate('.detail', overview, directives);
-
 				},
 				'profile': function() {
 					console.log('profile');
@@ -340,10 +344,13 @@
 				data, included
 			} = userData;
 
+			console.log(userData)
+
 			const libEntries = included.filter(item => item.type === type);
 			console.log('lib', libEntries);
 
 			const overview = libEntries.map(item => ({
+				item__type: item.type,
 				item__link: {
 					item__name: item.attributes.canonicalTitle,
 					item__image: '',
@@ -387,7 +394,7 @@
 			const directives = {
 				item__link: {
 					// href: function() { return `#${this.item__type}/${this.id}` },
-					href: function() { return `#${this.item__type}/${this.slug}` },
+					href: function() { return `#${this.item__type}/${this.slug}` }, // '#' + this.slug 
 				},
 				item__image: {
 					src: function() {
