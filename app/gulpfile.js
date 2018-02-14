@@ -14,6 +14,10 @@ gulp.task('browser-sync', function() {
 	browserSync.init(['*.html', './public/styles/*.css', './public/scripts/*.js'], {
 		server: {
 			baseDir: './'
+		},
+		port: 5000,
+		ui: {
+			port: 5001
 		}
 	});
 });
