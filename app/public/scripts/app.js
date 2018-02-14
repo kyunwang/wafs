@@ -6,6 +6,8 @@
 	===========================*/
 	const configs = {
 		allRoutes: [],
+		searchUserInput: '',
+		searchUserBtn: ''
 	};
 
 	const helpers = {
@@ -14,6 +16,7 @@
 		getElements(element) { return document.querySelectorAll(element); },
 		// getAllRoutes () { return helpers.getElements('section') },
 		shortenString(text, start, end) { return end ? text.substr(start, end) : text.substr(start); },
+		toInt(item) { return parseInt(item, 10) },
 
 		setData(key, data) { return localStorage.setItem(key, data); },
 		getData(key) { return localStorage.getItem(key); },
@@ -27,8 +30,6 @@
 	const debug = {
 		error(err) { console.log('Oops a error: ', err); return err; }
 	}
-
-
 
 
 	/*==========================
@@ -73,7 +74,7 @@
 		 * @param {string} 'anime' OR 'manga'
 		 * @returns 
 		 */
-		getUserData: async function(userId = 182702, filterKind = 'anime') {
+		getUserData: async function(userId = 182702, filterKind = 'anime', limit=20) {
 			const data = await fetch(`
 			https://kitsu.io/api/edge/library-entries
 			?
@@ -91,12 +92,12 @@
 			ratingRank,
 			episodeCount
 			&filter[user_id]=${182702}
-			&filter[kind]=${filterKind}
+			&filter[kind]=${filterKind || 'anime'}
 			&include=
 			anime,
 			user
 			&page[offset]=0
-			&page[limit]=100
+			&page[limit]=${limit || 20}
 			&sort=
 			status,
 			-progressed_at
@@ -113,7 +114,7 @@
 			.catch(err => debug.error(err));
 
 			console.log('Search for user: ', user);
-			// return user;
+			return user;
 		},
 		
 
@@ -137,8 +138,33 @@
 
 
 
+	/*==========================
+	=== Events
+	===========================*/
+	const events = {
+		init() {
+			const {
+				searchUserBtn,
+				searchUserInput
+			} = configs;
+
+			// 
+			searchUserBtn.addEventListener('click', async function(e) {
+				console.log('Sub', searchUserInput.value);
+				const user = await api.searchForUser(searchUserInput.value);
+
+				if (user.data.length) {
+					let userData = await api.getUserData(helpers.toInt(user.data[0].id), null, 40);
+
+					console.log(userData);
 
 
+				} else {
+					console.log('no user found');
+				}
+			});
+		}
+	}
 
 	/*==========================
 	=== Application and Routes
@@ -161,24 +187,38 @@
 				(devAnime === 'undefined') ||
 				(devManga === null) ||
 				(devManga === 'undefined')) {
-				console.log('No anime data so set');
-				// Set our initial routes and animedata in a promise
-				[configs.allRoutes, animeData, mangaData] = await Promise.all([
-					helpers.getElements('.view'),
-					api.get('anime', 20),
-					api.get('manga', 20)
-				]);
-				helpers.setData('animeData', helpers.stringify(animeData));
-				helpers.setData('mangaData', helpers.stringify(mangaData));
+					console.log('No anime data so set');
+					// Set our initial routes and animedata in a promise
+					[configs.allRoutes, animeData, mangaData] = await Promise.all([
+						helpers.getElements('.view'),
+						api.get('anime', 20),
+						api.get('manga', 20)
+					]);
+					helpers.setData('animeData', helpers.stringify(animeData));
+					helpers.setData('mangaData', helpers.stringify(mangaData));
 			} else {
-				configs.allRoutes = helpers.getElements('.view');
-			}
+				// configs.allRoutes = helpers.getElements('.view');
+				// configs.searchUserInput = helpers.getElement('#search-user-input');
+				// configs.searchUserBtn = helpers.getElement('#search-user-btn');
 
+				[
+					configs.allRoutes,
+					configs.searchUserInput,
+					configs.searchUserBtn,
+				] = await Promise.all([
+					helpers.getElements('.view'),
+					helpers.getElement('#search-user-input'),
+					helpers.getElement('#search-user-btn')
+				]);
+				console.log(configs)
+			}
 
 
 
 			// Setting our anime data in localstorage
 			
+			// Initiate our events (clicks ect.)
+			events.init();
 			// Initialize our route
 			routes.init();
 		}
@@ -195,7 +235,9 @@
 		},
 		routes() {
 			routie({
-				'home': function() {
+				'home': async function() {
+					console.log('Homepage');
+					sections.toggle(this.path);
 
 					let devUser = helpers.getData('userData');
 					let userData;
@@ -203,23 +245,25 @@
 
 					// For local test purposes
 					if ((devUser === null) || (devUser === 'undefined')) {
-						userData = api.getUserData(182702);
-						helpers.setData('userData', helpers.stringify());
+						console.log('No devUser found')
+						userData = await api.getUserData(182702);
+						helpers.setData('userData', helpers.stringify(userData));
 
 						console.log('userData: ', userData);
+					} else {
+						userData = devUser;
+						// userData = helpers.parse(userData);
 					}
 
-					console.log('Homepage', devUser);
-					sections.toggle(this.path);
 
-					var hello = {
-						hello:      'Hello',
-						goodbye:    '<i>Goodbye!</i>',
-						greeting:   'Howdy!',
-						// 'hi-label': 'Terve!' // Finnish i18n
-					};
+					console.log('Home', helpers.parse(userData))
 
-					helpers.renderTemplate('#home', hello);
+					const { overview, directives
+					} = template.userOverview(helpers.parse(userData));
+
+					console.log(123, overview)
+
+					helpers.renderTemplate('.view__home--user', overview, directives);
 				},
 				'anime': function() {
 					console.log('Anime overview');
@@ -227,9 +271,7 @@
 
 					const animeData = helpers.parse(helpers.getData('animeData'));
 
-					const {
-						overview,
-						directives
+					const { overview, directives
 					} = template.overview(animeData.data);
 					
 					// helpers.renderTemplate('#overview', overview, directives);
@@ -244,9 +286,7 @@
 
 					console.dir(singleAnime[0]);
 
-					const {
-						overview,
-						directives
+					const { overview, directives
 					} = template.detail(singleAnime[0]);
 
 					console.log('Anime slug', overview);
@@ -287,18 +327,53 @@
 					console.log('profile');
 				},
 			});
-		}
+		},
 	};
-
-
 
 	/*==========================
 	=== Our templates
 	===========================*/
 	const template = {
+		userOverview(userData, type = 'anime') {
+			console.log('userdata', userData);
+			const {
+				data, included
+			} = userData;
+
+			const libEntries = included.filter(item => item.type === type);
+			console.log('lib', libEntries);
+
+			const overview = libEntries.map(item => ({
+				item__link: {
+					item__name: item.attributes.canonicalTitle,
+					item__image: '',
+				},
+				...item.attributes
+			}));
+
+			const directives = {
+				item__link: {
+					// href: function() { return `#${this.item__type}/${this.id}` },
+					href: function() { return `#${this.item__type}/${this.slug}` },
+				},
+				item__image: {
+					src: function() {
+						if (this.posterImage) {
+							// console.log(this.posterImage.tiny)
+							return this.posterImage.small;
+						}
+						// Return a default image
+						// return 
+					}
+				}
+			};
+
+			return { overview, directives };
+
+		},
 		overview(data) {
 			// Return a template in a array for Transparency
-			let overview = data.map(item => ({
+			const overview = data.map(item => ({
 				id: item.id,
 				slug: item.attributes.slug,
 				item__type: item.type,
@@ -309,7 +384,7 @@
 				...item.attributes,
 			}));
 
-			let directives = {
+			const directives = {
 				item__link: {
 					// href: function() { return `#${this.item__type}/${this.id}` },
 					href: function() { return `#${this.item__type}/${this.slug}` },
@@ -335,7 +410,7 @@
 				rel = data.relationschips
 			} = data;
 
-			let overview = {
+			const overview = {
 				item__name: attr.canonicalTitle,
 				item__image: '',
 				item__synopsis: attr.synopsis,
@@ -344,7 +419,7 @@
 				...attr
 			};
 
-			let directives = {
+			const directives = {
 				item__image: {
 					src: function() {
 						if (this.posterImage) {
