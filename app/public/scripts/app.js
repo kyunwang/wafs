@@ -9,7 +9,9 @@
 	const configs = {
 		allRoutes: [],
 		searchUserInput: '',
-		searchUserBtn: ''
+		searchUserBtn: '',
+		showUserManga: '',
+		showUserAnime: '',
 	};
 
 	const helpers = {
@@ -85,30 +87,30 @@
 		 */
 		getUserData: async function(userId = 182702, filterKind = 'anime', limit=20) {
 			const data = await fetch(`
-			https://kitsu.io/api/edge/library-entries
-			?
-			fields[anime]=
-			slug,
-			posterImage,
-			canonicalTitle,
-			titles,
-			synopsis,
-			subtype,
-			startDate,
-			status,
-			averageRating,
-			popularityRank,
-			ratingRank,
-			episodeCount
-			&filter[user_id]=${userId}
-			&filter[kind]=${filterKind || 'anime'}
-			&include=
-			anime,
-			user
-			&page[offset]=0
-			&page[limit]=${limit || 20}
-			&sort=
-			status
+				https://kitsu.io/api/edge/library-entries
+				?
+				fields[anime]=
+				slug,
+				posterImage,
+				canonicalTitle,
+				titles,
+				synopsis,
+				subtype,
+				startDate,
+				status,
+				averageRating,
+				popularityRank,
+				ratingRank,
+				episodeCount
+				&filter[user_id]=${userId}
+				&filter[kind]=${filterKind || 'anime'}
+				&include=
+				anime,
+				user
+				&page[offset]=0
+				&page[limit]=${limit || 20}
+				&sort=
+				status
 			`)
 			// -progressed_at
 			.then((res, err) => res.json())
@@ -151,26 +153,25 @@
 
 			// 
 			searchUserBtn.addEventListener('click', async function(e) {
-				console.log('Sub', searchUserInput.value);
 				const user = await api.searchForUser(searchUserInput.value);
-				console.log('Our user', user, user.data[0].id);
 
 				if (user.data.length) {
-					// let userData = await api.getUserData(helpers.toInt(user.data[0].id), null, 40);
-					let userData = await api.getUserData(user.data[0].id, null, 40);
-					console.log(213123123213, userData)
+					const userData = await api.getUserData(user.data[0].id, null, 40);
+
 					helpers.setData('userData', helpers.stringify(userData));
 
 					const { overview, directives
 					} = template.userOverview(userData);
 
-					console.log('click', overview);
-
 					helpers.renderTemplate('.view__home', overview, directives);
 				} else {
+					// Return a message for the user
 					console.log('no user found');
 				}
 			});
+
+
+			
 		}
 	}
 
@@ -209,10 +210,14 @@
 					configs.allRoutes,
 					configs.searchUserInput,
 					configs.searchUserBtn,
+					configs.showUserAnime,
+					configs.showUserManga
 				] = await Promise.all([
 					helpers.getElements('.view'),
 					helpers.getElement('#search-user-input'),
-					helpers.getElement('#search-user-btn')
+					helpers.getElement('#search-user-btn'),
+					helpers.getElement('#show-user-anime'),
+					helpers.getElement('#show-user-manga')
 				]);
 			}
 
@@ -241,6 +246,8 @@
 				'home': async function() {
 					console.log('Homepage');
 					sections.toggle(this.path);
+
+					// Need some error handling
 
 					let devUser = helpers.getData('userData');
 					let userData;
@@ -280,6 +287,13 @@
 					
 					let singleAnime = helpers.parse(helpers.getData('animeData')).data
 					.filter(item => item.attributes.slug === slug);
+
+					// Want a better way to do this.....
+					// Get the userData if there is no data when routing from user library
+					if (!singleAnime.length) {
+						singleAnime = helpers.parse(helpers.getData('userData')).included
+						.filter(item => item.attributes.slug === slug);
+					}
 
 					const { overview, directives
 					} = template.detail(singleAnime[0]);
