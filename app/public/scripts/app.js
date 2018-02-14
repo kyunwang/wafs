@@ -106,9 +106,9 @@
 			console.log('Initializing app');
 			let animeData, mangaData;
 
-			console.log(!devAnime);
+			// console.log(devAnime, devManga);
 			// For dev purposes to prevent mass api calls
-			if (devAnime === undefined && devManga === undefined) {
+			if (devAnime === null || devManga === null) {
 				console.log('No anime data so set');
 				// Set our initial routes and animedata in a promise
 				[configs.allRoutes, animeData, mangaData] = await Promise.all([
@@ -176,14 +176,22 @@
 					sections.toggle('details');
 					
 					let singleAnime = helpers.parse(helpers.getData('animeData')).data
-					.filter(item => item.id === slug)
+					.filter(item => item.attributes.slug === slug);
 
-					console.log('Anime slug', slug, singleAnime);
+					console.dir(singleAnime[0]);
+
+					const {
+						overview,
+						directives
+					} = template.detail(singleAnime[0]);
+
+					console.log('Anime slug', overview);
 					// api.getOne('anime', slug);
-
+					helpers.renderTemplate('.detail', overview, directives);
 				},
 				'manga': function() {
 					console.log('Manga Overview');
+					sections.toggle('overview');	
 
 					const mangaData = helpers.parse(helpers.getData('mangaData'));
 
@@ -192,11 +200,24 @@
 						directives
 					} = template.overview(mangaData.data);
 					
-					// helpers.renderTemplate('#overview', overview, directives);
 					helpers.renderTemplate('.items', overview, directives);
 				},
 				'manga/:slug': function(slug) {
-					console.log('Manga slug: ', slug)
+					console.log('Manga slug: ', slug);
+					sections.toggle('details');
+
+					let singleManga = helpers.parse(helpers.getData('mangaData')).data
+					.filter(item => item.attributes.slug === slug);
+
+					console.dir(singleManga[0]);
+
+					const {
+						overview,
+						directives
+					} = template.detail(singleManga[0]);
+					
+					helpers.renderTemplate('.detail', overview, directives);
+
 				},
 				'profile': function() {
 					console.log('profile');
@@ -241,17 +262,46 @@
 				}
 			};
 
-			return {
-				overview,
-				directives
+			return { overview, directives };
+		},
+		detail(data) {
+			const {
+				type,
+				attr = data.attributes,
+				rel = data.relationschips
+			} = data;
+
+			let overview = {
+				item__name: attr.canonicalTitle,
+				item__image: '',
+				item__synopsis: attr.synopsis,
+				item__rating: attr.averageRating,
+				item__totalChOrEps: type === 'anime' ? attr.episodeCount : attr.chaperCount,
+				...attr
 			};
+
+			let directives = {
+				item__image: {
+					src: function() {
+						if (this.posterImage) {
+							// console.log(this.posterImage.tiny)
+							return this.posterImage.small;
+						}
+						// Return a default image
+						// return 
+					}
+				}
+			};
+
+			return { overview, directives };
 		}
+		
 	}
 
 	const sections = {
 		toggle(route) {
-			console.log('Change route');
-			console.log(configs.allRoutes, route);
+			console.log('Change route: ', route);
+			// console.log(configs.allRoutes, route);
 
 			configs.allRoutes.forEach(element => {
 				if (element.id === route) {
@@ -260,22 +310,6 @@
 					element.classList.add('inactive');
 				}
 			});
-
-
-			// const currentId = helpers.shortenString(route, 1);
-
-			// // Need a better way
-			// // Will probably screw up with many routes
-			// for(let i = 0; configs.allRoutes.length > i; i++) {
-			// 	if (configs.allRoutes[i].id === currentId) {
-			// 		configs.allRoutes[i].classList.remove('inactive');
-			// 	} else {
-			// 		configs.allRoutes[i].classList.add('inactive');
-			// 	}
-			// };
-
-
-
 		}
 	};
 

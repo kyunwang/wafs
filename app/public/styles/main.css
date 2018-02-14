@@ -37,12 +37,12 @@ li {
 /*==========================
 === Header /' Nav
 ===========================*/
-header {
+body > header {
   color: var(--white);
   background: var(--primary-color); }
-  header h1 {
+  body > header h1 {
     margin: 0; }
-  header a {
+  body > header a {
     color: var(--white); }
 
 nav {
