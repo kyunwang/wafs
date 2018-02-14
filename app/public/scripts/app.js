@@ -66,6 +66,55 @@
 			console.log(data)
 			return data;
 		},
+		/**
+		 * 
+		 * 
+		 * @param {number} The  
+		 * @param {string} 'anime' OR 'manga'
+		 * @returns 
+		 */
+		getUserData: async function(userId = 182702, filterKind = 'anime') {
+			const data = await fetch(`
+			https://kitsu.io/api/edge/library-entries
+			?
+			fields[anime]=
+			slug,
+			posterImage,
+			canonicalTitle,
+			titles,
+			synopsis,
+			subtype,
+			startDate,
+			status,
+			averageRating,
+			popularityRank,
+			ratingRank,
+			episodeCount
+			&filter[user_id]=${182702}
+			&filter[kind]=${filterKind}
+			&include=
+			anime,
+			user
+			&page[offset]=0
+			&page[limit]=100
+			&sort=
+			status,
+			-progressed_at
+			`)
+			.then((res, err) => res.json())
+			.catch(err => debug.error(err));
+
+			console.log('Userdata: ', data);
+			return data;
+		},
+		searchForUser: async function(userName = '') {
+			const user = await fetch(`https://kitsu.io/api/edge/users?filter%5Bname%5D=${userName}`)
+			.then((res, err) => res.json())
+			.catch(err => debug.error(err));
+
+			console.log('Search for user: ', user);
+			// return user;
+		},
 		
 
 
@@ -108,7 +157,10 @@
 
 			// console.log(devAnime, devManga);
 			// For dev purposes to prevent mass api calls
-			if (devAnime === null || devManga === null) {
+			if ((devAnime === null) ||
+				(devAnime === 'undefined') ||
+				(devManga === null) ||
+				(devManga === 'undefined')) {
 				console.log('No anime data so set');
 				// Set our initial routes and animedata in a promise
 				[configs.allRoutes, animeData, mangaData] = await Promise.all([
@@ -144,7 +196,20 @@
 		routes() {
 			routie({
 				'home': function() {
-					console.log('Home page', this);
+
+					let devUser = helpers.getData('userData');
+					let userData;
+
+
+					// For local test purposes
+					if ((devUser === null) || (devUser === 'undefined')) {
+						userData = api.getUserData(182702);
+						helpers.setData('userData', helpers.stringify());
+
+						console.log('userData: ', userData);
+					}
+
+					console.log('Homepage', devUser);
 					sections.toggle(this.path);
 
 					var hello = {
@@ -152,8 +217,7 @@
 						goodbye:    '<i>Goodbye!</i>',
 						greeting:   'Howdy!',
 						// 'hi-label': 'Terve!' // Finnish i18n
-						};
-
+					};
 
 					helpers.renderTemplate('#home', hello);
 				},
