@@ -54,7 +54,7 @@
 			.then((res, err) => res.json())
 			.catch(err => debug.error(err));
 
-			console.log(data)
+			// console.log(data)
 			return data;
 		},
 		getOne: async function(route = '', searchText = '') {
@@ -66,8 +66,16 @@
 			.then((res, err) => res.json())
 			.catch(err => debug.error(err));
 
-			console.log(data)
+			// console.log(data)
 			return data;
+		},
+		searchForUser: async function(userName = '') {
+			const user = await fetch(`https://kitsu.io/api/edge/users?filter%5Bname%5D=${userName}`)
+			.then((res, err) => res.json())
+			.catch(err => debug.error(err));
+
+			console.log('Search for user: ', user);
+			return user;
 		},
 		/**
 		 * 
@@ -92,7 +100,7 @@
 			popularityRank,
 			ratingRank,
 			episodeCount
-			&filter[user_id]=${182702}
+			&filter[user_id]=${userId}
 			&filter[kind]=${filterKind || 'anime'}
 			&include=
 			anime,
@@ -106,16 +114,8 @@
 			.then((res, err) => res.json())
 			.catch(err => debug.error(err));
 
-			console.log('Userdata: ', data);
+			// console.log('Userdata: ', data);
 			return data;
-		},
-		searchForUser: async function(userName = '') {
-			const user = await fetch(`https://kitsu.io/api/edge/users?filter%5Bname%5D=${userName}`)
-			.then((res, err) => res.json())
-			.catch(err => debug.error(err));
-
-			console.log('Search for user: ', user);
-			return user;
 		},
 		
 
@@ -153,15 +153,20 @@
 			searchUserBtn.addEventListener('click', async function(e) {
 				console.log('Sub', searchUserInput.value);
 				const user = await api.searchForUser(searchUserInput.value);
+				console.log('Our user', user, user.data[0].id);
 
 				if (user.data.length) {
-					let userData = await api.getUserData(helpers.toInt(user.data[0].id), null, 40);
+					// let userData = await api.getUserData(helpers.toInt(user.data[0].id), null, 40);
+					let userData = await api.getUserData(user.data[0].id, null, 40);
+					console.log(213123123213, userData)
 					helpers.setData('userData', helpers.stringify(userData));
 
 					const { overview, directives
 					} = template.userOverview(userData);
 
-					helpers.renderTemplate('.view__home--user', overview, directives);
+					console.log('click', overview);
+
+					helpers.renderTemplate('.view__home', overview, directives);
 				} else {
 					console.log('no user found');
 				}
@@ -174,17 +179,13 @@
 	===========================*/
 	const app = {
 		init: async function() {
+			console.log('Initializing app');
 
 			let devAnime = helpers.getData('animeData');
 			let devManga = helpers.getData('mangaData');
-			// console.log((devAnime), (devManga))
-			// // console.log(helpers.parse(devAnime), helpers.parse(devManga))
 			// helpers.deleteData('animeData');
-
-			console.log('Initializing app');
 			let animeData, mangaData;
 
-			// console.log(devAnime, devManga);
 			// For dev purposes to prevent mass api calls
 			if ((devAnime === null) ||
 				(devAnime === 'undefined') ||
@@ -213,7 +214,6 @@
 					helpers.getElement('#search-user-input'),
 					helpers.getElement('#search-user-btn')
 				]);
-				console.log(configs)
 			}
 
 
@@ -251,23 +251,15 @@
 						console.log('No devUser found')
 						userData = await api.getUserData(182702);
 						helpers.setData('userData', helpers.stringify(userData));
-
-						console.log('userData: ', userData);
 					} else {
 						userData = devUser;
 						// userData = helpers.parse(userData);
 					}
 
-
-					console.log('Home', helpers.parse(userData))
-
 					const { overview, directives
 					} = template.userOverview(helpers.parse(userData));
 
-					console.log(123, overview)
-
-					helpers.renderTemplate('.view__home--user .items', overview, directives);
-					// helpers.renderTemplate('#home', overview, directives);
+					helpers.renderTemplate('.view__home', overview, directives);
 				},
 				'anime': function() {
 					console.log('Anime overview');
@@ -283,18 +275,15 @@
 					helpers.renderTemplate('.view__overview .items', overview, directives);
 				},
 				'anime/:slug': function(slug) {
-					console.log('Anime slug: ', slug)
+					console.log('Anime slug: ', slug);
 					sections.toggle('details');
 					
 					let singleAnime = helpers.parse(helpers.getData('animeData')).data
 					.filter(item => item.attributes.slug === slug);
 
-					console.dir(singleAnime[0]);
-
 					const { overview, directives
 					} = template.detail(singleAnime[0]);
 
-					console.log('Anime slug', overview);
 					// api.getOne('anime', slug);
 					helpers.renderTemplate('.detail', overview, directives);
 				},
@@ -318,8 +307,6 @@
 					let singleManga = helpers.parse(helpers.getData('mangaData')).data
 					.filter(item => item.attributes.slug === slug);
 
-					console.dir(singleManga[0]);
-
 					const {
 						overview,
 						directives
@@ -339,38 +326,41 @@
 	===========================*/
 	const template = {
 		userOverview(userData, type = 'anime') {
-			console.log('userdata', userData);
-			const {
-				data, included
+			const { data, included
 			} = userData;
 
-			console.log(userData)
+			// Get the user from our includes
+			const user = included.filter(item => item.type === 'users');
 
+			// Get all our library entries of the user
 			const libEntries = included.filter(item => item.type === type);
-			console.log('lib', libEntries);
 
-			const overview = libEntries.map(item => ({
-				item__type: item.type,
-				item__link: {
-					item__name: item.attributes.canonicalTitle,
-					item__image: '',
-				},
-				...item.attributes
-			}));
+			const overview = {
+				['home-title']: `Hi, ${user[0].attributes.name}`,
+				items: libEntries.map(item => ({
+					item__type: item.type,
+					item__link: {
+						item__name: item.attributes.canonicalTitle,
+						item__image: '',
+					},
+					...item.attributes
+			}))};
 
 			const directives = {
-				item__link: {
-					// href: function() { return `#${this.item__type}/${this.id}` },
-					href: function() { return `#${this.item__type}/${this.slug}` },
-				},
-				item__image: {
-					src: function() {
-						if (this.posterImage) {
-							// console.log(this.posterImage.tiny)
-							return this.posterImage.small;
+				items: {
+					item__link: {
+						// href: function() { return `#${this.item__type}/${this.id}` },
+						href: function() { return `#${this.item__type}/${this.slug}` },
+					},
+					item__image: {
+						src: function() {
+							if (this.posterImage) {
+								// console.log(this.posterImage.tiny)
+								return this.posterImage.small;
+							}
+							// Return a default image
+							// return 
 						}
-						// Return a default image
-						// return 
 					}
 				}
 			};
