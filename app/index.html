@@ -10,24 +10,29 @@
 </head>
 
 <body>
-	<nav>
-		<ul>
-			<li>
-				<a href="#home">Home</a>
-			</li>
-			<li>
-				<a href="#anime">Anime</a>
-			</li>
-			<li>
-				<a href="#manga">Manga</a>
-			</li>
-			<li>
-				<a href="#profile">Profile</a>
-			</li>
-		</ul>
-	</nav>
+	<header>
+		<nav>
+			<ul>
+				<li>
+					<a href="#home"><h1>A/M Listing</h1></a>
+				</li>
+				<li>
+					<a href="#home">My Library</a>
+				</li>
+				<li>
+					<a href="#anime">Anime</a>
+				</li>
+				<li>
+					<a href="#manga">Manga</a>
+				</li>
+				<li>
+					<a href="#profile">Profile</a>
+				</li>
+			</ul>
+		</nav>
+	</header>
 	<main>
-		<section id="home">
+		<section id="home" class="view view__home">
 			<h1>Home section</h1>
 			<p>Something about this page and it's conventions stuff</p>
 			<p class="hello"></p>
@@ -35,20 +40,20 @@
 			<p class="greeting"></p>
 		</section>
 
-		<section id="overview">
-			<!-- <div class="items"> -->
+		<section id="overview" class="view view__overview">
+			<div class="items">
 				<a class="item__link" href="">
 					<img class="item__image" src="" alt=""></img>
-					<h3 class="item item__name"></h3>
+					<h3 class="item__name"></h3>
 				</a>
-			<!-- </div> -->
+			</div>
 		</section>
 
-		<section id="details">
+		<section id="details" class="view view__details">
 			<h2>Details</h2>
 		</section>
 
-		<section id="profile">
+		<section id="profile" class="view view__profile">
 			<h2>Profile</h2>
 		</section>
 	</main>

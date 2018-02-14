@@ -21,12 +21,13 @@
 		stringify(data) { return JSON.stringify(data); },
 		parse(data) { return JSON.parse(data); },
 
-		renderTemplate(id, template, directives = {}) { return Transparency.render(helpers.getElement(`#${id}`), template, directives); }
+		renderTemplate(element, template, directives = {}) { return Transparency.render(helpers.getElement(element), template, directives); }
 	};
 
 	const debug = {
 		error(err) { console.log('Oops a error: ', err); return err; }
 	}
+
 
 
 
@@ -86,6 +87,10 @@
 	}
 
 
+
+
+
+
 	/*==========================
 	=== Application and Routes
 	===========================*/
@@ -107,29 +112,40 @@
 				console.log('No anime data so set');
 				// Set our initial routes and animedata in a promise
 				[configs.allRoutes, animeData, mangaData] = await Promise.all([
-					helpers.getElements('main > section'),
+					helpers.getElements('.view'),
 					api.get('anime', 20),
 					api.get('manga', 20)
 				]);
 				helpers.setData('animeData', helpers.stringify(animeData));
 				helpers.setData('mangaData', helpers.stringify(mangaData));
+			} else {
+				configs.allRoutes = helpers.getElements('.view');
 			}
+
 
 
 
 			// Setting our anime data in localstorage
 			
+			// Initialize our route
 			routes.init();
 		}
 	};
+
+
+	/*==========================
+	=== Routing/Routes
+	===========================*/
 	
 	const routes = {
 		init() {
-			this.routes();
+			this.routes(); // Well not really needed it feels like
 		},
 		routes() {
 			routie({
 				'home': function() {
+					console.log('Home page', this);
+					sections.toggle(this.path);
 
 					var hello = {
 						hello:      'Hello',
@@ -138,12 +154,13 @@
 						// 'hi-label': 'Terve!' // Finnish i18n
 						};
 
-					console.log('home');
 
-					helpers.renderTemplate('home', hello);
+					helpers.renderTemplate('#home', hello);
 				},
 				'anime': function() {
-					console.log('Anime overview')
+					console.log('Anime overview');
+					sections.toggle('overview');					
+
 					const animeData = helpers.parse(helpers.getData('animeData'));
 
 					const {
@@ -151,9 +168,13 @@
 						directives
 					} = template.overview(animeData.data);
 					
-					helpers.renderTemplate('overview', overview, directives);
+					// helpers.renderTemplate('#overview', overview, directives);
+					helpers.renderTemplate('.items', overview, directives);
 				},
 				'anime/:slug': function(slug) {
+					console.log('Anime slug: ', slug)
+					sections.toggle('details');
+					
 					let singleAnime = helpers.parse(helpers.getData('animeData')).data
 					.filter(item => item.id === slug)
 
@@ -171,7 +192,8 @@
 						directives
 					} = template.overview(mangaData.data);
 					
-					helpers.renderTemplate('overview', overview, directives);
+					// helpers.renderTemplate('#overview', overview, directives);
+					helpers.renderTemplate('.items', overview, directives);
 				},
 				'manga/:slug': function(slug) {
 					console.log('Manga slug: ', slug)
@@ -183,6 +205,11 @@
 		}
 	};
 
+
+
+	/*==========================
+	=== Our templates
+	===========================*/
 	const template = {
 		overview(data) {
 			// Return a template in a array for Transparency
@@ -199,8 +226,8 @@
 
 			let directives = {
 				item__link: {
-					href: function() { return `#${this.item__type}/${this.id}` },
-					// href: function() { return `#${this.item__type}/${this.slug}` },
+					// href: function() { return `#${this.item__type}/${this.id}` },
+					href: function() { return `#${this.item__type}/${this.slug}` },
 				},
 				item__image: {
 					src: function() {
@@ -224,17 +251,31 @@
 	const sections = {
 		toggle(route) {
 			console.log('Change route');
-			const currentId = helpers.shortenString(route, 1);
+			console.log(configs.allRoutes, route);
 
-			// Need a better way
-			// Will probably screw up with many routes
-			for(let i = 0; configs.allRoutes.length > i; i++) {
-				if (configs.allRoutes[i].id === currentId) {
-					configs.allRoutes[i].classList.remove('inactive');
+			configs.allRoutes.forEach(element => {
+				if (element.id === route) {
+					element.classList.remove('inactive');
 				} else {
-					configs.allRoutes[i].classList.add('inactive');
+					element.classList.add('inactive');
 				}
-			};
+			});
+
+
+			// const currentId = helpers.shortenString(route, 1);
+
+			// // Need a better way
+			// // Will probably screw up with many routes
+			// for(let i = 0; configs.allRoutes.length > i; i++) {
+			// 	if (configs.allRoutes[i].id === currentId) {
+			// 		configs.allRoutes[i].classList.remove('inactive');
+			// 	} else {
+			// 		configs.allRoutes[i].classList.add('inactive');
+			// 	}
+			// };
+
+
+
 		}
 	};
 
@@ -244,5 +285,6 @@
 		storeData() {}
 	}
 
+	// Initializing our app
 	app.init();
 })();
