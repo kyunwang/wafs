@@ -10,6 +10,7 @@
 		allRoutes: [],
 		searchUserInput: '',
 		searchUserBtn: '',
+		// searchUserForm: '',
 		showUserManga: '',
 		showUserAnime: '',
 	};
@@ -148,11 +149,11 @@
 		init() {
 			const {
 				searchUserBtn,
-				searchUserInput
+				searchUserInput,
 			} = configs;
 
-			// 
 			searchUserBtn.addEventListener('click', async function(e) {
+				e.preventDefault;
 				const user = await api.searchForUser(searchUserInput.value);
 
 				if (user.data.length) {
@@ -210,14 +211,16 @@
 					configs.allRoutes,
 					configs.searchUserInput,
 					configs.searchUserBtn,
+					// configs.searchUserForm,
 					configs.showUserAnime,
 					configs.showUserManga
 				] = await Promise.all([
 					helpers.getElements('.view'),
 					helpers.getElement('#search-user-input'),
 					helpers.getElement('#search-user-btn'),
+					// helpers.getElement('#search-user-form'),
 					helpers.getElement('#show-user-anime'),
-					helpers.getElement('#show-user-manga')
+					helpers.getElement('#show-user-manga'),
 				]);
 			}
 
