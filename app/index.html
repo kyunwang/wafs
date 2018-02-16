@@ -14,10 +14,10 @@
 		<nav>
 			<ul>
 				<li>
-					<a href="#home"><h1>A/M Listing</h1></a>
+					<a href="#library"><h1>A/M Listing</h1></a>
 				</li>
 				<li>
-					<a href="#home">Library</a>
+					<a href="#library">Library</a>
 				</li>
 				<li>
 					<a href="#anime">Anime</a>
@@ -36,20 +36,20 @@
 		<!--==========================================>>>>>
 		=== Home/User view
 		============================================>>>>-->
-		<section id="home" class="view view__home">
+		<section id="library" class="view view__home">
 			<h1 data-bind="home-title">Hi, Welcome!</h1>
 
 			<form>
-				<input id="search-user-input" type="text" name="" id="" />
+				<input id="search-user-input" type="text" name="" id="" placeholder="Search on username" />
 				<input id="search-user-btn" type="button" value="Search" />
 			</form>
 			<input id="show-user-manga" type="button" value="Manga" />
 			<input id="show-user-anime" type="button" value="Anime" />
-			
-			<input id="show-user-all" type="button" value="All" name="all" />
-			<input id="show-user-current" type="button" value="Watching" name="current" />
-			<input id="show-user-completed" type="button" value="Completed" name="completed" />
-			<input id="show-user-planned" type="button" value="Want to watch" name="planned" />
+
+			<a href="#library">All</a>
+			<a href="#library/current">Current</a>
+			<a href="#library/completed">Completed</a>
+			<a href="#library/planned">Want to watch</a>
 
 
 			<section class="view__home--user">

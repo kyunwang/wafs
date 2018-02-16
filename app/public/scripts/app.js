@@ -13,11 +13,7 @@
 		// searchUserForm: '',
 		showUserManga: '',
 		showUserAnime: '',
-		showUserAll: '',
-		showUserCurrent: '',
-		showUserCompleted: '',
-		showUserPlanned: '',
-		foundUser: ''
+		foundUser: '',
 	};
 
 	const helpers = {
@@ -258,10 +254,6 @@
 			} = configs;
 
 			this.clickForData(showUserManga, 'manga');
-			// this.clickFilterData(showUserAll);
-			this.clickFilterData(showUserCurrent);
-			this.clickFilterData(showUserCompleted);
-			this.clickFilterData(showUserPlanned);
 		},
 		clickForData(element, filter = null) {
 			element.addEventListener('click', async function(e) {
@@ -271,27 +263,6 @@
 
 			});
 		},
-		clickFilterData(element) {
-			element.addEventListener('click', async function(e) {
-				e.preventDefault();
-				const userId = helpers.parse(helpers.getData('userId'));
-
-				console.log(this.name);
-				console.log(storage.userDataAnime);
-				console.log(userId);
-
-				api.getUserDataFilter(userId, null, this.name, 20, 1)
-					.then(res => storage.userDataAnime = res)
-					.then(res => {
-						const { overview, directives
-						} = template.userOverview(storage.userDataAnime);
-						helpers.renderTemplate('.view__home', overview, directives);				
-					})
-				// storage.userDataAnime = [...storage.userDataAnime];
-				
-
-			});
-		}
 	}
 
 	/*==========================
@@ -329,24 +300,17 @@
 				configs.allRoutes, // Yes we set it again just to be sure for dev
 				configs.searchUserInput,
 				configs.searchUserBtn,
-				// configs.searchUserForm,
 				configs.showUserAnime,
 				configs.showUserManga,
-				configs.showUserAll,
-				configs.showUserCurrent,
-				configs.showUserCompleted,
-				configs.showUserPlanned,
+				// configs.searchUserForm,
+
 			] = await Promise.all([
 				helpers.getElements('.view'),
 				helpers.getElement('#search-user-input'),
 				helpers.getElement('#search-user-btn'),
-				// helpers.getElement('#search-user-form'),
 				helpers.getElement('#show-user-anime'),
 				helpers.getElement('#show-user-manga'),
-				helpers.getElement('#show-user-all'),
-				helpers.getElement('#show-user-current'),
-				helpers.getElement('#show-user-completed'),
-				helpers.getElement('#show-user-planned'),
+				// helpers.getElement('#search-user-form'),
 			]);
 			
 			
@@ -368,11 +332,11 @@
 			this.routes(); // Well not really needed it feels like
 
 			// Redirect to the homepage/template when there no hash is active
-			if (!location.hash) { routie('home'); }
+			if (!location.hash) { routie('library'); }
 		},
 		routes() {
 			routie({
-				'home': async function() {
+				'library': async function() {
 					console.log('Homepage');
 					// let {
 					// 	userDataAnime,
@@ -405,6 +369,24 @@
 
 					helpers.renderTemplate('.view__home', overview, directives);
 				},
+				'library/:query': function(query) {
+					console.log('Library query: ', query);
+					const userId = helpers.parse(helpers.getData('userId'));
+
+					api.getUserDataFilter(userId, null, query, 20, 1)
+					.then(res => storage.userDataAnime = res)
+					.then(res => {
+						const { overview, directives
+						} = template.userOverview(storage.userDataAnime);
+
+						console.log(res);
+						
+						helpers.renderTemplate('.view__home', overview, directives);				
+					});
+
+
+				},
+				'library/manga/:query': function(query) {},
 				'anime': function() {
 					console.log('Anime overview');
 					sections.toggle('overview'); // Toggle to ...				
@@ -486,7 +468,7 @@
 					item__type: 'anime',
 					item__link: {
 						item__name: 'test',
-						item__image: '',
+						item__image: 'hello',
 						item__rating: 88
 					},
 				}]
