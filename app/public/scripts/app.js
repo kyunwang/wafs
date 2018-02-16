@@ -82,11 +82,11 @@
 		},
 		/**
 		 * 
-		 * @param {number} The  
+		 * @param {number} The userId
 		 * @param {string} 'anime' OR 'manga'
 		 * @returns 
 		 */
-		getUserData: async function(userId = 182702, filterKind = 'anime', limit=20) {
+		getUserData: async function(userId = 182702, filterKind = 'anime', limit = 20) {
 			const data = await fetch(`
 				https://kitsu.io/api/edge/library-entries
 				?
@@ -243,6 +243,10 @@
 	const routes = {
 		init() {
 			this.routes(); // Well not really needed it feels like
+
+			// Redirect to the homepage/template when there no hash is active
+			if (!location.hash) { routie('home'); }
+			
 		},
 		routes() {
 			routie({
