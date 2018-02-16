@@ -11,7 +11,7 @@ gulp.task('sass', function() {
 });
 
 gulp.task('browser-sync', function() {
-	browserSync.init(['*.html', './public/styles/*.css', './public/scripts/*.js'], {
+	browserSync.init(['*.html', './public/styles/main.css', './public/scripts/*.js'], {
 		server: {
 			baseDir: './'
 		},
@@ -23,5 +23,5 @@ gulp.task('browser-sync', function() {
 });
 
 gulp.task('default', ['sass', 'browser-sync'], function() {
-	gulp.watch('./public/styles/**/*.scss', ['sass']);
+	gulp.watch('./public/styles/*.scss', ['sass']);
 });

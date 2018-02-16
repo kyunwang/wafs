@@ -4,14 +4,16 @@
   "description": "Listing anime using Kitsu API",
   "main": "index.js",
   "scripts": {
-	 "start": "gulp",
-	 "push": "git push && git checkout master && git merge develop && git push && git checkout develop",
+    "start": "gulp",
+    "push": "git push && git checkout master && git merge develop && git push && git checkout develop",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kang Yun Wang (Kevin Wang)",
   "license": "ISC",
   "devDependencies": {
     "browser-sync": "^2.23.6",
-    "gulp": "^3.9.1"
+    "gulp": "^3.9.1",
+    "gulp-cssbeautify": "^1.0.0",
+    "gulp-sass": "^3.1.0"
   }
 }
