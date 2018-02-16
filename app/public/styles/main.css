@@ -123,13 +123,15 @@ main > section {
 
 .items {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(8em, 1fr)); }
+  grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));
+  grid-gap: 1rem; }
 
 .item {
   display: flex;
   position: relative;
   height: 100%;
-  overflow: hidden; }
+  overflow: hidden;
+  transition: var(--def-transition); }
   .item::before {
     content: "";
     position: absolute;
@@ -139,7 +141,8 @@ main > section {
     background: var(--black);
     transition: var(--def-transition); }
   .item:hover, .item:focus {
-    outline: none; }
+    outline: none;
+    box-shadow: 0 5px 10px var(--black); }
     .item:hover::before, .item:focus::before {
       opacity: .5; }
     .item:hover h3, .item:focus h3 {

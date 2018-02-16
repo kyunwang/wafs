@@ -166,11 +166,16 @@ main {
 		height: 2em;
 		padding: 0 .5em;
 	}
+
+	form {
+		
+	}
 }
+
 .items {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));
-	// grid-gap: .5rem;
+	grid-gap: 1rem;
 
 }
 
@@ -179,6 +184,8 @@ main {
 	position: relative;
 	height: 100%;
 	overflow: hidden;
+
+	transition: var(--def-transition);
 
 	&::before {
 		content: "";
@@ -194,6 +201,8 @@ main {
 	&:hover,
 	&:focus {
 		outline: none;
+		box-shadow: 0 5px 10px var(--black);
+
 		&::before {
 			// z-index: 100;
 			// background: var(--overlay-dark);
