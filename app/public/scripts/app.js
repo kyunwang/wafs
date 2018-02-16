@@ -13,6 +13,10 @@
 		// searchUserForm: '',
 		showUserManga: '',
 		showUserAnime: '',
+		showUserAll: '',
+		showUserCurrent: '',
+		showUserCompleted: '',
+		foundUser: ''
 	};
 
 	const helpers = {
@@ -36,6 +40,14 @@
 		error(err) { console.log('Oops a error: ', err); return err; }
 	}
 
+	const storage = {
+		getData() {},
+		storeData() {},
+		animeData: [],
+		userData: [],
+		userDataAnime: [],
+		userDataManga: [],
+	}
 
 	/*==========================
 	=== Api
@@ -124,6 +136,42 @@
 			// console.log('Userdata: ', data);
 			return data;
 		},
+		getUserDataFilter: async function(userId = 182702, filterKind = 'anime', limit = 20, offset = 0) {
+			const data = await fetch(`
+				https://kitsu.io/api/edge/library-entries
+				?
+				fields[anime]=
+				slug,
+				posterImage,
+				canonicalTitle,
+				titles,
+				synopsis,
+				subtype,
+				startDate,
+				status,
+				averageRating,
+				popularityRank,
+				ratingRank,
+				episodeCount
+				&filter[user_id]=${userId}
+				&filter[kind]=${filterKind || 'anime'}
+				&include=
+				anime,
+				user
+				&page[offset]=0
+				&page[limit]=${limit || 20}
+				&page[offset]=${offset || 0}
+				&sort=
+				status
+			`, {
+				headers: this.baseHeader // Is required for the api
+			})
+			.then((res, err) => res.json())
+			.catch(err => debug.error(err));
+
+			console.log('User filtered data: ', data);
+			return data;
+		},
 		
 
 
@@ -135,7 +183,7 @@
 			.then((res, err) => res.json())
 			.then((res, err) => {
 				helpers.setData('animeData', helpers.stringify(res));
-				console.log(res.data.length)
+				console.log(res.data.length);
 				return res;
 			})
 			.catch(err => debug.error(err));
@@ -154,10 +202,15 @@
 			const {
 				searchUserBtn,
 				searchUserInput,
+				showUserAnime,
+				showUserManga,
+				showUserAll,
+				showUserCurrent,
+				showUserCompleted
 			} = configs;
-
-
-			searchUserBtn.addEventListener('click', async function(e) {
+			console.log(configs);
+			
+			searchUserBtn.addEventListener('click', async(e) => {
 				e.preventDefault();
 
 				const user = await api.searchForUser(searchUserInput.value);
@@ -166,13 +219,17 @@
 				if (user.data.length) {
 					const userData = await api.getUserData(user.data[0].id, null, 40);
 
+					// Save the user id to localstorage for filter usage ect.
+					helpers.setData('userId', helpers.stringify(user.data[0].id));
+
 					// Save the data in localstorage
 					helpers.setData('userData', helpers.stringify(userData));
 
 					const { overview, directives
 					} = template.userOverview(userData);
-
+					
 					helpers.renderTemplate('.view__home', overview, directives);
+					this.initUserEvent();
 				} else {
 					// Return a message for the user
 					// Need to get a template ready or message thingy
@@ -181,7 +238,47 @@
 			});
 
 
-			
+			this.initUserEvent();
+			// showUserManga.addEventListener('click', async function(e) {
+			// 	e.preventDefault();
+
+			// })
+
+		},
+		initUserEvent() {
+			const {
+				showUserManga,
+				showUserAll,
+				showUserCurrent,
+				showUserCompleted
+			} = configs;
+
+			this.clickForData(showUserManga, 'manga');
+			this.clickFilterData(showUserAll);
+			this.clickFilterData(showUserCurrent);
+			this.clickFilterData(showUserCompleted);
+		},
+		clickForData(element, filter = null) {
+			element.addEventListener('click', async function(e) {
+				e.preventDefault();
+				console.log(filter, this);
+				// if (helpers.getData('userData').)
+
+			});
+		},
+		clickFilterData(element) {
+			element.addEventListener('click', async function(e) {
+				e.preventDefault();
+				const userId = helpers.parse(helpers.getData('userId'));
+
+				console.log(this.name);
+				console.log(storage.userDataAnime);
+				console.log(userId);
+
+				
+
+				
+			})
 		}
 	}
 
@@ -212,25 +309,32 @@
 					]);
 					helpers.setData('animeData', helpers.stringify(animeData));
 					helpers.setData('mangaData', helpers.stringify(mangaData));
-			} else {
-				// Getting and setting our elements here for later
-				// Need a better way or is this the way?
-				[
-					configs.allRoutes,
-					configs.searchUserInput,
-					configs.searchUserBtn,
-					// configs.searchUserForm,
-					configs.showUserAnime,
-					configs.showUserManga
-				] = await Promise.all([
-					helpers.getElements('.view'),
-					helpers.getElement('#search-user-input'),
-					helpers.getElement('#search-user-btn'),
-					// helpers.getElement('#search-user-form'),
-					helpers.getElement('#show-user-anime'),
-					helpers.getElement('#show-user-manga'),
-				]);
-			}
+			} 
+			
+			// Getting and setting our elements here for later
+			// Need a better way or is this the way?
+			[
+				configs.allRoutes, // Yes we set it again just to be sure for dev
+				configs.searchUserInput,
+				configs.searchUserBtn,
+				// configs.searchUserForm,
+				configs.showUserAnime,
+				configs.showUserManga,
+				configs.showUserAll,
+				configs.showUserCurrent,
+				configs.showUserCompleted,
+			] = await Promise.all([
+				helpers.getElements('.view'),
+				helpers.getElement('#search-user-input'),
+				helpers.getElement('#search-user-btn'),
+				// helpers.getElement('#search-user-form'),
+				helpers.getElement('#show-user-anime'),
+				helpers.getElement('#show-user-manga'),
+				helpers.getElement('#show-user-all'),
+				helpers.getElement('#show-user-current'),
+				helpers.getElement('#show-user-completed'),
+			]);
+			
 			
 			// Initiate our events (clicks ect.)
 			events.init();
@@ -256,26 +360,34 @@
 			routie({
 				'home': async function() {
 					console.log('Homepage');
+					// let {
+					// 	userDataAnime,
+					// 	userDataManga,
+					// } = storage;
+					
 					sections.toggle(this.path);
 
 					// Need some error handling
 
 					let devUser = helpers.getData('userData');
-					let userData;
+					// let userData;
 
 
 					// For local test purposes
 					if ((devUser === null) || (devUser === 'undefined')) {
 						console.log('No devUser found')
-						userData = await api.getUserData(182702); // Get a default userdata
-						helpers.setData('userData', helpers.stringify(userData));
+						storage.userDataAnime = await api.getUserData(182702); // Get a default userdata
+						
+						helpers.setData('userData', helpers.stringify(userDataAnime));
 					} else {
-						userData = devUser;
-						// userData = helpers.parse(userData);
+						storage.userDataAnime = helpers.parse(devUser);
 					}
 
+					//
+					// events.initUserEvent();
+
 					const { overview, directives
-					} = template.userOverview(helpers.parse(userData));
+					} = template.userOverview(storage.userDataAnime);
 
 					helpers.renderTemplate('.view__home', overview, directives);
 				},
@@ -361,6 +473,7 @@
 
 			// Get all our library entries of the user
 			const libEntries = included.filter(item => item.type === type);
+console.log(libEntries, userData);
 
 			// The weird Transparency syntax
 			const overview = {
@@ -377,7 +490,8 @@
 				})
 			)};
 			
-			console.log('User overview', overview.items[0]);
+			// console.log('User overview', overview.items[0]);
+			console.log('User overview', overview.items);
 
 			const directives = {
 				items: {
@@ -468,12 +582,6 @@
 			});
 		}
 	};
-
-
-	const storage = {
-		getData() {},
-		storeData() {}
-	}
 
 	// Initializing our app
 	app.init();
