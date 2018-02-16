@@ -3,6 +3,11 @@
 	--primary-color: #00B0FF;
 	--white: #fff;
 
+	// Font
+	--font-normal: .9em;
+	--font-big: 1.2em;
+
+
 	// General
 	--def-margin-hor: 1rem;
 }
@@ -56,14 +61,38 @@ body > header {
 }
 
 nav {
-	padding: .5rem var(--def-margin-hor);
 	ul {
 		display: flex;
+		align-items: flex-end;
+		justify-content: flex-end;
+		flex-wrap: wrap;
+		padding: .5rem var(--def-margin-hor);
+		height: 100%;
 
 		// display: grid;
 		// grid-template-columns: 1fr 1fr;
 		// justify-items: center;
 	}
+
+	li {
+		&:first-of-type {
+			margin-right: auto;
+			width: 100%;
+		}
+		&:not(:first-of-type) {
+			height: 100%;
+			// background: red;
+			a {
+				padding: .5rem 1rem;
+			}
+		}
+		&:last-of-type {
+			a {
+				padding-right: 0;
+			}
+		}
+	}
+	
 }
 	
 
@@ -100,9 +129,25 @@ main {
 }
 
 /*==========================
-=== Home
+=== Home / User Library
 ===========================*/
 
+.view__home {
+	form {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+	}
+	
+	[type="text"] {
+		font-size: 1em;
+		// flex: 1;
+		// font-size: var(--font-big);
+
+		height: 2em;
+		padding: 0 .5em;
+	}
+}
 .items {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));

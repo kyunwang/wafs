@@ -23,3 +23,4 @@ Maybe
 
 ### Need to do
 - Clean the templates because I was pretty WET, but want to be DRY (You get it? 😏)
+- Pagination stuff
