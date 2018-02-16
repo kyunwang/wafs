@@ -16,6 +16,7 @@
 		showUserAll: '',
 		showUserCurrent: '',
 		showUserCompleted: '',
+		showUserPlanned: '',
 		foundUser: ''
 	};
 
@@ -100,11 +101,11 @@
 		 * @param {string} 'anime' OR 'manga'
 		 * @returns 
 		 */
-		getUserData: async function(userId = 182702, filterKind = 'anime', limit = 20) {
+		getUserData: async function(userId = 182702, kind = 'anime', limit = 20) {
 			const data = await fetch(`
 				https://kitsu.io/api/edge/library-entries
 				?
-				fields[anime]=
+				fields[${kind || 'anime'}]=
 				slug,
 				posterImage,
 				canonicalTitle,
@@ -118,7 +119,7 @@
 				ratingRank,
 				episodeCount
 				&filter[user_id]=${userId}
-				&filter[kind]=${filterKind || 'anime'}
+				&filter[kind]=${kind || 'anime'}
 				&include=
 				anime,
 				user
@@ -136,11 +137,11 @@
 			// console.log('Userdata: ', data);
 			return data;
 		},
-		getUserDataFilter: async function(userId = 182702, filterKind = 'anime', limit = 20, offset = 0) {
+		getUserDataFilter: async function(userId = 182702, kind = 'anime', status = '', limit = 20, offset = 0) {
 			const data = await fetch(`
 				https://kitsu.io/api/edge/library-entries
 				?
-				fields[anime]=
+				fields[${kind || 'anime'}]=
 				slug,
 				posterImage,
 				canonicalTitle,
@@ -154,7 +155,8 @@
 				ratingRank,
 				episodeCount
 				&filter[user_id]=${userId}
-				&filter[kind]=${filterKind || 'anime'}
+				&filter[kind]=${kind || 'anime'}
+				&filter[status]=${status || ''}				
 				&include=
 				anime,
 				user
@@ -218,6 +220,7 @@
 				// If there is any data found of the user. Get his data
 				if (user.data.length) {
 					const userData = await api.getUserData(user.data[0].id, null, 40);
+					
 
 					// Save the user id to localstorage for filter usage ect.
 					helpers.setData('userId', helpers.stringify(user.data[0].id));
@@ -250,13 +253,15 @@
 				showUserManga,
 				showUserAll,
 				showUserCurrent,
-				showUserCompleted
+				showUserCompleted,
+				showUserPlanned,
 			} = configs;
 
 			this.clickForData(showUserManga, 'manga');
-			this.clickFilterData(showUserAll);
+			// this.clickFilterData(showUserAll);
 			this.clickFilterData(showUserCurrent);
 			this.clickFilterData(showUserCompleted);
+			this.clickFilterData(showUserPlanned);
 		},
 		clickForData(element, filter = null) {
 			element.addEventListener('click', async function(e) {
@@ -275,10 +280,17 @@
 				console.log(storage.userDataAnime);
 				console.log(userId);
 
+				api.getUserDataFilter(userId, null, this.name, 20, 1)
+					.then(res => storage.userDataAnime = res)
+					.then(res => {
+						const { overview, directives
+						} = template.userOverview(storage.userDataAnime);
+						helpers.renderTemplate('.view__home', overview, directives);				
+					})
+				// storage.userDataAnime = [...storage.userDataAnime];
 				
 
-				
-			})
+			});
 		}
 	}
 
@@ -323,6 +335,7 @@
 				configs.showUserAll,
 				configs.showUserCurrent,
 				configs.showUserCompleted,
+				configs.showUserPlanned,
 			] = await Promise.all([
 				helpers.getElements('.view'),
 				helpers.getElement('#search-user-input'),
@@ -333,6 +346,7 @@
 				helpers.getElement('#show-user-all'),
 				helpers.getElement('#show-user-current'),
 				helpers.getElement('#show-user-completed'),
+				helpers.getElement('#show-user-planned'),
 			]);
 			
 			
@@ -464,16 +478,36 @@
 	=== Our templates
 	===========================*/
 	const template = {
+		noStuff() {
+			// Need to change the name 
+			const overview = {
+				['home-title']: `Hi, $error`,
+				items: [{
+					item__type: 'anime',
+					item__link: {
+						item__name: 'test',
+						item__image: '',
+						item__rating: 88
+					},
+				}]
+			}
+
+			return { overview };
+		},
 		userOverview(userData, type = 'anime') {
 			const { data, included
 			} = userData;
+
+			if(data.length < 2) {
+				console.log('no stuff');
+				return this.noStuff();
+			}
 
 			// Get the user from our includes
 			const user = included.filter(item => item.type === 'users');
 
 			// Get all our library entries of the user
 			const libEntries = included.filter(item => item.type === type);
-console.log(libEntries, userData);
 
 			// The weird Transparency syntax
 			const overview = {
