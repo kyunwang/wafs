@@ -74,3 +74,6 @@ Here I will list the PR's I have made.
 Week 1:
 - https://github.com/baskager/wafs/pull/5
 - https://github.com/IIYAMA12/wafs/pull/2
+
+Week 2:
+- https://github.com/niyorn/wafs/pull/8

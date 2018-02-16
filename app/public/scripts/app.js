@@ -73,7 +73,9 @@
 			return data;
 		},
 		searchForUser: async function(userName = '') {
-			const user = await fetch(`https://kitsu.io/api/edge/users?filter%5Bname%5D=${userName}`)
+			const user = await fetch(`https://kitsu.io/api/edge/users?filter%5Bname%5D=${userName}`, {
+				headers: this.baseHeader // Is required for the api
+			})
 			.then((res, err) => res.json())
 			.catch(err => debug.error(err));
 
@@ -112,7 +114,9 @@
 				&page[limit]=${limit || 20}
 				&sort=
 				status
-			`)
+			`, {
+				headers: this.baseHeader // Is required for the api
+			})
 			// -progressed_at
 			.then((res, err) => res.json())
 			.catch(err => debug.error(err));
@@ -123,7 +127,7 @@
 		
 
 
-
+		// Probably not needed anymore
 		getAnime: async function(limit = 10, offset = 0) {
 			const data = await fetch(`${this.baseUrl}/anime?page[limit]=${limit}&page[offset]=${offset}`, {
 				headers: this.baseHeader
@@ -152,15 +156,17 @@
 				searchUserInput,
 			} = configs;
 
-			searchUserBtn.addEventListener('click', async function(e) {
-				e.preventDefault;
-				const user = await api.searchForUser(searchUserInput.value);
-				console.log(user);
 
+			searchUserBtn.addEventListener('click', async function(e) {
+				e.preventDefault();
+
+				const user = await api.searchForUser(searchUserInput.value);
+
+				// If there is any data found of the user. Get his data
 				if (user.data.length) {
 					const userData = await api.getUserData(user.data[0].id, null, 40);
 
-
+					// Save the data in localstorage
 					helpers.setData('userData', helpers.stringify(userData));
 
 					const { overview, directives
@@ -169,6 +175,7 @@
 					helpers.renderTemplate('.view__home', overview, directives);
 				} else {
 					// Return a message for the user
+					// Need to get a template ready or message thingy
 					console.log('no user found');
 				}
 			});
@@ -185,6 +192,7 @@
 		init: async function() {
 			console.log('Initializing app');
 
+			// We check the existence of the data first 
 			let devAnime = helpers.getData('animeData');
 			let devManga = helpers.getData('mangaData');
 			// helpers.deleteData('animeData');
@@ -205,10 +213,8 @@
 					helpers.setData('animeData', helpers.stringify(animeData));
 					helpers.setData('mangaData', helpers.stringify(mangaData));
 			} else {
-				// configs.allRoutes = helpers.getElements('.view');
-				// configs.searchUserInput = helpers.getElement('#search-user-input');
-				// configs.searchUserBtn = helpers.getElement('#search-user-btn');
-
+				// Getting and setting our elements here for later
+				// Need a better way or is this the way?
 				[
 					configs.allRoutes,
 					configs.searchUserInput,
@@ -225,13 +231,10 @@
 					helpers.getElement('#show-user-manga'),
 				]);
 			}
-
-
-
-			// Setting our anime data in localstorage
 			
 			// Initiate our events (clicks ect.)
 			events.init();
+
 			// Initialize our route
 			routes.init();
 		}
@@ -264,7 +267,7 @@
 					// For local test purposes
 					if ((devUser === null) || (devUser === 'undefined')) {
 						console.log('No devUser found')
-						userData = await api.getUserData(182702);
+						userData = await api.getUserData(182702); // Get a default userdata
 						helpers.setData('userData', helpers.stringify(userData));
 					} else {
 						userData = devUser;
@@ -278,7 +281,7 @@
 				},
 				'anime': function() {
 					console.log('Anime overview');
-					sections.toggle('overview');					
+					sections.toggle('overview'); // Toggle to ...				
 
 					const animeData = helpers.parse(helpers.getData('animeData'));
 
@@ -291,7 +294,7 @@
 				},
 				'anime/:slug': function(slug) {
 					console.log('Anime slug: ', slug);
-					sections.toggle('details');
+					sections.toggle('details'); // Toggle to ...
 					
 					let singleAnime = helpers.parse(helpers.getData('animeData')).data
 					.filter(item => item.attributes.slug === slug);
@@ -311,7 +314,7 @@
 				},
 				'manga': function() {
 					console.log('Manga Overview');
-					sections.toggle('overview');	
+					sections.toggle('overview'); // Toggle to ...
 
 					const mangaData = helpers.parse(helpers.getData('mangaData'));
 
@@ -324,7 +327,7 @@
 				},
 				'manga/:slug': function(slug) {
 					console.log('Manga slug: ', slug);
-					sections.toggle('details');
+					sections.toggle('details'); // Toggle to ...
 
 					let singleManga = helpers.parse(helpers.getData('mangaData')).data
 					.filter(item => item.attributes.slug === slug);
@@ -352,17 +355,14 @@
 		userOverview(userData, type = 'anime') {
 			const { data, included
 			} = userData;
-			// console.log(userData);
-			
 
 			// Get the user from our includes
 			const user = included.filter(item => item.type === 'users');
 
 			// Get all our library entries of the user
 			const libEntries = included.filter(item => item.type === type);
-			// console.log(libEntries);
-			
 
+			// The weird Transparency syntax
 			const overview = {
 				['home-title']: `Hi, ${user[0].attributes.name}`,
 				items: libEntries.map((item, i) => ({
@@ -377,13 +377,12 @@
 				})
 			)};
 			
-			console.log(overview.items[0]);
+			console.log('User overview', overview.items[0]);
 
 			const directives = {
 				items: {
 					item__link: {
-						// href: function() { return `#${this.item__type}/${this.id}` },
-						href: function() { return `#${this.item__type}/${this.slug}` },
+						href: function() { return `#${this.item__type}/${this.slug}` },  // '#' + this.slug 
 					},
 					item__image: {
 						src: function() {
@@ -392,7 +391,6 @@
 								return this.posterImage.medium;
 							}
 							// Return a default image
-							// return 
 						}
 					}
 				}
@@ -416,14 +414,11 @@
 
 			const directives = {
 				item__link: {
-					// href: function() { return `#${this.item__type}/${this.id}` },
-					href: function() { return `#${this.item__type}/${this.slug}` }, // '#' + this.slug 
+					href: function() { return `#${this.item__type}/${this.slug}` },
 				},
 				item__image: {
 					src: function() {
-						if (this.posterImage) {
-							return this.posterImage.medium;
-						}
+						if (this.posterImage) { return this.posterImage.medium; }
 					}
 				}
 			};
@@ -449,9 +444,7 @@
 			const directives = {
 				item__image: {
 					src: function() {
-						if (this.posterImage) {
-							return this.posterImage.medium;
-						}
+						if (this.posterImage) { return this.posterImage.medium; }
 					}
 				}
 			};
@@ -463,9 +456,9 @@
 
 	const sections = {
 		toggle(route) {
-			console.log('Change route: ', route);
-			// console.log(configs.allRoutes, route);
+			console.log('Change route to: ', route);
 
+			// We remove hide all the inactive views and display the active one (sound logical)
 			configs.allRoutes.forEach(element => {
 				if (element.id === route) {
 					element.classList.remove('inactive');
