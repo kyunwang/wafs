@@ -155,9 +155,11 @@
 			searchUserBtn.addEventListener('click', async function(e) {
 				e.preventDefault;
 				const user = await api.searchForUser(searchUserInput.value);
+				console.log(user);
 
 				if (user.data.length) {
 					const userData = await api.getUserData(user.data[0].id, null, 40);
+
 
 					helpers.setData('userData', helpers.stringify(userData));
 
@@ -246,7 +248,6 @@
 
 			// Redirect to the homepage/template when there no hash is active
 			if (!location.hash) { routie('home'); }
-			
 		},
 		routes() {
 			routie({
@@ -342,6 +343,8 @@
 		},
 	};
 
+
+
 	/*==========================
 	=== Our templates
 	===========================*/
@@ -349,23 +352,32 @@
 		userOverview(userData, type = 'anime') {
 			const { data, included
 			} = userData;
+			// console.log(userData);
+			
 
 			// Get the user from our includes
 			const user = included.filter(item => item.type === 'users');
 
 			// Get all our library entries of the user
 			const libEntries = included.filter(item => item.type === type);
+			// console.log(libEntries);
+			
 
 			const overview = {
 				['home-title']: `Hi, ${user[0].attributes.name}`,
-				items: libEntries.map(item => ({
+				items: libEntries.map((item, i) => ({
 					item__type: item.type,
 					item__link: {
 						item__name: item.attributes.canonicalTitle,
 						item__image: '',
+						item__rating: data[i].attributes.rating === '0.0' ? '-' : (data[i].attributes.rating * 2) // Will make the rating to be a 0 to 10 rating
 					},
-					...item.attributes
-			}))};
+					...item.attributes,
+					...data[i].attributes
+				})
+			)};
+			
+			console.log(overview.items[0]);
 
 			const directives = {
 				items: {
@@ -376,8 +388,8 @@
 					item__image: {
 						src: function() {
 							if (this.posterImage) {
-								// console.log(this.posterImage.tiny)
-								return this.posterImage.small;
+								// console.log(this.posterImage);
+								return this.posterImage.medium;
 							}
 							// Return a default image
 							// return 
@@ -410,11 +422,8 @@
 				item__image: {
 					src: function() {
 						if (this.posterImage) {
-							// console.log(this.posterImage.tiny)
-							return this.posterImage.small;
+							return this.posterImage.medium;
 						}
-						// Return a default image
-						// return 
 					}
 				}
 			};
@@ -441,11 +450,8 @@
 				item__image: {
 					src: function() {
 						if (this.posterImage) {
-							// console.log(this.posterImage.tiny)
-							return this.posterImage.small;
+							return this.posterImage.medium;
 						}
-						// Return a default image
-						// return 
 					}
 				}
 			};

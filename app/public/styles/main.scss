@@ -2,14 +2,20 @@
 	// Colors
 	--primary-color: #00B0FF;
 	--white: #fff;
+	--black: rgb(58, 57, 57);
+
+	--overlay-dark: rgba(0, 0, 0, .5);
 
 	// Font
 	--font-normal: .9em;
 	--font-big: 1.2em;
-
+	--font-giant: 6em;
 
 	// General
 	--def-margin-hor: 1rem;
+	// --def-gap: .5rem;
+	--def-gap: 1rem;
+	--def-transition: all .3s ease-in;
 }
 
 @media all and (min-width: 40rem) {
@@ -39,10 +45,23 @@ li {
 	list-style: none;
 }
 
+h3, p {
+	margin: 0;
+}
+
+img {
+	height: 100%;	
+	width: 100%;	
+}
+
 
 .inactive {
 	display: none;
 }
+
+/*==========================
+=== Keyframes if there are any
+===========================*/
 
 /*==========================
 === Header / Nav
@@ -151,9 +170,68 @@ main {
 .items {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));
-	grid-gap: 1rem;
-	img {
+	// grid-gap: .5rem;
+
+}
+
+.item {
+	display: flex;
+	position: relative;
+	height: 100%;
+	overflow: hidden;
+
+	&::before {
+		content: "";
+		position: absolute;
+		height: 100%;
 		width: 100%;
+		opacity: 0;
+		background: var(--black);
+
+		transition: var(--def-transition);
+	}
+	
+	&:hover,
+	&:focus {
+		outline: none;
+		&::before {
+			// z-index: 100;
+			// background: var(--overlay-dark);
+			opacity: .5;
+		}
+		h3 {
+			transform: translateY(0);
+		}
+		
+		p {
+			transform: translateY(0);
+		}
+	}
+	
+	h3, p {
+		position: absolute;
+		color: var(--white);
+		margin: 0 var(--def-gap);
+		pointer-events: none;
+		transition: var(--def-transition);
+		
+	}
+
+	h3 {
+		bottom: var(--def-gap);
+		font-size: var(--font-normal);
+		font-weight: 500;
+		transform: translateY(5em);
+	}
+
+	p {
+		align-self: center;
+		right: 0;
+		left: 0;
+		text-align: center;
+		font-size: var(--font-giant);
+		transform: translateY(-2em);
+		
 	}
 }
 

@@ -1,9 +1,14 @@
 :root {
     --primary-color: #00B0FF;
     --white: #fff;
+    --black: #3a3939;
+    --overlay-dark: rgba(0, 0, 0, 0.5);
     --font-normal: .9em;
     --font-big: 1.2em;
+    --font-giant: 6em;
     --def-margin-hor: 1rem;
+    --def-gap: 1rem;
+    --def-transition: all .3s ease-in;
 }
 
 @media all and (min-width: 40rem) {
@@ -32,10 +37,22 @@ li {
     list-style: none;
 }
 
+h3, p {
+    margin: 0;
+}
+
+img {
+    height: 100%;
+    width: 100%;
+}
+
 .inactive {
     display: none;
 }
 
+/*==========================
+=== Keyframes if there are any
+===========================*/
 /*==========================
 === Header / Nav
 ===========================*/
@@ -106,10 +123,47 @@ main > section {
 
 .items {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));
-  grid-gap: 1rem; }
-  .items img {
-    width: 100%; }
+  grid-template-columns: repeat(auto-fit, minmax(8em, 1fr)); }
+
+.item {
+  display: flex;
+  position: relative;
+  height: 100%;
+  overflow: hidden; }
+  .item::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    background: var(--black);
+    transition: var(--def-transition); }
+  .item:hover, .item:focus {
+    outline: none; }
+    .item:hover::before, .item:focus::before {
+      opacity: .5; }
+    .item:hover h3, .item:focus h3 {
+      transform: translateY(0); }
+    .item:hover p, .item:focus p {
+      transform: translateY(0); }
+  .item h3, .item p {
+    position: absolute;
+    color: var(--white);
+    margin: 0 var(--def-gap);
+    pointer-events: none;
+    transition: var(--def-transition); }
+  .item h3 {
+    bottom: var(--def-gap);
+    font-size: var(--font-normal);
+    font-weight: 500;
+    transform: translateY(5em); }
+  .item p {
+    align-self: center;
+    right: 0;
+    left: 0;
+    text-align: center;
+    font-size: var(--font-giant);
+    transform: translateY(-2em); }
 
 @media all and (min-width: 30rem) {
   .items {
