@@ -58,28 +58,16 @@
 		},
 		// Max limit for the api is 20
 		get: async function(route = '', limit = 10, offset = 0) {
-
 			// Get the data based on the params given
-			const data = await fetch(`${this.baseUrl}/${route}?page[limit]=${limit}&page[offset]=${offset}`, {
+			// const data = await fetch(`${this.baseUrl}/${route}?page[limit]=${limit}&page[offset]=${offset}`, {
+			return await fetch(`${this.baseUrl}/${route}?page[limit]=${limit}&page[offset]=${offset}`, {
 				headers: this.baseHeader // Is required for the api
 			})
 			.then((res, err) => res.json())
 			.catch(err => debug.error(err));
 
 			// console.log(data)
-			return data;
-		},
-		getOne: async function(route = '', searchText = '') {
-			// Get the data based on the params given
-			// const data = await fetch(`${this.baseUrl}/${route}??filter[slug]=${searchText}`, {
-			const data = await fetch(`${this.baseUrl}/${route}??filter[id]=${searchText}`, {
-				headers: this.baseHeader // Is required for the api
-			})
-			.then((res, err) => res.json())
-			.catch(err => debug.error(err));
-
-			// console.log(data)
-			return data;
+			// return data;
 		},
 		searchForUser: async function(userName = '') {
 			const user = await fetch(`https://kitsu.io/api/edge/users?filter%5Bname%5D=${userName}`, {
@@ -170,24 +158,6 @@
 			console.log('User filtered data: ', data);
 			return data;
 		},
-		
-
-
-		// Probably not needed anymore
-		getAnime: async function(limit = 10, offset = 0) {
-			const data = await fetch(`${this.baseUrl}/anime?page[limit]=${limit}&page[offset]=${offset}`, {
-				headers: this.baseHeader
-			})
-			.then((res, err) => res.json())
-			.then((res, err) => {
-				helpers.setData('animeData', helpers.stringify(res));
-				console.log(res.data.length);
-				return res;
-			})
-			.catch(err => debug.error(err));
-
-			return data;
-		}
 	}
 
 
@@ -417,7 +387,6 @@
 					const { overview, directives
 					} = template.detail(singleAnime[0]);
 
-					// api.getOne('anime', slug);
 					helpers.renderTemplate('.detail', overview, directives);
 				},
 				'manga': function() {
