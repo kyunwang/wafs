@@ -2,11 +2,19 @@
     --primary-color: #00B0FF;
     --white: #fff;
     --black: #3a3939;
+    --black2: #858585;
+    --grey: #eee;
     --overlay-dark: rgba(0, 0, 0, 0.5);
     --font-normal: .9em;
     --font-big: 1.2em;
     --font-giant: 6em;
+    --shadow-normal: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    --shadow-hover: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    --btn-padding: .5rem 1rem;
     --def-margin-hor: 1rem;
+    --def-margin-ver: 1rem;
+    --def-margin-ver2: 2rem;
+    --def-radius: .15rem;
     --def-gap: 1rem;
     --def-transition: all .3s ease-in;
 }
@@ -46,6 +54,19 @@ img {
     width: 100%;
 }
 
+button,
+[type="button"] {
+    color: var(--black2);
+    border-radius: var(--def-radius);
+    padding: var(--btn-padding);
+    transition: var(--def-transition);
+}
+
+button:hover,
+  [type="button"]:hover {
+    background: var(--grey);
+}
+
 .inactive {
     display: none;
 }
@@ -58,7 +79,6 @@ img {
 ===========================*/
 body > header {
     color: var(--white);
-    background: var(--primary-color);
 }
 
 body > header h1 {
@@ -66,21 +86,21 @@ body > header h1 {
 }
 
 body > header a {
-    color: var(--white);
+    text-decoration: none;
 }
 
 nav ul {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: flex-end;
     flex-wrap: wrap;
-    padding: 0.5rem var(--def-margin-hor);
     height: 100%;
+    margin: 0 var(--def-margin-hor);
+    padding: 1rem 0;
 }
 
 nav li:first-of-type {
     margin-right: auto;
-    width: 100%;
 }
 
 nav li:not(:first-of-type) {
@@ -88,11 +108,33 @@ nav li:not(:first-of-type) {
 }
 
 nav li:not(:first-of-type) a {
-    padding: .5rem 1rem;
+    color: var(--black2);
+    margin-right: 1rem;
+    border-radius: var(--def-radius);
+    padding: var(--btn-padding);
+    transition: var(--def-transition);
+}
+
+nav li:not(:first-of-type) a:hover {
+    background: var(--grey);
 }
 
 nav li:last-of-type a {
-    padding-right: 0;
+    margin: 0;
+    color: var(--white);
+    background: var(--primary-color);
+    box-shadow: var(--shadow-normal);
+}
+
+nav li:last-of-type a:hover {
+    background: var(--primary-color);
+    box-shadow: var(--shadow-hover);
+}
+
+@media all and (min-width: 35em) {
+    nav ul {
+        margin: 0 4rem;
+    }
 }
 
 /*==========================
@@ -100,6 +142,12 @@ nav li:last-of-type a {
 ===========================*/
 main > section {
     margin: 0 var(--def-margin-hor);
+}
+
+@media all and (min-width: 35em) {
+    main > section {
+        margin: 0 4rem;
+    }
 }
 
 /*==========================
@@ -113,13 +161,26 @@ main > section {
 ===========================*/
 .view__home form {
   display: flex;
-  flex-direction: column;
-  width: 100%; }
+  width: 100%;
+  margin: var(--def-margin-ver2) 0; }
+  .view__home form [type="button"] {
+    margin-left: 1rem; }
 
 .view__home [type="text"] {
   font-size: 1em;
   height: 2em;
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid var(--grey);
   padding: 0 .5em; }
+  .view__home [type="text"]::-webkit-input-placeholder, .view__home [type="text"]::-moz-placeholder, .view__home [type="text"]:-ms-input-placeholder, .view__home [type="text"]:-moz-placeholder {
+    /* Firefox 18- */
+    color: green; }
+
+.view__home [type="button"] {
+  color: var(--black);
+  text-transform: uppercase;
+  font-weight: 500; }
 
 .items {
   display: grid;
@@ -131,7 +192,7 @@ main > section {
   position: relative;
   height: 100%;
   overflow: hidden;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  box-shadow: var(--shadow-normal);
   transition: var(--def-transition); }
   .item::before {
     content: "";
@@ -143,7 +204,7 @@ main > section {
     transition: var(--def-transition); }
   .item:hover, .item:focus {
     outline: none;
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22); }
+    box-shadow: var(--shadow-hover); }
     .item:hover::before, .item:focus::before {
       opacity: .4; }
     .item:hover h3, .item:focus h3 {
@@ -161,13 +222,20 @@ main > section {
     font-size: var(--font-normal);
     font-weight: 500;
     transform: translateY(5em); }
-  .item p {
+  .item p,
+  .item p::before {
     align-self: center;
     right: 0;
     left: 0;
     text-align: center;
-    font-size: var(--font-giant);
-    transform: translateY(-2em); }
+    transform: translateY(-3em); }
+  .item .item__rating {
+    font-size: var(--font-giant); }
+    .item .item__rating::before {
+      content: "my rating";
+      font-size: .8rem;
+      position: absolute;
+      align-self: center; }
 
 @media all and (min-width: 30rem) {
   .items {

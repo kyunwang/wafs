@@ -17,13 +17,13 @@
 					<a href="#library"><h1>A/M Listing</h1></a>
 				</li>
 				<li>
-					<a href="#library">Library</a>
-				</li>
-				<li>
 					<a href="#anime">Anime</a>
 				</li>
 				<li>
 					<a href="#manga">Manga</a>
+				</li>
+				<li>
+					<a href="#library">Library</a>
 				</li>
 				<!-- <li>
 					<a href="#profile">Profile</a>
@@ -37,20 +37,20 @@
 		=== Home/User view
 		============================================>>>>-->
 		<section id="library" class="view view__home">
-			<h1 data-bind="home-title">Hi, Welcome!</h1>
-
+			
 			<form>
 				<input id="search-user-input" type="text" name="" id="" placeholder="Search on username" />
 				<input id="search-user-btn" type="button" value="Search" />
 			</form>
 			<input id="show-user-manga" type="button" value="Manga" />
 			<input id="show-user-anime" type="button" value="Anime" />
+			
+			<h1 data-bind="home-title">Hi, Welcome!</h1>
 
 			<a href="#library">All</a>
 			<a href="#library/current">Current</a>
 			<a href="#library/completed">Completed</a>
 			<a href="#library/planned">Want to watch</a>
-
 
 			<section class="view__home--user">
 				<div class="items">
@@ -58,7 +58,10 @@
 						<img class="item__image" src="" alt=""></img>
 						<!-- <div> -->
 						<h3 class="item__name"></h3>
-						<p class="item__rating"></p>
+						<!-- <div> -->
+							<!-- <p>my rating</p> -->
+							<p class="item__rating"></p>
+						<!-- </div> -->
 						<!-- </div> -->
 					</a>
 				</div>
