@@ -13,7 +13,8 @@
 		// searchUserForm: '',
 		showUserManga: '',
 		showUserAnime: '',
-		foundUser: '',
+		userId: '',
+		activeFilter: 'anime'
 	};
 
 	const helpers = {
@@ -38,9 +39,10 @@
 	}
 
 	const storage = {
-		getData() {},
-		storeData() {},
+		// getData() {},
+		// storeData() {},
 		animeData: [],
+		mangaData: [],
 		userData: [],
 		userDataAnime: [],
 		userDataManga: [],
@@ -50,7 +52,7 @@
 	=== Api
 	===========================*/
 	const api = {
-		animeData: helpers.getData('animeData'),
+		// animeData: helpers.getData('animeData'),
 		baseUrl: 'https://kitsu.io/api/edge',
 		baseHeader: {
 			'Accept': 'application/vnd.api+json',
@@ -101,11 +103,10 @@
 				averageRating,
 				popularityRank,
 				ratingRank,
-				episodeCount
-				&filter[user_id]=${userId}
+				&filter[user_id]=${userId || 182702}
 				&filter[kind]=${kind || 'anime'}
 				&include=
-				anime,
+				${kind || 'anime'},
 				user
 				&page[offset]=0
 				&page[limit]=${limit || 20}
@@ -118,10 +119,10 @@
 			.then((res, err) => res.json())
 			.catch(err => debug.error(err));
 
-			// console.log('Userdata: ', data);
+			console.log('Userdata: ', data);
 			return data;
 		},
-		getUserDataFilter: async function(userId = 182702, kind = 'anime', status = '', limit = 20, offset = 0) {
+		getUserDataFilter: async function(userId = 182702, kind = 'anime', status = 'current', limit = 20, offset = 0) {
 			const data = await fetch(`
 				https://kitsu.io/api/edge/library-entries
 				?
@@ -137,12 +138,11 @@
 				averageRating,
 				popularityRank,
 				ratingRank,
-				episodeCount
-				&filter[user_id]=${userId}
+				&filter[user_id]=${userId || 182702}
 				&filter[kind]=${kind || 'anime'}
-				&filter[status]=${status || ''}				
+				&filter[status]=${status || 'current'}				
 				&include=
-				anime,
+				${kind || 'anime'},
 				user
 				&page[offset]=0
 				&page[limit]=${limit || 20}
@@ -172,11 +172,8 @@
 				searchUserInput,
 				showUserAnime,
 				showUserManga,
-				showUserAll,
-				showUserCurrent,
-				showUserCompleted
 			} = configs;
-			console.log(configs);
+			// console.log(configs);
 			
 			searchUserBtn.addEventListener('click', async(e) => {
 				e.preventDefault();
@@ -187,6 +184,7 @@
 				if (user.data.length) {
 					const userData = await api.getUserData(user.data[0].id, null, 40);
 					
+					configs.userId = user.data[0].id;
 
 					// Save the user id to localstorage for filter usage ect.
 					helpers.setData('userId', helpers.stringify(user.data[0].id));
@@ -198,6 +196,8 @@
 					} = template.userOverview(userData);
 					
 					helpers.renderTemplate('.view__home', overview, directives);
+
+					// Initiate user specific events (e.g. button click)
 					this.initUserEvent();
 				} else {
 					// Return a message for the user
@@ -207,28 +207,37 @@
 			});
 
 
+			// First init of user specific events
 			this.initUserEvent();
-			// showUserManga.addEventListener('click', async function(e) {
-			// 	e.preventDefault();
-
-			// })
-
 		},
 		initUserEvent() {
 			const {
 				showUserManga,
-				showUserAll,
-				showUserCurrent,
-				showUserCompleted,
-				showUserPlanned,
+				showUserAnime,
 			} = configs;
 
-			this.clickForData(showUserManga, 'manga');
+			this.clickForUserData(showUserManga, 'manga');
+			this.clickForUserData(showUserAnime, 'anime');
 		},
-		clickForData(element, filter = null) {
+		clickForUserData(element, filter = null) {
 			element.addEventListener('click', async function(e) {
 				e.preventDefault();
-				console.log(filter, this);
+				console.log(filter, this, configs.userId);
+
+				configs.activeFilter = filter;
+
+				const userData = await api.getUserData(configs.userId, filter, 40);
+
+				console.log('udata', userData);
+				
+
+				const { overview, directives
+				} = template.userOverview(userData, filter);
+				
+				helpers.renderTemplate('.view__home', overview, directives);
+				
+
+
 				// if (helpers.getData('userData').)
 
 			});
@@ -317,18 +326,20 @@
 
 					// Need some error handling
 
-					let devUser = helpers.getData('userData');
+					let devUser = helpers.parse(helpers.getData('userData'));
+					console.log(devUser);
+					
 					// let userData;
 
 
 					// For local test purposes
-					if ((devUser === null) || (devUser === 'undefined')) {
+					if ((devUser === null) || (devUser === 'undefined') || (devUser.errors)) {
 						console.log('No devUser found')
 						storage.userDataAnime = await api.getUserData(182702); // Get a default userdata
 						
-						helpers.setData('userData', helpers.stringify(userDataAnime));
+						helpers.setData('userData', helpers.stringify(storage.userDataAnime));
 					} else {
-						storage.userDataAnime = helpers.parse(devUser);
+						storage.userDataAnime = devUser;
 					}
 
 					//
@@ -341,18 +352,18 @@
 				},
 				'library/:query': function(query) {
 					console.log('Library query: ', query);
-					const userId = helpers.parse(helpers.getData('userId'));
+					const userId = configs.userId || helpers.parse(helpers.getData('userId'));
 
-					api.getUserDataFilter(userId, null, query, 20, 1)
-					.then(res => storage.userDataAnime = res)
-					.then(res => {
-						const { overview, directives
-						} = template.userOverview(storage.userDataAnime);
+					api.getUserDataFilter(userId, configs.activeFilter, query, 20, 1)
+						.then(res => storage.userDataAnime = res)
+						.then(res => {
+							const { overview, directives
+							} = template.userOverview(storage.userDataAnime);
 
-						console.log(res);
-						
-						helpers.renderTemplate('.view__home', overview, directives);				
-					});
+							console.log(res);
+							
+							helpers.renderTemplate('.view__home', overview, directives);				
+						});
 
 
 				},
@@ -416,9 +427,6 @@
 					
 					helpers.renderTemplate('.detail', overview, directives);
 				},
-				'profile': function() {
-					console.log('profile');
-				},
 			});
 		},
 	};
@@ -445,11 +453,15 @@
 
 			return { overview };
 		},
-		userOverview(userData, type = 'anime') {
+		userOverview(userData, type = configs.activeFilter) {
 			const { data, included
 			} = userData;
 
-			if(data.length < 2) {
+			console.log(userData, type);
+			
+
+			// Because the index of [0] is the user
+			if (data.length < 2) {
 				console.log('no stuff');
 				return this.noStuff();
 			}
@@ -460,9 +472,12 @@
 			// Get all our library entries of the user
 			const libEntries = included.filter(item => item.type === type);
 
+			console.log(libEntries);
+			
+
 			// The weird Transparency syntax
 			const overview = {
-				['home-title']: `Hi, ${user[0].attributes.name}`,
+				['home-title']: `Hi, ${user[0].attributes.name}. This is your watchlist`,
 				items: libEntries.map((item, i) => ({
 					item__type: item.type,
 					item__link: {
@@ -474,9 +489,6 @@
 					...data[i].attributes
 				})
 			)};
-			
-			// console.log('User overview', overview.items[0]);
-			console.log('User overview', overview.items);
 
 			const directives = {
 				items: {
@@ -496,7 +508,6 @@
 			};
 
 			return { overview, directives };
-
 		},
 		overview(data) {
 			// Return a template in a array for Transparency
