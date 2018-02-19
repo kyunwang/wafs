@@ -267,6 +267,7 @@
 					sections.toggle(this.path);
 
 					let devUser = helpers.getData('userData');
+					let devUserId = helpers.getData('userId');
 
 					// If there is data in the localstorage
 					// return and wait till the user has searched for his/her account
@@ -275,9 +276,11 @@
 					} else {
 						// Set view to active because there is data
 						configs.userView.classList.add('user__view--active');
-
+						
 						// Set data into temporary local data
 						storage.userDataAnime = devUser;
+						
+						configs.userId = devUserID;
 
 						const { overview, directives
 						} = template.userOverview(storage.userDataAnime);
