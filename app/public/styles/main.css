@@ -182,6 +182,9 @@ main > section {
   text-transform: uppercase;
   font-weight: 500; }
 
+/*==========================
+=== Cards/items style
+===========================*/
 .items {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));

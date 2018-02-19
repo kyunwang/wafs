@@ -279,6 +279,22 @@ main {
 
 }
 
+// .user__view {
+// 	opacity: .3;
+// 	transform: translateY(3em);
+// 	// transition-delay: 10s;
+// 	transition: var(--def-transition) 10s;
+// }
+
+// .user__view--active {
+// 	transform: translateY(0);
+// 	opacity: 1;
+// }
+
+/*==========================
+=== Cards/items style
+===========================*/
+
 .items {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));

@@ -32,6 +32,12 @@
 		parse(data) { return JSON.parse(data); },
 
 		renderTemplate(element, template, directives = {}) { return Transparency.render(helpers.getElement(element), template, directives); }
+		// renderTemplate(element, template, directives = {}) {
+ 		// 	return new Promise(function(resolve, reject) {
+		// 		 Transparency.render(helpers.getElement(element), template, directives);
+		// 		 resolve('a wrapper');
+		// 	 });
+		// }
 	};
 
 	const debug = {
@@ -178,7 +184,7 @@
 			searchUserBtn.addEventListener('click', async(e) => {
 				e.preventDefault();
 
-				const user = await api.searchForUser(searchUserInput.value);
+				const user = await api.searchForUser(searchUserInput.value);				
 
 				// If there is any data found of the user. Get his data
 				if (user.data.length) {
@@ -196,6 +202,12 @@
 					} = template.userOverview(userData);
 					
 					helpers.renderTemplate('.view__home', overview, directives);
+					// // helpers.renderTemplate('.view__home', overview, directives)
+						// .then(() => {
+						// // helpers.getElement('#user-view').classList.add('user__view--active');
+					// })
+
+					
 
 					// Initiate user specific events (e.g. button click)
 					this.initUserEvent();
@@ -317,44 +329,50 @@
 			routie({
 				'library': async function() {
 					console.log('Homepage');
-					// let {
-					// 	userDataAnime,
-					// 	userDataManga,
-					// } = storage;
 					
 					sections.toggle(this.path);
 
-					// Need some error handling
-
 					let devUser = helpers.parse(helpers.getData('userData'));
-					console.log(devUser);
-					
-					// let userData;
 
-
-					// For local test purposes
+					// If there is data in the localstorage
+					// Take it and render
 					if ((devUser === null) || (devUser === 'undefined') || (devUser.errors)) {
-						console.log('No devUser found')
-						storage.userDataAnime = await api.getUserData(182702); // Get a default userdata
+						// console.log('No devUser found')
+						// storage.userDataAnime = await api.getUserData(182702); // Get a default userdata
 						
-						helpers.setData('userData', helpers.stringify(storage.userDataAnime));
+						// helpers.setData('userData', helpers.stringify(storage.userDataAnime));
+
+						// const { overview, directives
+						// } = template.userOverview(storage.userDataAnime);
+	
+						// helpers.renderTemplate('.view__home', overview, directives);
+						return;
 					} else {
 						storage.userDataAnime = devUser;
+						
+						const { overview, directives
+						} = template.userOverview(storage.userDataAnime);
+	
+						helpers.renderTemplate('.view__home', overview, directives);
 					}
 
-					//
-					// events.initUserEvent();
+				},
+				'library/manga': async function() {
+					console.log('Library Manga', configs.userId);
+					
+
+					const userData = await api.getUserData((configs.userId || 182702), 'manga', 40);
 
 					const { overview, directives
-					} = template.userOverview(storage.userDataAnime);
-
+					} = template.userOverview(userData, 'manga');
+					
 					helpers.renderTemplate('.view__home', overview, directives);
 				},
 				'library/:query': function(query) {
 					console.log('Library query: ', query);
 					const userId = configs.userId || helpers.parse(helpers.getData('userId'));
 
-					api.getUserDataFilter(userId, configs.activeFilter, query, 20, 1)
+					api.getUserDataFilter(userId, 'anime', query, 20, 1)
 						.then(res => storage.userDataAnime = res)
 						.then(res => {
 							const { overview, directives
@@ -367,7 +385,21 @@
 
 
 				},
-				'library/manga/:query': function(query) {},
+				'library/manga/:query': function(query) {
+					console.log('Library query Manga: ', query);
+					const userId = configs.userId || helpers.parse(helpers.getData('userId'));
+
+					api.getUserDataFilter(userId, 'manga', query, 20, 1)
+						.then(res => storage.userDataManga = res)
+						.then(res => {
+							const { overview, directives
+							} = template.userOverview(storage.userDataManga, 'manga');
+
+							console.log(res);
+							
+							helpers.renderTemplate('.view__home', overview, directives);				
+						});
+				},
 				'anime': function() {
 					console.log('Anime overview');
 					sections.toggle('overview'); // Toggle to ...				
@@ -453,7 +485,7 @@
 
 			return { overview };
 		},
-		userOverview(userData, type = configs.activeFilter) {
+		userOverview(userData, type = 'anime') {
 			const { data, included
 			} = userData;
 
@@ -478,6 +510,9 @@
 			// The weird Transparency syntax
 			const overview = {
 				['home-title']: `Hi, ${user[0].attributes.name}. This is your watchlist`,
+
+				// []: ,
+
 				items: libEntries.map((item, i) => ({
 					item__type: item.type,
 					item__link: {
@@ -491,6 +526,18 @@
 			)};
 
 			const directives = {
+				['show-all']: { href: function() {
+					return `#library/${type == 'anime' ? '' : 'manga'}`}
+				},
+				['show-current']: { href: function() {
+					return `#library/${type == 'anime' ? 'current' : 'manga/current'}`}
+				},
+				['show-completed']: { href: function() {
+					return `#library/${type == 'anime' ? 'completed' : 'manga/completed'}`}
+				},
+				['show-planned']: { href: function() {
+					return `#library/${type == 'anime' ? 'planned' : 'manga/planned'}`}
+				},
 				items: {
 					item__link: {
 						href: function() { return `#${this.item__type}/${this.slug}` },  // '#' + this.slug 
