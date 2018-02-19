@@ -305,6 +305,8 @@ main {
 }
 
 .view__home--filter {
+	display: flex;
+	align-items: center;
 	margin-bottom: var(--def-margin-ver);
 	
 	a {
@@ -324,6 +326,15 @@ main {
 			margin-right: 1rem;
 		}
 	}
+
+	button {
+		margin-left: 1rem; 
+		&:first-of-type {
+			margin-left: auto;
+		}
+	}
+
+
 }
 
 .user__view {
@@ -466,6 +477,15 @@ main {
 	// img {
 	// 	width: 100%;
 	// }
+	.item__rating {
+
+		&::before {
+			content: "average rating";
+			font-size: .8rem;
+			position: absolute;
+			align-self: center;
+		}
+	}
 }
 
 @media all and (min-width: 30rem) {

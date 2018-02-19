@@ -40,12 +40,16 @@ import { configs, storage } from './config.js';
 					} = template.userOverview(userData);
 					
 					helpers.renderTemplate('.view__home', overview, directives);
+
+					configs.userView.classList.add('user__view--active');
 				} else {
 					// Return a message for the user
 					const { overview } =
 					template.errorPage(`We cannot find ${searchUserInput.value}`);
 
 					helpers.renderTemplate('.view__home', overview);
+
+					configs.userView.classList.add('user__view--active');
 				}
 			});
 		},

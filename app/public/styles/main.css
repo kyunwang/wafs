@@ -221,6 +221,8 @@ main > section {
     outline: none; }
 
 .view__home--filter {
+  display: flex;
+  align-items: center;
   margin-bottom: var(--def-margin-ver); }
   .view__home--filter a {
     color: var(--black);
@@ -232,6 +234,10 @@ main > section {
       color: var(--primary-color); }
     .view__home--filter a:not(:last-of-type) {
       margin-right: 1rem; }
+  .view__home--filter button {
+    margin-left: 1rem; }
+    .view__home--filter button:first-of-type {
+      margin-left: auto; }
 
 .user__view button {
   padding: var(--btn-padding-ver) 0; }
@@ -313,3 +319,8 @@ main > section {
 /*==========================
 === Overview
 ===========================*/
+.view__overview .item__rating::before {
+  content: "average rating";
+  font-size: .8rem;
+  position: absolute;
+  align-self: center; }

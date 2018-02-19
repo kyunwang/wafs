@@ -90,11 +90,14 @@
 			return { overview, directives };
 		},
 		overview(data) {
+			console.log(data);
+			
 			// Return a template in a array for Transparency
 			const overview = data.map(item => ({
 				id: item.id,
 				slug: item.attributes.slug,
 				item__type: item.type,
+				item__rating: item.attributes.averageRating,
 				item__link: {
 					item__name: item.attributes.canonicalTitle,
 					item__image: '',

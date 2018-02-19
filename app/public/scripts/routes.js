@@ -20,11 +20,10 @@ const routes = {
 			'library': async function() {
 				console.log('Homepage', storage);
 				
-				sections.toggle(this.path);
+				sections.toggle('library');
 
 				let devUser = helpers.getData('userData');
 				let devUserId = helpers.getData('userId');
-				console.log(devUserId);
 				
 
 				// If there is data in the localstorage
@@ -50,14 +49,20 @@ const routes = {
 			'library/manga': async function() {
 				console.log('Library Manga', storage);
 				
+				// sections.toggle('library');
 
-				const userData = await api.getUserData((configs.userId || 182702), 'manga', 40);
+				if (!storage.userDataManga.data) {
+					const userData = await api.getUserData((configs.userId || helpers.getData('userId')), 'manga', 40);
 
-				// Set data into temporary local data
-				storage.userDataManga = userData;
+					// Set data into temporary local data
+					storage.userDataManga = userData;
+				}
+
+				// Set view to active because there is data
+				configs.userView.classList.add('user__view--active');
 
 				const { overview, directives
-				} = template.userOverview(userData, 'manga');
+				} = template.userOverview(storage.userDataManga, 'manga');
 				
 				helpers.renderTemplate('.view__home', overview, directives);
 			},
