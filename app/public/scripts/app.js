@@ -164,6 +164,8 @@
 			searchUserBtn.addEventListener('click', async(e) => {
 				e.preventDefault();
 
+				if (!searchUserInput.value.length) return;
+
 				const user = await api.searchForUser(searchUserInput.value);				
 
 				// If there is any data found of the user. Get his data
@@ -189,7 +191,6 @@
 
 				} else {
 					// Return a message for the user
-					// Need to get a template ready or message thingy
 					const { overview } =
 					template.noStuff(`We cannot find ${searchUserInput.value}`);
 
