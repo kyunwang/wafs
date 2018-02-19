@@ -86,6 +86,7 @@ button a {
 ===========================*/
 body > header {
     color: var(--white);
+    margin-bottom: var(--def-margin-ver2);
 }
 
 body > header h1 {
@@ -169,7 +170,7 @@ main > section {
 .view__home form {
   display: flex;
   width: 100%;
-  margin: var(--def-margin-ver2) 0; }
+  margin-bottom: var(--def-margin-ver2); }
   .view__home form [type="button"] {
     margin-left: 1rem; }
 

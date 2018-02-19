@@ -1,5 +1,3 @@
-// @ts-check
-// ts-check is a build in vscode checker
 'use strict';
 
 (function () {
@@ -24,12 +22,12 @@
 		// getAllRoutes () { return helpers.getElements('section') },
 		shortenString(text, start, end) { return end ? text.substr(start, end) : text.substr(start); },
 		toInt(item) { return parseInt(item, 10) },
-
-		setData(key, data) { return localStorage.setItem(key, data); },
-		getData(key) { return localStorage.getItem(key); },
-		deleteData(key) { return localStorage.removeItem(key); },
+		
 		stringify(data) { return JSON.stringify(data); },
 		parse(data) { return JSON.parse(data); },
+		setData(key, data) { return localStorage.setItem(key, this.stringify(data)); },
+		getData(key) { return this.parse(localStorage.getItem(key)); },
+		deleteData(key) { return localStorage.removeItem(key); },
 
 		renderTemplate(element, template, directives = {}) { return Transparency.render(helpers.getElement(element), template, directives); }
 		// renderTemplate(element, template, directives = {}) {
@@ -45,8 +43,6 @@
 	}
 
 	const storage = {
-		// getData() {},
-		// storeData() {},
 		animeData: [],
 		mangaData: [],
 		userData: [],
@@ -67,25 +63,18 @@
 		// Max limit for the api is 20
 		get: async function(route = '', limit = 10, offset = 0) {
 			// Get the data based on the params given
-			// const data = await fetch(`${this.baseUrl}/${route}?page[limit]=${limit}&page[offset]=${offset}`, {
 			return await fetch(`${this.baseUrl}/${route}?page[limit]=${limit}&page[offset]=${offset}`, {
 				headers: this.baseHeader // Is required for the api
 			})
 			.then((res, err) => res.json())
 			.catch(err => debug.error(err));
-
-			// console.log(data)
-			// return data;
 		},
 		searchForUser: async function(userName = '') {
-			const user = await fetch(`https://kitsu.io/api/edge/users?filter%5Bname%5D=${userName}`, {
+			return await fetch(`https://kitsu.io/api/edge/users?filter%5Bname%5D=${userName}`, {
 				headers: this.baseHeader // Is required for the api
 			})
 			.then((res, err) => res.json())
 			.catch(err => debug.error(err));
-
-			console.log('Search for user: ', user);
-			return user;
 		},
 		/**
 		 * 
@@ -94,7 +83,7 @@
 		 * @returns 
 		 */
 		getUserData: async function(userId = 182702, kind = 'anime', limit = 20) {
-			const data = await fetch(`
+			return await fetch(`
 				https://kitsu.io/api/edge/library-entries
 				?
 				fields[${kind || 'anime'}]=
@@ -124,12 +113,9 @@
 			// -progressed_at
 			.then((res, err) => res.json())
 			.catch(err => debug.error(err));
-
-			console.log('Userdata: ', data);
-			return data;
 		},
 		getUserDataFilter: async function(userId = 182702, kind = 'anime', status = 'current', limit = 20, offset = 0) {
-			const data = await fetch(`
+			return await fetch(`
 				https://kitsu.io/api/edge/library-entries
 				?
 				fields[${kind || 'anime'}]=
@@ -160,9 +146,6 @@
 			})
 			.then((res, err) => res.json())
 			.catch(err => debug.error(err));
-
-			console.log('User filtered data: ', data);
-			return data;
 		},
 	}
 
@@ -176,10 +159,7 @@
 			const {
 				searchUserBtn,
 				searchUserInput,
-				showUserAnime,
-				showUserManga,
 			} = configs;
-			// console.log(configs);
 			
 			searchUserBtn.addEventListener('click', async(e) => {
 				e.preventDefault();
@@ -193,10 +173,10 @@
 					configs.userId = user.data[0].id;
 
 					// Save the user id to localstorage for filter usage ect.
-					helpers.setData('userId', helpers.stringify(user.data[0].id));
+					helpers.setData('userId', user.data[0].id);
 
 					// Save the data in localstorage
-					helpers.setData('userData', helpers.stringify(userData));
+					helpers.setData('userData', userData);
 
 					const { overview, directives
 					} = template.userOverview(userData);
@@ -210,7 +190,10 @@
 				} else {
 					// Return a message for the user
 					// Need to get a template ready or message thingy
-					console.log('no user found');
+					const { overview } =
+					template.noStuff(`We cannot find ${searchUserInput.value}`);
+
+					helpers.renderTemplate('.view__home', overview);
 				}
 			});
 		},
@@ -241,9 +224,17 @@
 						api.get('anime', 20),
 						api.get('manga', 20)
 					]);
-					helpers.setData('animeData', helpers.stringify(animeData));
-					helpers.setData('mangaData', helpers.stringify(mangaData));
-			} 
+					helpers.setData('animeData', animeData);
+					helpers.setData('mangaData', mangaData);
+
+					// Store the data in our temporary storage
+					storage.animeData = animeData;
+					storage.mangaData = mangaData;
+				} else {
+					// Store the data in our temporary storage
+					storage.animeData = devAnime;
+					storage.mangaData = devManga;
+				}
 			
 			// Getting and setting our elements here for later
 			// Need a better way or is this the way?
@@ -251,7 +242,6 @@
 				configs.allRoutes, // Yes we set it again just to be sure for dev
 				configs.searchUserInput,
 				configs.searchUserBtn,
-
 			] = await Promise.all([
 				helpers.getElements('.view'),
 				helpers.getElement('#search-user-input'),
@@ -282,28 +272,20 @@
 		routes() {
 			routie({
 				'library': async function() {
-					console.log('Homepage');
+					console.log('Homepage', storage);
 					
 					sections.toggle(this.path);
 
-					let devUser = helpers.parse(helpers.getData('userData'));
+					let devUser = helpers.getData('userData');
 
 					// If there is data in the localstorage
-					// Take it and render
+					// return and wait till the user has searched for his/her account
 					if ((devUser === null) || (devUser === 'undefined') || (devUser.errors)) {
-						// console.log('No devUser found')
-						// storage.userDataAnime = await api.getUserData(182702); // Get a default userdata
-						
-						// helpers.setData('userData', helpers.stringify(storage.userDataAnime));
-
-						// const { overview, directives
-						// } = template.userOverview(storage.userDataAnime);
-	
-						// helpers.renderTemplate('.view__home', overview, directives);
 						return;
 					} else {
+						// Set data into temporary local data
 						storage.userDataAnime = devUser;
-						
+
 						const { overview, directives
 						} = template.userOverview(storage.userDataAnime);
 	
@@ -312,10 +294,13 @@
 
 				},
 				'library/manga': async function() {
-					console.log('Library Manga', configs.userId);
+					console.log('Library Manga', storage);
 					
 
 					const userData = await api.getUserData((configs.userId || 182702), 'manga', 40);
+
+					// Set data into temporary local data
+					storage.userDataManga = userData;
 
 					const { overview, directives
 					} = template.userOverview(userData, 'manga');
@@ -324,7 +309,7 @@
 				},
 				'library/:query': function(query) {
 					console.log('Library query: ', query);
-					const userId = configs.userId || helpers.parse(helpers.getData('userId'));
+					const userId = configs.userId || helpers.getData('userId');
 
 					api.getUserDataFilter(userId, 'anime', query, 20, 1)
 						.then(res => storage.userDataAnime = res)
@@ -341,7 +326,7 @@
 				},
 				'library/manga/:query': function(query) {
 					console.log('Library query Manga: ', query);
-					const userId = configs.userId || helpers.parse(helpers.getData('userId'));
+					const userId = configs.userId || helpers.getData('userId');
 
 					api.getUserDataFilter(userId, 'manga', query, 20, 1)
 						.then(res => storage.userDataManga = res)
@@ -358,7 +343,7 @@
 					console.log('Anime overview');
 					sections.toggle('overview'); // Toggle to ...				
 
-					const animeData = helpers.parse(helpers.getData('animeData'));
+					const animeData = helpers.getData('animeData');
 
 					const { overview, directives
 					} = template.overview(animeData.data);
@@ -371,13 +356,13 @@
 					console.log('Anime slug: ', slug);
 					sections.toggle('details'); // Toggle to ...
 					
-					let singleAnime = helpers.parse(helpers.getData('animeData')).data
+					let singleAnime = helpers.getData('animeData').data
 					.filter(item => item.attributes.slug === slug);
 
 					// Want a better way to do this.....
 					// Get the userData if there is no data when routing from user library
 					if (!singleAnime.length) {
-						singleAnime = helpers.parse(helpers.getData('userData')).included
+						singleAnime = helpers.getData('userData').included
 						.filter(item => item.attributes.slug === slug);
 					}
 
@@ -390,7 +375,7 @@
 					console.log('Manga Overview');
 					sections.toggle('overview'); // Toggle to ...
 
-					const mangaData = helpers.parse(helpers.getData('mangaData'));
+					const mangaData = helpers.getData('mangaData');
 
 					const {
 						overview,
@@ -403,7 +388,7 @@
 					console.log('Manga slug: ', slug);
 					sections.toggle('details'); // Toggle to ...
 
-					let singleManga = helpers.parse(helpers.getData('mangaData')).data
+					let singleManga = helpers.getData('mangaData').data
 					.filter(item => item.attributes.slug === slug);
 
 					const {
@@ -423,10 +408,11 @@
 	=== Our templates
 	===========================*/
 	const template = {
-		noStuff() {
+		noStuff(err) {
 			// Need to change the name 
 			const overview = {
-				['home-title']: `Hi, $error`,
+				['home-title']: `Oops something went wrong`,
+				['error-message']: `${err}`,
 				items: [{
 					item__type: 'anime',
 					item__link: {
@@ -443,13 +429,10 @@
 			const { data, included
 			} = userData;
 
-			console.log(userData, type);
-			
-
 			// Because the index of [0] is the user
 			if (data.length < 2) {
 				console.log('no stuff');
-				return this.noStuff();
+				return this.noStuff('Nothing to see here');
 			}
 
 			// Get the user from our includes
@@ -457,9 +440,6 @@
 
 			// Get all our library entries of the user
 			const libEntries = included.filter(item => item.type === type);
-
-			console.log(libEntries);
-			
 
 			// The weird Transparency syntax
 			const overview = {
