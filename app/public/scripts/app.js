@@ -207,51 +207,11 @@
 						// // helpers.getElement('#user-view').classList.add('user__view--active');
 					// })
 
-					
-
-					// Initiate user specific events (e.g. button click)
-					this.initUserEvent();
 				} else {
 					// Return a message for the user
 					// Need to get a template ready or message thingy
 					console.log('no user found');
 				}
-			});
-
-
-			// First init of user specific events
-			this.initUserEvent();
-		},
-		initUserEvent() {
-			const {
-				showUserManga,
-				showUserAnime,
-			} = configs;
-
-			this.clickForUserData(showUserManga, 'manga');
-			this.clickForUserData(showUserAnime, 'anime');
-		},
-		clickForUserData(element, filter = null) {
-			element.addEventListener('click', async function(e) {
-				e.preventDefault();
-				console.log(filter, this, configs.userId);
-
-				configs.activeFilter = filter;
-
-				const userData = await api.getUserData(configs.userId, filter, 40);
-
-				console.log('udata', userData);
-				
-
-				const { overview, directives
-				} = template.userOverview(userData, filter);
-				
-				helpers.renderTemplate('.view__home', overview, directives);
-				
-
-
-				// if (helpers.getData('userData').)
-
 			});
 		},
 	}
@@ -291,17 +251,11 @@
 				configs.allRoutes, // Yes we set it again just to be sure for dev
 				configs.searchUserInput,
 				configs.searchUserBtn,
-				configs.showUserAnime,
-				configs.showUserManga,
-				// configs.searchUserForm,
 
 			] = await Promise.all([
 				helpers.getElements('.view'),
 				helpers.getElement('#search-user-input'),
 				helpers.getElement('#search-user-btn'),
-				helpers.getElement('#show-user-anime'),
-				helpers.getElement('#show-user-manga'),
-				// helpers.getElement('#search-user-form'),
 			]);
 			
 			
@@ -509,7 +463,7 @@
 
 			// The weird Transparency syntax
 			const overview = {
-				['home-title']: `Hi, ${user[0].attributes.name}. This is your watchlist`,
+				['home-title']: `Hi, ${user[0].attributes.name}. This is your ${type == 'anime' ? 'watchlist' : 'readlist' }`,
 
 				// []: ,
 

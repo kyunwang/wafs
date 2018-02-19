@@ -11,6 +11,8 @@
     --shadow-normal: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     --shadow-hover: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
     --btn-padding: .5rem 1rem;
+    --btn-padding-ver: .5rem;
+    --btn-padding-hor: 1rem;
     --def-margin-hor: 1rem;
     --def-margin-ver: 1rem;
     --def-margin-ver2: 2rem;
@@ -54,16 +56,21 @@ img {
     width: 100%;
 }
 
+[type="button"],
+[type="button"],
 button,
-[type="button"] {
+button a {
+    cursor: pointer;
     color: var(--black2);
     border-radius: var(--def-radius);
     padding: var(--btn-padding);
     transition: var(--def-transition);
 }
 
-button:hover,
-  [type="button"]:hover {
+[type="button"]:hover,
+  [type="button"]:hover,
+  button:hover,
+  button a:hover {
     background: var(--grey);
 }
 
@@ -177,10 +184,14 @@ main > section {
     /* Firefox 18- */
     color: green; }
 
-.view__home [type="button"] {
+.user__view button {
+  padding: var(--btn-padding-ver) 0; }
+
+.user__view button a {
   color: var(--black);
   text-transform: uppercase;
-  font-weight: 500; }
+  font-weight: 500;
+  text-decoration: none; }
 
 /*==========================
 === Cards/items style

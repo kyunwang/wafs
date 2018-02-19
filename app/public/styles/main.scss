@@ -19,6 +19,8 @@
 
 	// Button
 	--btn-padding: .5rem 1rem;
+	--btn-padding-ver: .5rem;
+	--btn-padding-hor: 1rem;
 
 	// General
 	--def-margin-hor: 1rem;
@@ -75,8 +77,11 @@ img {
 
 
 
+[type="button"],
+[type="button"],
 button,
-[type="button"] {
+button a {
+	cursor: pointer;
 	color: var(--black2);
 
 	// border: none;
@@ -266,17 +271,21 @@ main {
 		}
 	}
 
-	[type="button"] {
-		// color: var(--primary-color);
+
+	
+}
+
+.user__view {
+	button {
+		padding: var(--btn-padding-ver) 0;
+	}
+	
+	button a {
 		color: var(--black);
 		text-transform: uppercase;
 		font-weight: 500;
-		
-		// margin-left: 1rem;
-
-		// borders: none;
+		text-decoration: none;
 	}
-
 }
 
 // .user__view {
