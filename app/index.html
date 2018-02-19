@@ -47,24 +47,27 @@
 
 			<div id="user-view" class="user__view">
 				<button>
-						<a href="#library">Anime</a>
+					<a href="#library">Anime</a>
 				</button>
 				<button>
-						<a href="#library/manga">Manga</a>
+					<a href="#library/manga">Manga</a>
 				</button>
 				<!-- <input id="show-user-anime" type="button" value="Anime" /> -->
 				<!-- <input id="show-user-manga" type="button" value="Manga" /> -->
-				
+
 
 				<!-- <a href="#library/manga"></a> -->
 
 				<h1 data-bind="home-title">Hi, Welcome!</h1>
 				<p data-bind="error-message"></p>
 
-				<a data-bind="show-all" href="#library">All</a>
-				<a data-bind="show-current" href="#library/current">Current</a>
-				<a data-bind="show-completed" href="#library/completed">Completed</a>
-				<a data-bind="show-planned" href="#library/planned">Want to see</a>
+				<div class="view__home--filter">
+					<a data-bind="show-all" href="#library">All</a>
+					<a data-bind="show-current" href="#library/current">Current</a>
+					<a data-bind="show-completed" href="#library/completed">Completed</a>
+					<a data-bind="show-planned" href="#library/planned">Want to see</a>
+				</div>
+
 
 				<section class="view__home--user">
 					<div class="items">
@@ -103,7 +106,6 @@
 		=== Detail view
 		============================================>>>>-->
 		<section id="details" class="view view__details">
-			<h2>Details</h2>
 			<!-- The content container -->
 			<div class="detail">
 				<header>
@@ -118,14 +120,6 @@
 			</div>
 		</section>
 
-
-
-		<!--==========================================>>>>>
-		=== Profile view
-		============================================>>>>-->
-		<section id="profile" class="view view__profile">
-			<h2>Profile</h2>
-		</section>
 	</main>
 </body>
 

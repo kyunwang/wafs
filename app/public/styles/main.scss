@@ -51,6 +51,7 @@
 
 html {
 	font-family: 'Work Sans', sans-serif;
+	color: var(--black);
 }
 
 body {
@@ -90,7 +91,9 @@ button a {
 
 	transition: var(--def-transition);
 
-	&:hover {
+	&:hover,
+	&:focus {
+		outline: none;
 		background: var(--grey);
 	}
 }
@@ -112,6 +115,8 @@ body > header {
 	margin-bottom: var(--def-margin-ver2);
 	h1 {
 		margin: 0;
+		color: var(--black);
+		text-align: center;
 	}
 	a {
 		// color: var(--white);
@@ -121,44 +126,43 @@ body > header {
 
 }
 
+@media all and (min-width: 30rem) {
+
+}
+
 nav {
 	ul {
 		display: flex;
-		// align-items: flex-end;
 		align-items: center;
 		justify-content: flex-end;
+		justify-content: center;
 		flex-wrap: wrap;
 		
 		height: 100%;
 		
 		margin: 0 var(--def-margin-hor);
 		padding: 1rem 0;
-		// padding: .5rem var(--def-margin-hor);
-
-		// display: grid;
-		// grid-template-columns: 1fr 1fr;
-		// justify-items: center;
 	}
 
 	li {
+		// padding: 0 var(--btn-padding-hor);
+		
 		&:first-of-type {
 			margin-right: auto;
-			// width: 100%;
+			width: 100%;
 		}
 		&:not(:first-of-type) {
 			height: 100%;
-			// background: red;
 			a {
 				color: var(--black2);
-				// background: red;
-
 				margin-right: 1rem;
 				border-radius: var(--def-radius);
 				padding: var(--btn-padding);
 
 				transition: var(--def-transition);
 
-				&:hover {
+				&:hover,
+				&:focus {
 					background: var(--grey);
 				}
 			}
@@ -171,7 +175,8 @@ nav {
 				background: var(--primary-color);
 				box-shadow: var(--shadow-normal);
 				
-				&:hover {
+				&:hover,
+				&:focus {
 					// opacity: .7;
 					background: var(--primary-color);
 					box-shadow: var(--shadow-hover);
@@ -179,17 +184,25 @@ nav {
 			}
 		}
 	}
-
-	a {
-		
-	}
-	
 }
 	
 @media all and (min-width: 35em) {
+	body > header {
+		h1 {
+			text-align: inherit;
+		}
+	}
+
 	nav {
 		ul {
 			margin: 0 4rem;
+		}
+
+		li {
+			&:first-of-type {
+				// margin-right: auto;
+				width: inherit;
+			}
 		}
 	}
 }
@@ -199,6 +212,7 @@ nav {
 ===========================*/
 
 main {
+	margin-bottom: var(--def-margin-ver2);
 	&>section {
 		margin: 0 var(--def-margin-hor);
 	}
@@ -270,10 +284,34 @@ main {
 			// color: -var(--grey);
 			color: green;
 		}
-	}
 
+		&:focus,
+		&:hover {
+			outline: none;
+		}
+	}	
+}
 
+.view__home--filter {
+	margin-bottom: var(--def-margin-ver);
 	
+	a {
+		color: var(--black);
+		font-weight: 500;
+		text-decoration: none;
+
+		transition: var(--def-transition);
+
+		&:focus,
+		&:hover {
+			outline: none;
+			color: var(--primary-color);
+		}
+
+		&:not(:last-of-type) {
+			margin-right: 1rem;
+		}
+	}
 }
 
 .user__view {
