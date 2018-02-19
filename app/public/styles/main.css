@@ -86,6 +86,18 @@ button a {
 /*==========================
 === Keyframes if there are any
 ===========================*/
+@keyframes animateView {
+    from {
+        transform: translateY(3em);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
 /*==========================
 === Header / Nav
 ===========================*/
@@ -229,6 +241,12 @@ main > section {
   text-transform: uppercase;
   font-weight: 500;
   text-decoration: none; }
+
+.user__view {
+  opacity: 0; }
+
+.user__view--active {
+  animation: animateView 1s forwards; }
 
 /*==========================
 === Cards/items style

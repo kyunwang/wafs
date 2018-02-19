@@ -8,9 +8,7 @@
 		allRoutes: [],
 		searchUserInput: '',
 		searchUserBtn: '',
-		// searchUserForm: '',
-		showUserManga: '',
-		showUserAnime: '',
+		userView: '',
 		userId: '',
 		activeFilter: 'anime'
 	};
@@ -30,12 +28,6 @@
 		deleteData(key) { return localStorage.removeItem(key); },
 
 		renderTemplate(element, template, directives = {}) { return Transparency.render(helpers.getElement(element), template, directives); }
-		// renderTemplate(element, template, directives = {}) {
- 		// 	return new Promise(function(resolve, reject) {
-		// 		 Transparency.render(helpers.getElement(element), template, directives);
-		// 		 resolve('a wrapper');
-		// 	 });
-		// }
 	};
 
 	const debug = {
@@ -184,15 +176,10 @@
 					} = template.userOverview(userData);
 					
 					helpers.renderTemplate('.view__home', overview, directives);
-					// // helpers.renderTemplate('.view__home', overview, directives)
-						// .then(() => {
-						// // helpers.getElement('#user-view').classList.add('user__view--active');
-					// })
-
 				} else {
 					// Return a message for the user
 					const { overview } =
-					template.noStuff(`We cannot find ${searchUserInput.value}`);
+					template.errorPage(`We cannot find ${searchUserInput.value}`);
 
 					helpers.renderTemplate('.view__home', overview);
 				}
@@ -243,10 +230,12 @@
 				configs.allRoutes, // Yes we set it again just to be sure for dev
 				configs.searchUserInput,
 				configs.searchUserBtn,
+				configs.userView
 			] = await Promise.all([
 				helpers.getElements('.view'),
 				helpers.getElement('#search-user-input'),
 				helpers.getElement('#search-user-btn'),
+				helpers.getElement('#user-view'),
 			]);
 			
 			
@@ -284,6 +273,9 @@
 					if ((devUser === null) || (devUser === 'undefined') || (devUser.errors)) {
 						return;
 					} else {
+						// Set view to active because there is data
+						configs.userView.classList.add('user__view--active');
+
 						// Set data into temporary local data
 						storage.userDataAnime = devUser;
 
@@ -409,11 +401,15 @@
 	=== Our templates
 	===========================*/
 	const template = {
-		noStuff(err) {
+		errorPage(err) {
 			// Need to change the name 
 			const overview = {
 				['home-title']: `Oops something went wrong`,
 				['error-message']: `${err}`,
+				['show-all']: '',
+				['show-current']: '',
+				['show-completed']: '',
+				['show-planned']: '',
 				items: [{
 					item__type: 'anime',
 					item__link: {
@@ -433,7 +429,7 @@
 			// Because the index of [0] is the user
 			if (data.length < 2) {
 				console.log('no stuff');
-				return this.noStuff('Nothing to see here');
+				return this.errorPage('Nothing to see here');
 			}
 
 			// Get the user from our includes
@@ -445,6 +441,7 @@
 			// The weird Transparency syntax
 			const overview = {
 				['home-title']: `Hi, ${user[0].attributes.name}. This is your ${type == 'anime' ? 'watchlist' : 'readlist' }`,
+				['show-planned']: type === 'anime' ? 'Want to see' : 'Want to read',
 
 				// []: ,
 
@@ -462,16 +459,16 @@
 
 			const directives = {
 				['show-all']: { href: function() {
-					return `#library/${type == 'anime' ? '' : 'manga'}`}
+					return `#library/${type === 'anime' ? '' : 'manga'}`}
 				},
 				['show-current']: { href: function() {
-					return `#library/${type == 'anime' ? 'current' : 'manga/current'}`}
+					return `#library/${type === 'anime' ? 'current' : 'manga/current'}`}
 				},
 				['show-completed']: { href: function() {
-					return `#library/${type == 'anime' ? 'completed' : 'manga/completed'}`}
+					return `#library/${type === 'anime' ? 'completed' : 'manga/completed'}`}
 				},
 				['show-planned']: { href: function() {
-					return `#library/${type == 'anime' ? 'planned' : 'manga/planned'}`}
+					return `#library/${type === 'anime' ? 'planned' : 'manga/planned'}`}
 				},
 				items: {
 					item__link: {

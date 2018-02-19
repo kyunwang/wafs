@@ -106,6 +106,18 @@ button a {
 === Keyframes if there are any
 ===========================*/
 
+@keyframes animateView {
+	from{
+		transform:translateY(3em);
+		opacity: 0;
+	}
+	
+	to{
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
 /*==========================
 === Header / Nav
 ===========================*/
@@ -327,17 +339,18 @@ main {
 	}
 }
 
-// .user__view {
-// 	opacity: .3;
-// 	transform: translateY(3em);
-// 	// transition-delay: 10s;
-// 	transition: var(--def-transition) 10s;
-// }
+.user__view {
+	opacity: 0;
+	// transform: translateY(3em);
+	// // transition-delay: 10s;
+	// transition: var(--def-transition) 10s;
+}
 
-// .user__view--active {
-// 	transform: translateY(0);
-// 	opacity: 1;
-// }
+.user__view--active {
+	animation: animateView 1s forwards;
+	// transform: translateY(0);
+	// opacity: 1;
+}
 
 /*==========================
 === Cards/items style
