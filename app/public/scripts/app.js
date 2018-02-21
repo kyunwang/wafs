@@ -75,7 +75,31 @@ import { configs, storage } from './config.js';
 					router.loader.hide();
 				}
 			});
+
+
+			// init on scroll bottom events
+			this.onScrollBottom();
 		},
+		onScrollBottom() {
+			// window.onscroll = function(ev) {
+			// 	if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
+			// 		alert("you're at the bottom of the page");
+			// 	}
+			// };
+			// From https://gist.github.com/nathansmith/8939548
+			window.onscroll = function() {
+				const d = document.documentElement;
+				const offset = d.scrollTop + window.innerHeight;
+				const height = d.offsetHeight - 2;
+			  
+				console.log('offset = ' + offset);
+				console.log('height = ' + height);
+			  
+				if (offset >= height) {
+				  console.log('At the bottom');
+				}
+			  };
+		}
 	}
 
 	/*==========================
