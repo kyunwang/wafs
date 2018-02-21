@@ -24,7 +24,7 @@ import { configs, storage } from './config.js';
 
 				configs.userView.classList.remove('user__view--active');
 
-				
+
 				router.loader.show();
 				
 
@@ -37,8 +37,12 @@ import { configs, storage } from './config.js';
 					storage.userDataManga = [];
 
 
-					const userData = await api.getUserData(user.data[0].id, null, 40);
+					const [userData, userDataManga] = await Promise.all([
+						api.getUserData(user.data[0].id, null, 40),
+						api.getUserData(user.data[0].id, 'manga', 40)
+					]);
 					
+					// Save the userid for the session
 					configs.userId = user.data[0].id;
 
 					// Save the user id to localstorage for filter usage ect.
@@ -46,6 +50,7 @@ import { configs, storage } from './config.js';
 
 					// Save the data in localstorage
 					helpers.setData('userData', userData);
+					helpers.setData('userDataManga', userDataManga);
 
 					const { overview, directives
 					} = template.userOverview(userData);
@@ -55,6 +60,9 @@ import { configs, storage } from './config.js';
 					configs.userView.classList.add('user__view--active');
 
 					router.loader.hide();
+
+					// Always return to library. In case the user was on library/manga
+					routie('library');
 				} else {
 					// Return a message for the user
 					const { overview } =

@@ -11,6 +11,8 @@ import { configs, storage } from './config.js';
 const router = {
 	init() {
 		this.routes(); // Well not really needed it feels like
+		
+		configs.userId = helpers.getData('userId');
 
 		// Redirect to the homepage/template when there no hash is active
 		if (!location.hash) { routie('library'); }
@@ -22,13 +24,11 @@ const router = {
 				
 				router.toggle('library');
 
-				let devUser = helpers.getData('userData');
-				let devUserId = helpers.getData('userId');
-				
+				const devUser = helpers.getData('userData');
 
 				// If there is data in the localstorage
 				// return and wait till the user has searched for his/her account
-				if ((devUser === null) || (devUser === 'undefined') || (devUser.errors)) {
+				if (helpers.checkData(devUser)) {
 					return;
 				} else {
 					// Set view to active because there is data
@@ -36,8 +36,6 @@ const router = {
 					
 					// Set data into temporary local data
 					storage.userDataAnime = devUser;
-					
-					configs.userId = devUserId;
 
 					const { overview, directives
 					} = template.userOverview(storage.userDataAnime);
@@ -49,27 +47,22 @@ const router = {
 			'library/manga': async function() {
 				console.log('Library Manga', storage);
 				
-				// router.toggle('library');
+				const userData = helpers.getData('userDataManga');
 
-				if (!storage.userDataManga.data) {
-					configs.userView.classList.remove('user__view--active');
-					router.loader.show();
-					
-					const userData = await api.getUserData((configs.userId || helpers.getData('userId')), 'manga', 40);
-										
+				if (helpers.getData(userData)) {
+					return;
+				} else {
+					// Set view to active because there is data
+					configs.userView.classList.add('user__view--active');
+
 					// Set data into temporary local data
 					storage.userDataManga = userData;
+
+					const { overview, directives
+					} = template.userOverview(storage.userDataManga, 'manga');
+					
+					helpers.renderTemplate('.view__home', overview, directives);
 				}
-
-				// Set view to active because there is data
-				configs.userView.classList.add('user__view--active');
-
-				const { overview, directives
-				} = template.userOverview(storage.userDataManga, 'manga');
-				
-				helpers.renderTemplate('.view__home', overview, directives);
-
-				router.loader.hide();
 			},
 			'library/:query': function(query) {
 				console.log('Library query: ', query);
@@ -79,7 +72,7 @@ const router = {
 
 				router.loader.show();
 
-				api.getUserDataFilter(userId, 'anime', query, 20, 1)
+				api.getUserDataFilter(userId, 'anime', query, 20, 0)
 					.then(res => storage.userDataAnime = res)
 					.then(res => {
 						const { overview, directives
@@ -103,7 +96,7 @@ const router = {
 
 				router.loader.show();
 
-				api.getUserDataFilter(userId, 'manga', query, 20, 1)
+				api.getUserDataFilter(userId, 'manga', query, 20, 0)
 					.then(res => storage.userDataManga = res)
 					.then(res => {
 						const { overview, directives
@@ -157,9 +150,7 @@ const router = {
 
 				const mangaData = helpers.getData('mangaData');
 
-				const {
-					overview,
-					directives
+				const { overview, directives
 				} = template.overview(mangaData.data);
 				
 				helpers.renderTemplate('.view__overview .items', overview, directives);
@@ -173,9 +164,12 @@ const router = {
 				let singleManga = helpers.getData('mangaData').data
 				.filter(item => item.attributes.slug === slug);
 
-				const {
-					overview,
-					directives
+				if (!singleManga.length) {
+					singleManga = helpers.getData('userDataManga').included
+					.filter(item => item.attributes.slug === slug);
+				}
+
+				const { overview, directives
 				} = template.detail(singleManga[0]);
 				
 				helpers.renderTemplate('.detail', overview, directives);
@@ -197,8 +191,6 @@ const router = {
 	loader: {
 		self: helpers.getElement('#loader'),
 		show() {
-			console.log('show', this.self);
-			
 			this.self.classList.remove('inactive');
 		},
 		hide() {

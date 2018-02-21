@@ -12,6 +12,10 @@ const helpers = {
 	getData(key) { return this.parse(localStorage.getItem(key)); },
 	deleteData(key) { return localStorage.removeItem(key); },
 
+	checkData(data) {
+		return (data === null) || (data === 'undefined') || (data.errors);
+	},
+
 	renderTemplate(element, template, directives = {}) { return Transparency.render(helpers.getElement(element), template, directives); }
 };
 
