@@ -98,10 +98,6 @@ button a {
 	}
 }
 
-.inactive {
-	display: none;
-}
-
 /*==========================
 === Keyframes if there are any
 ===========================*/
@@ -357,11 +353,11 @@ main {
 
 .items {
 	// opacity: 0;
-	visibility: hidden;
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));
 	grid-gap: 1.4rem;
-
+	visibility: hidden;
+	height: 0;
 }
 
 .item {
@@ -458,15 +454,6 @@ main {
 ===========================*/
 
 .view__overview {
-	// .items {
-	// 	display: grid;
-	// 	grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));
-	// 	grid-gap: 1rem;
-	// }
-
-	// img {
-	// 	width: 100%;
-	// }
 	.item__rating {
 
 		&::before {
@@ -491,17 +478,25 @@ main {
 === Animation classes
 ===========================*/
 
+.inactive {
+	display: none;
+}
+
+// .active {
+// 	display: initial;
+// }
+
 .user__view--user {
-	// opacity: 0;
 	visibility: hidden;
-	// transform: translateY(3em);
-	// // transition-delay: 10s;
-	// transition: var(--def-transition) 10s;
+	height: 0;
+	
 }
 
 .user__view--active {
 	animation: animateView 1s forwards;
 	visibility: visible;
+	height: auto;
+	
 	// transform: translateY(0);
 	// opacity: 1;
 }
@@ -509,10 +504,11 @@ main {
 .view__overview {
 	.items {
 		visibility: hidden;
+		height: 0;
 	}
 	.user__view--active {
 		animation: animateView 1s forwards;
-		visibility: visible;
+		visibility: visible;		
 		// transform: translateY(0);
 		// opacity: 1;
 	}

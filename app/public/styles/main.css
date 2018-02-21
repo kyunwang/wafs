@@ -79,10 +79,6 @@ button a {
     background: var(--grey);
 }
 
-.inactive {
-    display: none;
-}
-
 /*==========================
 === Keyframes if there are any
 ===========================*/
@@ -252,10 +248,11 @@ main > section {
 === Cards/items style
 ===========================*/
 .items {
-  visibility: hidden;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));
-  grid-gap: 1.4rem; }
+  grid-gap: 1.4rem;
+  visibility: hidden;
+  height: 0; }
 
 .item {
   display: flex;
@@ -323,15 +320,21 @@ main > section {
 /*==========================
 === Animation classes
 ===========================*/
+.inactive {
+  display: none; }
+
 .user__view--user {
-  visibility: hidden; }
+  visibility: hidden;
+  height: 0; }
 
 .user__view--active {
   animation: animateView 1s forwards;
-  visibility: visible; }
+  visibility: visible;
+  height: auto; }
 
 .view__overview .items {
-  visibility: hidden; }
+  visibility: hidden;
+  height: 0; }
 
 .view__overview .user__view--active {
   animation: animateView 1s forwards;

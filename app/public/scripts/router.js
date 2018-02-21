@@ -52,8 +52,11 @@ const router = {
 				// router.toggle('library');
 
 				if (!storage.userDataManga.data) {
+					configs.userView.classList.remove('user__view--active');
+					router.loader.show();
+					
 					const userData = await api.getUserData((configs.userId || helpers.getData('userId')), 'manga', 40);
-
+										
 					// Set data into temporary local data
 					storage.userDataManga = userData;
 				}
@@ -65,6 +68,8 @@ const router = {
 				} = template.userOverview(storage.userDataManga, 'manga');
 				
 				helpers.renderTemplate('.view__home', overview, directives);
+
+				router.loader.hide();
 			},
 			'library/:query': function(query) {
 				console.log('Library query: ', query);
@@ -167,16 +172,24 @@ const router = {
 		console.log('Change route to: ', route);
 
 		// We remove hide all the inactive views and display the active one (sound logical)
-		console.log(configs.allRoutes);
-		
 		configs.allRoutes.forEach(element => {
-			console.log(element.id);
 			if (element.id === route) {
 				element.classList.remove('inactive');
 			} else {
 				element.classList.add('inactive');
 			}
 		});
+	},
+	loader: {
+		self: helpers.getElement('#loader'),
+		show() {
+			console.log('show', this.self);
+			
+			this.self.classList.remove('inactive');
+		},
+		hide() {
+			this.self.classList.add('inactive');
+		}
 	}
 };
 

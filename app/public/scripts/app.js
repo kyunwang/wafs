@@ -22,6 +22,12 @@ import { configs, storage } from './config.js';
 
 				if (!searchUserInput.value.length) return;
 
+				configs.userView.classList.remove('user__view--active');
+
+				
+				router.loader.show();
+				
+
 				const user = await api.searchForUser(searchUserInput.value);				
 
 				// If there is any data found of the user. Get his data
@@ -47,6 +53,8 @@ import { configs, storage } from './config.js';
 					helpers.renderTemplate('.view__home', overview, directives);
 
 					configs.userView.classList.add('user__view--active');
+
+					router.loader.hide();
 				} else {
 					// Return a message for the user
 					const { overview } =
@@ -55,6 +63,8 @@ import { configs, storage } from './config.js';
 					helpers.renderTemplate('.view__home', overview);
 
 					configs.userView.classList.add('user__view--active');
+
+					router.loader.hide();
 				}
 			});
 		},
