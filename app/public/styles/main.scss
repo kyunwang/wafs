@@ -9,6 +9,7 @@
 	--overlay-dark: rgba(0, 0, 0, .5);
 
 	// Font
+	--primary-font: 'Work Sans', sans-serif; 
 	--font-normal: .9em;
 	--font-big: 1.2em;
 	--font-giant: 6em;
@@ -50,7 +51,7 @@
 ===========================*/
 
 html {
-	font-family: 'Work Sans', sans-serif;
+	font-family: var(--primary-font);
 	color: var(--black);
 }
 
@@ -84,6 +85,8 @@ button,
 button a {
 	cursor: pointer;
 	color: var(--black2);
+	background: var(--white);
+	font-family: var(--primary-font);
 
 	// border: none;
 	border-radius: var(--def-radius);
