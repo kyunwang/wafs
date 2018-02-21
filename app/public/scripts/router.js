@@ -75,6 +75,10 @@ const router = {
 				console.log('Library query: ', query);
 				const userId = configs.userId || helpers.getData('userId');
 
+				configs.userView.classList.remove('user__view--active');
+
+				router.loader.show();
+
 				api.getUserDataFilter(userId, 'anime', query, 20, 1)
 					.then(res => storage.userDataAnime = res)
 					.then(res => {
@@ -83,7 +87,10 @@ const router = {
 
 						console.log(res);
 						
-						helpers.renderTemplate('.view__home', overview, directives);				
+						helpers.renderTemplate('.view__home', overview, directives);
+						
+						configs.userView.classList.add('user__view--active');
+						router.loader.hide();
 					});
 
 
@@ -91,6 +98,10 @@ const router = {
 			'library/manga/:query': function(query) {
 				console.log('Library query Manga: ', query);
 				const userId = configs.userId || helpers.getData('userId');
+
+				configs.userView.classList.remove('user__view--active');
+
+				router.loader.show();
 
 				api.getUserDataFilter(userId, 'manga', query, 20, 1)
 					.then(res => storage.userDataManga = res)
@@ -100,7 +111,10 @@ const router = {
 
 						console.log(res);
 						
-						helpers.renderTemplate('.view__home', overview, directives);				
+						helpers.renderTemplate('.view__home', overview, directives);
+						
+						configs.userView.classList.add('user__view--active');
+						router.loader.hide();
 					});
 			},
 			'anime': function() {
