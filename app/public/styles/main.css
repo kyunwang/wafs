@@ -163,6 +163,7 @@ nav li:last-of-type a:hover, nav li:last-of-type a:focus {
 @media all and (min-width: 35em) {
     body > header h1 {
         text-align: inherit;
+        font-size: 2em;
     }
 
     nav ul {

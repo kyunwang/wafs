@@ -2,7 +2,7 @@
 
 import api from './api.js';
 import template from './templates.js';
-import routes from './routes.js';
+import router from './router.js';
 import { helpers } from './helpers.js';
 import { configs, storage } from './config.js';
 
@@ -61,7 +61,7 @@ import { configs, storage } from './config.js';
 	}
 
 	/*==========================
-	=== Application and Routes
+	=== Application and Router
 	===========================*/
 	const app = {
 		init: async function() {
@@ -79,7 +79,7 @@ import { configs, storage } from './config.js';
 				(devManga === null) ||
 				(devManga === 'undefined')) {
 					console.log('No anime data so set');
-					// Set our initial routes and animedata in a promise
+					// Set our initial router and animedata in a promise
 					[configs.allRoutes, animeData, mangaData] = await Promise.all([
 						helpers.getElements('.view'),
 						api.get('anime', 20),
@@ -121,7 +121,7 @@ import { configs, storage } from './config.js';
 			events.init();
 
 			// Initialize our route
-			routes.init();
+			router.init();
 		}
 	};
 	

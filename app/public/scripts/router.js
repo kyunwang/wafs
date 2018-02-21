@@ -8,7 +8,7 @@ import { configs, storage } from './config.js';
 === Routing/Routes
 ===========================*/
 
-const routes = {
+const router = {
 	init() {
 		this.routes(); // Well not really needed it feels like
 
@@ -20,7 +20,7 @@ const routes = {
 			'library': async function() {
 				console.log('Homepage', storage);
 				
-				sections.toggle('library');
+				router.toggle('library');
 
 				let devUser = helpers.getData('userData');
 				let devUserId = helpers.getData('userId');
@@ -49,7 +49,7 @@ const routes = {
 			'library/manga': async function() {
 				console.log('Library Manga', storage);
 				
-				// sections.toggle('library');
+				// router.toggle('library');
 
 				if (!storage.userDataManga.data) {
 					const userData = await api.getUserData((configs.userId || helpers.getData('userId')), 'manga', 40);
@@ -100,7 +100,7 @@ const routes = {
 			},
 			'anime': function() {
 				console.log('Anime overview');
-				sections.toggle('overview'); // Toggle to ...				
+				router.toggle('overview'); // Toggle to ...				
 
 				const animeData = helpers.getData('animeData');
 
@@ -115,7 +115,7 @@ const routes = {
 			},
 			'anime/:slug': function(slug) {
 				console.log('Anime slug: ', slug);
-				sections.toggle('details'); // Toggle to ...
+				router.toggle('details'); // Toggle to ...
 				
 				let singleAnime = helpers.getData('animeData').data
 				.filter(item => item.attributes.slug === slug);
@@ -134,7 +134,7 @@ const routes = {
 			},
 			'manga': function() {
 				console.log('Manga Overview');
-				sections.toggle('overview'); // Toggle to ...
+				router.toggle('overview'); // Toggle to ...
 
 				const mangaData = helpers.getData('mangaData');
 
@@ -149,7 +149,7 @@ const routes = {
 			},
 			'manga/:slug': function(slug) {
 				console.log('Manga slug: ', slug);
-				sections.toggle('details'); // Toggle to ...
+				router.toggle('details'); // Toggle to ...
 
 				let singleManga = helpers.getData('mangaData').data
 				.filter(item => item.attributes.slug === slug);
@@ -163,14 +163,14 @@ const routes = {
 			},
 		});
 	},
-};
-
-const sections = {
 	toggle(route) {
 		console.log('Change route to: ', route);
 
 		// We remove hide all the inactive views and display the active one (sound logical)
+		console.log(configs.allRoutes);
+		
 		configs.allRoutes.forEach(element => {
+			console.log(element.id);
 			if (element.id === route) {
 				element.classList.remove('inactive');
 			} else {
@@ -180,4 +180,4 @@ const sections = {
 	}
 };
 
-export default routes;
+export default router;
