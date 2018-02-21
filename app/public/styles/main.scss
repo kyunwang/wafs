@@ -523,3 +523,28 @@ main {
 		// visibility: hidden;
 	}
 }
+
+// Thanks to https://codepen.io/fbrz/pen/KvwIF
+#loader {
+	width: 3rem;
+	height: 3rem;
+
+	margin: 2rem auto;
+
+	border-style: solid;
+	border-width: 5px;
+	border-color: var(--grey);
+	border-top-color: var(--primary-color);
+
+	border-radius: 50%;
+
+	animation: rotateLoader 1s linear infinite;
+ }
+
+ @keyframes rotateLoader {
+	0% { transform: rotate(0deg); }
+	25% { transform: rotate(70deg); }
+	50% { transform: rotate(150deg); }
+	75% { transform: rotate(240deg); }
+	100% { transform: rotate(360deg); }
+ }

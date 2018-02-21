@@ -163,7 +163,6 @@ nav li:last-of-type a:hover, nav li:last-of-type a:focus {
 @media all and (min-width: 35em) {
     body > header h1 {
         text-align: inherit;
-        font-size: 2em;
     }
 
     nav ul {
@@ -337,3 +336,26 @@ main > section {
 .view__overview .user__view--active {
   animation: animateView 1s forwards;
   visibility: visible; }
+
+#loader {
+  width: 3rem;
+  height: 3rem;
+  margin: 2rem auto;
+  border-style: solid;
+  border-width: 5px;
+  border-color: var(--grey);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: rotateLoader 1s linear infinite; }
+
+@keyframes rotateLoader {
+  0% {
+    transform: rotate(0deg); }
+  25% {
+    transform: rotate(70deg); }
+  50% {
+    transform: rotate(150deg); }
+  75% {
+    transform: rotate(240deg); }
+  100% {
+    transform: rotate(360deg); } }
