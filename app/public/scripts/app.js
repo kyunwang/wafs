@@ -26,6 +26,11 @@ import { configs, storage } from './config.js';
 
 				// If there is any data found of the user. Get his data
 				if (user.data.length) {
+					// First clean the user storage
+					storage.userDataAnime = [];
+					storage.userDataManga = [];
+
+
 					const userData = await api.getUserData(user.data[0].id, null, 40);
 					
 					configs.userId = user.data[0].id;
@@ -98,12 +103,17 @@ import { configs, storage } from './config.js';
 				configs.allRoutes, // Yes we set it again just to be sure for dev
 				configs.searchUserInput,
 				configs.searchUserBtn,
-				configs.userView
+				configs.userView,
+				configs.overviewView,
+				configs.detailView,
 			] = await Promise.all([
 				helpers.getElements('.view'),
 				helpers.getElement('#search-user-input'),
 				helpers.getElement('#search-user-btn'),
-				helpers.getElement('#user-view'),
+				helpers.getElement('.view__home--user .items'),
+				helpers.getElement('#overview .items'),
+				helpers.getElement('#details .detail'),
+				// helpers.getElement('#user-view'),
 			]);
 			
 			

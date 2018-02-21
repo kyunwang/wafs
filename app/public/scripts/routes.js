@@ -110,6 +110,8 @@ const routes = {
 				
 				// helpers.renderTemplate('#overview', overview, directives);
 				helpers.renderTemplate('.view__overview .items', overview, directives);
+
+				configs.overviewView.classList.add('user__view--active');
 			},
 			'anime/:slug': function(slug) {
 				console.log('Anime slug: ', slug);
@@ -142,6 +144,8 @@ const routes = {
 				} = template.overview(mangaData.data);
 				
 				helpers.renderTemplate('.view__overview .items', overview, directives);
+
+				configs.overviewView.classList.add('user__view--active');
 			},
 			'manga/:slug': function(slug) {
 				console.log('Manga slug: ', slug);

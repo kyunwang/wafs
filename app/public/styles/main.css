@@ -248,16 +248,11 @@ main > section {
   font-weight: 500;
   text-decoration: none; }
 
-.user__view {
-  opacity: 0; }
-
-.user__view--active {
-  animation: animateView 1s forwards; }
-
 /*==========================
 === Cards/items style
 ===========================*/
 .items {
+  visibility: hidden;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));
   grid-gap: 1.4rem; }
@@ -324,3 +319,20 @@ main > section {
   font-size: .8rem;
   position: absolute;
   align-self: center; }
+
+/*==========================
+=== Animation classes
+===========================*/
+.user__view--user {
+  visibility: hidden; }
+
+.user__view--active {
+  animation: animateView 1s forwards;
+  visibility: visible; }
+
+.view__overview .items {
+  visibility: hidden; }
+
+.view__overview .user__view--active {
+  animation: animateView 1s forwards;
+  visibility: visible; }

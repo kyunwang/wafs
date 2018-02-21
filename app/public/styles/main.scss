@@ -350,24 +350,14 @@ main {
 	}
 }
 
-.user__view {
-	opacity: 0;
-	// transform: translateY(3em);
-	// // transition-delay: 10s;
-	// transition: var(--def-transition) 10s;
-}
-
-.user__view--active {
-	animation: animateView 1s forwards;
-	// transform: translateY(0);
-	// opacity: 1;
-}
 
 /*==========================
 === Cards/items style
 ===========================*/
 
 .items {
+	// opacity: 0;
+	visibility: hidden;
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));
 	grid-gap: 1.4rem;
@@ -494,4 +484,42 @@ main {
 	// 		grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
 	// 	}
 	// }
+}
+
+
+/*==========================
+=== Animation classes
+===========================*/
+
+.user__view--user {
+	// opacity: 0;
+	visibility: hidden;
+	// transform: translateY(3em);
+	// // transition-delay: 10s;
+	// transition: var(--def-transition) 10s;
+}
+
+.user__view--active {
+	animation: animateView 1s forwards;
+	visibility: visible;
+	// transform: translateY(0);
+	// opacity: 1;
+}
+
+.view__overview {
+	.items {
+		visibility: hidden;
+	}
+	.user__view--active {
+		animation: animateView 1s forwards;
+		visibility: visible;
+		// transform: translateY(0);
+		// opacity: 1;
+	}
+}
+
+.view__details {
+	.detail {
+		// visibility: hidden;
+	}
 }

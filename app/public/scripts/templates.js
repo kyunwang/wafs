@@ -97,7 +97,7 @@
 				id: item.id,
 				slug: item.attributes.slug,
 				item__type: item.type,
-				item__rating: item.attributes.averageRating,
+				item__rating: item.attributes.averageRating ? item.attributes.averageRating : '-',
 				item__link: {
 					item__name: item.attributes.canonicalTitle,
 					item__image: '',
@@ -129,7 +129,7 @@
 				item__name: attr.canonicalTitle,
 				item__image: '',
 				item__synopsis: attr.synopsis,
-				item__rating: attr.averageRating,
+				item__rating: attr.averageRating ? attr.averageRating : '-',
 				item__totalChOrEps: type === 'anime' ? attr.episodeCount : attr.chaperCount,
 				...attr
 			};

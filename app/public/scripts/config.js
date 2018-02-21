@@ -6,6 +6,8 @@ const configs = {
 	searchUserInput: '',
 	searchUserBtn: '',
 	userView: '',
+	overviewView: '',
+	detailView: '',
 	userId: '',
 	activeFilter: 'anime'
 };
