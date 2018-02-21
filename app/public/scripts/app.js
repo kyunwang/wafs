@@ -22,7 +22,7 @@ import { configs, storage } from './config.js';
 
 				if (!searchUserInput.value.length) return;
 
-				configs.userView.classList.remove('user__view--active');
+				configs.userView.classList.remove('anim__view--show');
 
 
 				router.loader.show();
@@ -57,7 +57,7 @@ import { configs, storage } from './config.js';
 					
 					helpers.renderTemplate('.view__home', overview, directives);
 
-					configs.userView.classList.add('user__view--active');
+					configs.userView.classList.add('anim__view--show');
 
 					router.loader.hide();
 
@@ -70,7 +70,7 @@ import { configs, storage } from './config.js';
 
 					helpers.renderTemplate('.view__home', overview);
 
-					configs.userView.classList.add('user__view--active');
+					configs.userView.classList.add('anim__view--show');
 
 					router.loader.hide();
 				}
@@ -128,9 +128,9 @@ import { configs, storage } from './config.js';
 				helpers.getElements('.view'),
 				helpers.getElement('#search-user-input'),
 				helpers.getElement('#search-user-btn'),
-				helpers.getElement('.view__home--user .items'),
-				helpers.getElement('#overview .items'),
-				helpers.getElement('#details .detail'),
+				helpers.getElement('.view__home .anim__view'),
+				helpers.getElement('#overview .anim__view'),
+				helpers.getElement('#details .anim__view'),
 				// helpers.getElement('#user-view'),
 			]);
 			

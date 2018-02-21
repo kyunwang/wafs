@@ -53,11 +53,11 @@
 				<input id="search-user-btn" type="button" value="Search" />
 			</form>
 
-			<div id="user-view" class="user__view">
-				<h1 data-bind="home-title">Hi, Welcome!</h1>
-				
-				<p data-bind="error-message"></p>
-				
+			<h1 data-bind="home-title">Hi, Welcome!</h1>
+			
+			<p data-bind="error-message"></p>
+			
+			<div id="user-view" class="user__view anim__view">
 				<div class="view__home--filter">
 					<a data-bind="show-all" href="#library">All</a>
 					<a data-bind="show-current" href="#library/current">Current</a>
@@ -72,7 +72,7 @@
 					</button>
 				</div>
 
-				<section class="view__home--user">
+				<!-- <section class="view__home--user"> -->
 					<div class="items">
 						<a class="item item__link" href="">
 							<img class="item__image" src="" alt=""></img>
@@ -80,7 +80,7 @@
 							<p class="item__rating"></p>
 						</a>
 					</div>
-				</section>
+				<!-- </section> -->
 			</div>
 		</section>
 
@@ -91,7 +91,7 @@
 		============================================>>>>-->
 		<section id="overview" class="view view__overview">
 			<!-- The content container -->
-			<div class="items">
+			<div class="items anim__view">
 				<a class="item item__link" href="">
 					<img class="item__image" src="" alt=""></img>
 					<h3 class="item__name"></h3>
@@ -106,7 +106,7 @@
 		============================================>>>>-->
 		<section id="details" class="view view__details">
 			<!-- The content container -->
-			<div class="detail">
+			<div class="detail anim__view">
 				<header>
 					<h3 class="item__name"></h3>
 					<img class="item__image" src="" alt="">

@@ -189,176 +189,229 @@ main > section {
 
 /*==========================
 === Views
-=== Yup using the id's becuse they are there already so why not?
-=== Btw id's are somewhat faster than classes but it is insignificant
-== Or do not use id's => classes again now
 ===========================*/
 /*==========================
 === Home / User Library
 ===========================*/
 .view__home form {
-  display: flex;
-  width: 100%;
-  margin-bottom: var(--def-margin-ver2); }
-  .view__home form [type="button"] {
-    margin-left: 1rem; }
+    display: flex;
+    width: 100%;
+    margin-bottom: var(--def-margin-ver2);
+}
+
+.view__home form [type="button"] {
+    margin-left: 1rem;
+}
 
 .view__home [type="text"] {
-  font-size: 1em;
-  height: 2em;
-  width: 100%;
-  border: none;
-  border-bottom: 2px solid var(--grey);
-  padding: 0 .5em; }
-  .view__home [type="text"]::-webkit-input-placeholder, .view__home [type="text"]::-moz-placeholder, .view__home [type="text"]:-ms-input-placeholder, .view__home [type="text"]:-moz-placeholder {
+    font-size: 1em;
+    height: 2em;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid var(--grey);
+    padding: 0 .5em;
+}
+
+.view__home [type="text"]::-webkit-input-placeholder, .view__home [type="text"]::-moz-placeholder, .view__home [type="text"]:-ms-input-placeholder, .view__home [type="text"]:-moz-placeholder {
     /* Firefox 18- */
-    color: green; }
-  .view__home [type="text"]:focus, .view__home [type="text"]:hover {
-    outline: none; }
+    color: green;
+}
+
+.view__home [type="text"]:focus, .view__home [type="text"]:hover {
+    outline: none;
+}
 
 .view__home--filter {
-  display: flex;
-  align-items: center;
-  margin-bottom: var(--def-margin-ver); }
-  .view__home--filter a {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--def-margin-ver);
+}
+
+.view__home--filter a {
     color: var(--black);
     font-weight: 500;
     text-decoration: none;
-    transition: var(--def-transition); }
-    .view__home--filter a:focus, .view__home--filter a:hover {
-      outline: none;
-      color: var(--primary-color); }
-    .view__home--filter a:not(:last-of-type) {
-      margin-right: 1rem; }
-  .view__home--filter button {
-    margin-left: 1rem; }
-    .view__home--filter button:first-of-type {
-      margin-left: auto; }
+    transition: var(--def-transition);
+}
+
+.view__home--filter a:focus, .view__home--filter a:hover {
+    outline: none;
+    color: var(--primary-color);
+}
+
+.view__home--filter a:not(:last-of-type) {
+    margin-right: 1rem;
+}
+
+.view__home--filter button {
+    margin-left: 1rem;
+}
+
+.view__home--filter button:first-of-type {
+    margin-left: auto;
+}
 
 .user__view button {
-  padding: var(--btn-padding-ver) 0; }
+    padding: var(--btn-padding-ver) 0;
+}
 
 .user__view button a {
-  color: var(--black);
-  text-transform: uppercase;
-  font-weight: 500;
-  text-decoration: none; }
+    color: var(--black);
+    text-transform: uppercase;
+    font-weight: 500;
+    text-decoration: none;
+}
 
 /*==========================
 === Cards/items style
 ===========================*/
 .items {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));
-  grid-gap: 1.4rem;
-  visibility: hidden;
-  height: 0; }
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));
+    grid-gap: 1.4rem;
+}
 
 .item {
-  display: flex;
-  position: relative;
-  height: 100%;
-  overflow: hidden;
-  box-shadow: var(--shadow-normal);
-  transition: var(--def-transition); }
-  .item::before {
+    display: flex;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    box-shadow: var(--shadow-normal);
+    transition: var(--def-transition);
+}
+
+.item::before {
     content: "";
     position: absolute;
     height: 100%;
     width: 100%;
     opacity: 0;
     background: var(--black);
-    transition: var(--def-transition); }
-  .item:hover, .item:focus {
+    transition: var(--def-transition);
+}
+
+.item:hover, .item:focus {
     outline: none;
-    box-shadow: var(--shadow-hover); }
-    .item:hover::before, .item:focus::before {
-      opacity: .4; }
-    .item:hover h3, .item:focus h3 {
-      transform: translateY(0); }
-    .item:hover p, .item:focus p {
-      transform: translateY(0); }
-  .item h3, .item p {
+    box-shadow: var(--shadow-hover);
+}
+
+.item:hover::before, .item:focus::before {
+    opacity: .4;
+}
+
+.item:hover h3, .item:focus h3 {
+    transform: translateY(0);
+}
+
+.item:hover p, .item:focus p {
+    transform: translateY(0);
+}
+
+.item h3, .item p {
     position: absolute;
     color: var(--white);
     margin: 0 var(--def-gap);
     pointer-events: none;
-    transition: var(--def-transition); }
-  .item h3 {
+    transition: var(--def-transition);
+}
+
+.item h3 {
     bottom: var(--def-gap);
     font-size: var(--font-normal);
     font-weight: 500;
-    transform: translateY(5em); }
-  .item p,
+    transform: translateY(5em);
+}
+
+.item p,
   .item p::before {
     align-self: center;
     right: 0;
     left: 0;
     text-align: center;
-    transform: translateY(-3em); }
-  .item .item__rating {
-    font-size: var(--font-giant); }
-    .item .item__rating::before {
-      content: "my rating";
-      font-size: .8rem;
-      position: absolute;
-      align-self: center; }
+    transform: translateY(-3em);
+}
+
+.item .item__rating {
+    font-size: var(--font-giant);
+}
+
+.item .item__rating::before {
+    content: "my rating";
+    font-size: .8rem;
+    position: absolute;
+    align-self: center;
+}
 
 @media all and (min-width: 30rem) {
-  .items {
-    grid-template-columns: repeat(auto-fit, minmax(10em, 1fr)); } }
+    .items {
+        grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
+    }
+}
 
 /*==========================
 === Overview
 ===========================*/
 .view__overview .item__rating::before {
-  content: "average rating";
-  font-size: .8rem;
-  position: absolute;
-  align-self: center; }
+    content: "average rating";
+    font-size: .8rem;
+    position: absolute;
+    align-self: center;
+}
 
 /*==========================
 === Animation classes
 ===========================*/
 .inactive {
-  display: none; }
+    display: none;
+}
 
-.user__view--user {
-  visibility: hidden;
-  height: 0; }
+.anim__view {
+    visibility: hidden;
+    height: 0;
+}
+
+.anim__view--show {
+    animation: animateView 1s forwards;
+    visibility: visible;
+    height: auto;
+}
 
 .user__view--active {
-  animation: animateView 1s forwards;
-  visibility: visible;
-  height: auto; }
-
-.view__overview .items {
-  visibility: hidden;
-  height: 0; }
-
-.view__overview .user__view--active {
-  animation: animateView 1s forwards;
-  visibility: visible; }
+    animation: animateView 1s forwards;
+    visibility: visible;
+    height: auto;
+}
 
 #loader {
-  width: 3rem;
-  height: 3rem;
-  margin: 2rem auto;
-  border-style: solid;
-  border-width: 5px;
-  border-color: var(--grey);
-  border-top-color: var(--primary-color);
-  border-radius: 50%;
-  animation: rotateLoader 1s linear infinite; }
+    width: 3rem;
+    height: 3rem;
+    margin: 2rem auto;
+    border-style: solid;
+    border-width: 5px;
+    border-color: var(--grey);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: rotateLoader 1s linear infinite;
+}
 
 @keyframes rotateLoader {
-  0% {
-    transform: rotate(0deg); }
-  25% {
-    transform: rotate(70deg); }
-  50% {
-    transform: rotate(150deg); }
-  75% {
-    transform: rotate(240deg); }
-  100% {
-    transform: rotate(360deg); } }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(70deg);
+    }
+
+    50% {
+        transform: rotate(150deg);
+    }
+
+    75% {
+        transform: rotate(240deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

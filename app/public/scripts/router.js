@@ -32,7 +32,7 @@ const router = {
 					return;
 				} else {
 					// Set view to active because there is data
-					configs.userView.classList.add('user__view--active');
+					configs.userView.classList.add('anim__view--show');
 					
 					// Set data into temporary local data
 					storage.userDataAnime = devUser;
@@ -53,7 +53,7 @@ const router = {
 					return;
 				} else {
 					// Set view to active because there is data
-					configs.userView.classList.add('user__view--active');
+					configs.userView.classList.add('anim__view--show');
 
 					// Set data into temporary local data
 					storage.userDataManga = userData;
@@ -68,7 +68,7 @@ const router = {
 				console.log('Library query: ', query);
 				const userId = configs.userId || helpers.getData('userId');
 
-				configs.userView.classList.remove('user__view--active');
+				configs.userView.classList.remove('anim__view--show');
 
 				router.loader.show();
 
@@ -82,7 +82,7 @@ const router = {
 						
 						helpers.renderTemplate('.view__home', overview, directives);
 						
-						configs.userView.classList.add('user__view--active');
+						configs.userView.classList.add('anim__view--show');
 						router.loader.hide();
 					});
 
@@ -92,7 +92,7 @@ const router = {
 				console.log('Library query Manga: ', query);
 				const userId = configs.userId || helpers.getData('userId');
 
-				configs.userView.classList.remove('user__view--active');
+				configs.userView.classList.remove('anim__view--show');
 
 				router.loader.show();
 
@@ -106,7 +106,7 @@ const router = {
 						
 						helpers.renderTemplate('.view__home', overview, directives);
 						
-						configs.userView.classList.add('user__view--active');
+						configs.userView.classList.add('anim__view--show');
 						router.loader.hide();
 					});
 			},
@@ -123,7 +123,7 @@ const router = {
 				// helpers.renderTemplate('#overview', overview, directives);
 				helpers.renderTemplate('.view__overview .items', overview, directives);
 
-				configs.overviewView.classList.add('user__view--active');
+				configs.overviewView.classList.add('anim__view--show');
 			},
 			'anime/:slug': function(slug) {
 				console.log('Anime slug: ', slug);
@@ -143,6 +143,8 @@ const router = {
 				} = template.detail(singleAnime[0]);
 
 				helpers.renderTemplate('.detail', overview, directives);
+
+				configs.detailView.classList.add('anim__view--show');
 			},
 			'manga': function() {
 				console.log('Manga Overview');
@@ -155,7 +157,7 @@ const router = {
 				
 				helpers.renderTemplate('.view__overview .items', overview, directives);
 
-				configs.overviewView.classList.add('user__view--active');
+				configs.overviewView.classList.add('anim__view--show');
 			},
 			'manga/:slug': function(slug) {
 				console.log('Manga slug: ', slug);
@@ -173,6 +175,8 @@ const router = {
 				} = template.detail(singleManga[0]);
 				
 				helpers.renderTemplate('.detail', overview, directives);
+				
+				configs.detailView.classList.add('anim__view--show');
 			},
 		});
 	},
