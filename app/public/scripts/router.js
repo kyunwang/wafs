@@ -24,23 +24,20 @@ const router = {
 				
 				router.toggle('library');
 
-				const devUser = helpers.getData('userData');
+				const userData = helpers.getData('userData');
 
 				// If there is data in the localstorage
 				// return and wait till the user has searched for his/her account
-				if (helpers.checkData(devUser)) {
+				if (helpers.checkData(userData)) {
 					return;
 				} else {
 					// Set view to active because there is data
 					configs.userView.classList.add('anim__view--show');
 					
 					// Set data into temporary local data
-					storage.userDataAnime = devUser;
+					storage.userDataAnime = userData;
 
-					const { overview, directives
-					} = template.userOverview(storage.userDataAnime);
-
-					helpers.renderTemplate('.view__home', overview, directives);
+					helpers.renderTemplate('.view__home', 'userOverview', storage.userDataAnime);
 				}
 
 			},
@@ -49,19 +46,20 @@ const router = {
 				
 				const userData = helpers.getData('userDataManga');
 
-				if (helpers.getData(userData)) {
+				if (helpers.checkData(userData)) {
+					console.log('return');
+					
 					return;
 				} else {
+					console.log('yes');
+					
 					// Set view to active because there is data
 					configs.userView.classList.add('anim__view--show');
 
 					// Set data into temporary local data
 					storage.userDataManga = userData;
 
-					const { overview, directives
-					} = template.userOverview(storage.userDataManga, 'manga');
-					
-					helpers.renderTemplate('.view__home', overview, directives);
+					helpers.renderTemplate('.view__home', 'userOverview', storage.userDataManga, 'manga');
 				}
 			},
 			'library/:query': function(query) {
@@ -75,12 +73,7 @@ const router = {
 				api.getUserDataFilter(userId, 'anime', query, 20, 0)
 					.then(res => storage.userDataAnime = res)
 					.then(res => {
-						const { overview, directives
-						} = template.userOverview(storage.userDataAnime);
-
-						console.log(res);
-						
-						helpers.renderTemplate('.view__home', overview, directives);
+						helpers.renderTemplate('.view__home', 'userOverview', storage.userDataAnime);
 						
 						configs.userView.classList.add('anim__view--show');
 						router.loader.hide();
@@ -99,12 +92,7 @@ const router = {
 				api.getUserDataFilter(userId, 'manga', query, 20, 0)
 					.then(res => storage.userDataManga = res)
 					.then(res => {
-						const { overview, directives
-						} = template.userOverview(storage.userDataManga, 'manga');
-
-						console.log(res);
-						
-						helpers.renderTemplate('.view__home', overview, directives);
+						helpers.renderTemplate('.view__home', 'userOverview', storage.userDataManga, 'manga');
 						
 						configs.userView.classList.add('anim__view--show');
 						router.loader.hide();
@@ -116,14 +104,14 @@ const router = {
 
 				const animeData = helpers.getData('animeData');
 
-				const { overview, directives
-				} = template.overview(animeData.data);
-
-				
-				// helpers.renderTemplate('#overview', overview, directives);
-				helpers.renderTemplate('.view__overview .items', overview, directives);
+				helpers.renderTemplate('.view__overview .items', 'overview', animeData.data);
 
 				configs.overviewView.classList.add('anim__view--show');
+
+				console.log(storage);
+
+				router.onScrollBottom('anime', 'animeData');
+				// router.onScrollBottom(api.getMoreLink.anime, 'anime');
 			},
 			'anime/:slug': function(slug) {
 				console.log('Anime slug: ', slug);
@@ -139,10 +127,7 @@ const router = {
 					.filter(item => item.attributes.slug === slug);
 				}
 
-				const { overview, directives
-				} = template.detail(singleAnime[0]);
-
-				helpers.renderTemplate('.detail', overview, directives);
+				helpers.renderTemplate('.detail', 'detail', singleAnime[0]);
 
 				configs.detailView.classList.add('anim__view--show');
 			},
@@ -152,10 +137,7 @@ const router = {
 
 				const mangaData = helpers.getData('mangaData');
 
-				const { overview, directives
-				} = template.overview(mangaData.data);
-				
-				helpers.renderTemplate('.view__overview .items', overview, directives);
+				helpers.renderTemplate('.view__overview .items', 'overview', mangaData.data);
 
 				configs.overviewView.classList.add('anim__view--show');
 			},
@@ -171,10 +153,7 @@ const router = {
 					.filter(item => item.attributes.slug === slug);
 				}
 
-				const { overview, directives
-				} = template.detail(singleManga[0]);
-				
-				helpers.renderTemplate('.detail', overview, directives);
+				helpers.renderTemplate('.detail', 'detail', singleManga[0]);
 				
 				configs.detailView.classList.add('anim__view--show');
 			},
@@ -200,6 +179,35 @@ const router = {
 		hide() {
 			this.self.classList.add('inactive');
 		}
+	},
+	onScrollBottom(type, storageName) {
+		// From https://gist.github.com/nathansmith/8939548
+		window.onscroll = function() {
+			const d = document.documentElement;
+			// Window height + diff in space from the top of the page
+			const offset = d.scrollTop + window.innerHeight;
+			// The total height/length of the page
+			const height = d.offsetHeight - 1;
+
+			if (offset >= height) {
+				api.getMoreData(type)
+					.then(res => {
+						// console.log(type, storageName, res);
+						storage[storageName] = {
+							data: [...storage[storageName].data, ...res.data],
+							links: res.links,
+							meta: res.meta,
+						};
+						return res;
+					})
+					.then(res => {
+
+						console.log(res, 2 ,api.getMoreLink[type]);
+					})
+
+			  console.log('At the bottom');
+			}
+		  };
 	}
 };
 

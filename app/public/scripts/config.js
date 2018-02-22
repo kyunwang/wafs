@@ -13,11 +13,11 @@ const configs = {
 };
 
 const storage = {
-	animeData: [],
-	mangaData: [],
-	userData: [],
-	userDataAnime: [],
-	userDataManga: [],
+	animeData: {},
+	mangaData: {},
+	userData: {},
+	userDataAnime: {},
+	userDataManga: {},
 };
 
 export {

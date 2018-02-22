@@ -1,3 +1,5 @@
+import template from './templates.js';
+
 const helpers = {
 	getHash() { return location.hash; },
 	getElement(element) { return document.querySelector(element); },
@@ -16,7 +18,13 @@ const helpers = {
 		return (data === null) || (data === 'undefined') || (data.errors);
 	},
 
-	renderTemplate(element, template, directives = {}) { return Transparency.render(helpers.getElement(element), template, directives); }
+	renderTemplate(element, templateName, data, type = 'anime') {
+		
+		const { overview, directives
+		} = template[templateName](data, type);
+
+		return Transparency.render(helpers.getElement(element), overview, directives);
+	}
 };
 
 const debug = {

@@ -52,10 +52,8 @@ import { configs, storage } from './config.js';
 					helpers.setData('userData', userData);
 					helpers.setData('userDataManga', userDataManga);
 
-					const { overview, directives
-					} = template.userOverview(userData);
 					
-					helpers.renderTemplate('.view__home', overview, directives);
+					helpers.renderTemplate('.view__home', 'userOverview', userData);
 
 					configs.userView.classList.add('anim__view--show');
 
@@ -78,27 +76,7 @@ import { configs, storage } from './config.js';
 
 
 			// init on scroll bottom events
-			this.onScrollBottom();
-		},
-		onScrollBottom() {
-			// window.onscroll = function(ev) {
-			// 	if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
-			// 		alert("you're at the bottom of the page");
-			// 	}
-			// };
-			// From https://gist.github.com/nathansmith/8939548
-			window.onscroll = function() {
-				const d = document.documentElement;
-				const offset = d.scrollTop + window.innerHeight;
-				const height = d.offsetHeight - 2;
-			  
-				console.log('offset = ' + offset);
-				console.log('height = ' + height);
-			  
-				if (offset >= height) {
-				  console.log('At the bottom');
-				}
-			  };
+			// this.onScrollBottom();
 		}
 	}
 
@@ -133,10 +111,16 @@ import { configs, storage } from './config.js';
 					// Store the data in our temporary storage
 					storage.animeData = animeData;
 					storage.mangaData = mangaData;
+
+					api.getMoreLink.anime = animeData.links.next;
+					api.getMoreLink.manga = mangaData.links.next;
 				} else {
 					// Store the data in our temporary storage
 					storage.animeData = devAnime;
 					storage.mangaData = devManga;
+
+					api.getMoreLink.anime = devAnime.links.next;
+					api.getMoreLink.manga = devManga.links.next;
 				}
 			
 			// Getting and setting our elements here for later

@@ -10,6 +10,12 @@ import { debug } from './helpers.js';
 			'Accept': 'application/vnd.api+json',
 			'Content-Type': 'application/vnd.api+json'
 		},
+		getMoreLink: {
+			anime: '',
+			manga: '',
+			userManga: '',
+			userAnime: ''
+		},
 		// Max limit for the api is 20
 		get: async function(route = '', limit = 10, offset = 0) {
 			// Get the data based on the params given
@@ -97,6 +103,15 @@ import { debug } from './helpers.js';
 			.then((res, err) => res.json())
 			.catch(err => debug.error(err));
 		},
+		getMoreData: async function(type) {
+			return await fetch(api.getMoreLink[type], { headers: this.baseHeader })
+			.then(res => res.json())
+			.then(res => {
+				api.getMoreLink[type] = res.links.next;
+				return res;
+			})
+			.catch(err => debug.error(err));
+		}
 	}
 
 	export default api;
