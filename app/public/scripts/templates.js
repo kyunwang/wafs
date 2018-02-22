@@ -86,14 +86,15 @@
 					}
 				}
 			};
+			
 
 			return { overview, directives };
 		},
 		overview(data) {
-			// console.log(data);
+			const items = data.data;
 			
 			// Return a template in a array for Transparency
-			const overview = data.map(item => ({
+			const overview = items.map(item => ({
 				id: item.id,
 				slug: item.attributes.slug,
 				item__type: item.type,

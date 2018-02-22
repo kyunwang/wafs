@@ -36,10 +36,13 @@ const router = {
 					
 					// Set data into temporary local data
 					storage.userDataAnime = userData;
+					api.getMoreLink.userAnime = userData.links.next;
 
 					helpers.renderTemplate('.view__home', 'userOverview', storage.userDataAnime);
+					
+					// Initialize pagination on route enter
+					router.onScrollBottom('userAnime', 'userDataAnime', '.view__home', 'userOverview');
 				}
-
 			},
 			'library/manga': async function() {
 				console.log('Library Manga', storage);
@@ -47,19 +50,19 @@ const router = {
 				const userData = helpers.getData('userDataManga');
 
 				if (helpers.checkData(userData)) {
-					console.log('return');
-					
 					return;
 				} else {
-					console.log('yes');
-					
 					// Set view to active because there is data
 					configs.userView.classList.add('anim__view--show');
 
 					// Set data into temporary local data
 					storage.userDataManga = userData;
+					api.getMoreLink.userManga = userData.links.next;
 
 					helpers.renderTemplate('.view__home', 'userOverview', storage.userDataManga, 'manga');
+
+					// Initialize pagination on route enter
+					router.onScrollBottom('userManga', 'userDataManga', '.view__home', 'userOverview', 'manga');
 				}
 			},
 			'library/:query': function(query) {
@@ -104,14 +107,12 @@ const router = {
 
 				const animeData = helpers.getData('animeData');
 
-				helpers.renderTemplate('.view__overview .items', 'overview', animeData.data);
+				helpers.renderTemplate('.view__overview .items', 'overview', animeData);
 
 				configs.overviewView.classList.add('anim__view--show');
 
-				console.log(storage);
-
-				router.onScrollBottom('anime', 'animeData');
-				// router.onScrollBottom(api.getMoreLink.anime, 'anime');
+				// Initialize pagination on route enter
+				router.onScrollBottom('anime', 'animeData', '.view__overview .items', 'overview');
 			},
 			'anime/:slug': function(slug) {
 				console.log('Anime slug: ', slug);
@@ -137,9 +138,12 @@ const router = {
 
 				const mangaData = helpers.getData('mangaData');
 
-				helpers.renderTemplate('.view__overview .items', 'overview', mangaData.data);
+				helpers.renderTemplate('.view__overview .items', 'overview', mangaData);
 
 				configs.overviewView.classList.add('anim__view--show');
+
+				// Initialize pagination on route enter
+				router.onScrollBottom('manga', 'mangaData', '.view__overview .items', 'overview');
 			},
 			'manga/:slug': function(slug) {
 				console.log('Manga slug: ', slug);
@@ -180,7 +184,7 @@ const router = {
 			this.self.classList.add('inactive');
 		}
 	},
-	onScrollBottom(type, storageName) {
+	onScrollBottom(linkType, storageName, element, templateName, type = 'anime') {
 		// From https://gist.github.com/nathansmith/8939548
 		window.onscroll = function() {
 			const d = document.documentElement;
@@ -190,19 +194,18 @@ const router = {
 			const height = d.offsetHeight - 1;
 
 			if (offset >= height) {
-				api.getMoreData(type)
+				api.getMoreData(linkType)
 					.then(res => {
-						// console.log(type, storageName, res);
 						storage[storageName] = {
 							data: [...storage[storageName].data, ...res.data],
 							links: res.links,
 							meta: res.meta,
+							included: res.included ? [...storage[storageName].included, ...res.included] : []
 						};
 						return res;
 					})
 					.then(res => {
-
-						console.log(res, 2 ,api.getMoreLink[type]);
+						helpers.renderTemplate(element, templateName, storage[storageName], type);
 					})
 
 			  console.log('At the bottom');

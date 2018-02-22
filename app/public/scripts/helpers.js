@@ -19,7 +19,6 @@ const helpers = {
 	},
 
 	renderTemplate(element, templateName, data, type = 'anime') {
-		
 		const { overview, directives
 		} = template[templateName](data, type);
 

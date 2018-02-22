@@ -103,11 +103,11 @@ import { debug } from './helpers.js';
 			.then((res, err) => res.json())
 			.catch(err => debug.error(err));
 		},
-		getMoreData: async function(type) {
-			return await fetch(api.getMoreLink[type], { headers: this.baseHeader })
+		getMoreData: async function(linkType) {
+			return await fetch(api.getMoreLink[linkType], { headers: this.baseHeader })
 			.then(res => res.json())
 			.then(res => {
-				api.getMoreLink[type] = res.links.next;
+				api.getMoreLink[linkType] = res.links.next;
 				return res;
 			})
 			.catch(err => debug.error(err));
