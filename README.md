@@ -14,9 +14,9 @@ Challenges:
 This application makes use of the [Kitsu API](https://kitsu.docs.apiary.io/).
 
 **Citation**
-```
-Kitsu is a modern anime discovery platform that helps you track the anime you're watching, discover new anime and socialize with other fans.With the Kitsu API you can do everything the client can do and much more.API path: https://kitsu.io/api/edge
-```
+
+> Kitsu is a modern anime discovery platform that helps you track the anime you're watching, discover new anime and socialize with other fans.With the Kitsu API you can do everything the client can do and much more.API path: https://kitsu.io/api/edge
+
 
 It was really easy to get basic `GET` requests but a lot of the documentation as unclear. Like how to make `POST` requests, as the required header and data has not been documented. The time taken to understand and implemment the API could have been much less if it had been beter documentated or more varied exampled were given.
 
@@ -45,21 +45,28 @@ Maybe
 ## Actor and Flow diagram
 These diagrams give a overview of the available methods and how the (data)flow goes of the application.
 
+The flow diagrams are made with [draw.io](https://www.draw.io)
+
 ### Actor diagram
 The actor diagram shows all our *Actors* to give a clear overview of where all the possible methods and properties live and are called.
+
 ![The actor diagram of the application](https://github.com/kyunwang/wafs/blob/develop/images/actor-diagram.jpg)
 
 ### Flow diagram
 These diagrams show a the data flow of the application. In this case it has been divided in three sections.
 
-**The initial flow**
+- **The initial flow**
+
 Initializing the application
+
 ![A diagram of the initial flow of the application. The initialization](https://github.com/kyunwang/wafs/blob/develop/images/flow-diagram-initial.jpg)
 
-**The flow on the overview page**
+- **The flow on the overview page**
+
 ![A diagram of the flow on the overview page](https://github.com/kyunwang/wafs/blob/develop/images/flow-diagram-overview.jpg)
 
-**The flow on the user library page**
+- **The flow on the user library page**
+
 ![A diagram of the flow on the user library page](https://github.com/kyunwang/wafs/blob/develop/images/flow-diagram-library.jpg)
 
 ### Need to do
