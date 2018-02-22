@@ -118,26 +118,26 @@ Initializing the application
 ## Todo
 - [x] ~~Clean the templates because I was pretty WET, but want to be DRY (You get it? 😏)~~
 - [x] ~~Add pagination~~
-- [] Some more info on the initial library view
+- [ ] Some more info on the initial library view
 	- Added a example in the placeholder for now
 - [x] ~~Transpile the JS to ES5~~
-- [] Show the loader on pagination
+- [ ] Show the loader on pagination
 
 ## Known issues
 Mostly just small issues
-- [] Not all api failures have been catched yet
-- [] Pagination in a filtered view does not work correctly yet. (e.g. after selecting *completed* in the user library)
+- [ ] Not all api failures have been catched yet
+- [ ] Pagination in a filtered view does not work correctly yet. (e.g. after selecting *completed* in the user library)
 - [x] ~~Does not work on most browser (because of ES6 spread operator) - Transpite to ES5~~
 - Some styling (the buttons) is not consistent across browsers (safari, windows chrome) 
-- [] The detailpage is not really *done/made*
-- [] The pagination should't have animation
-- [] Pagination didn't work on safari ()
+- [ ] The detailpage is not really *done/made*
+- [ ] The pagination should't have animation
+- [ ] Pagination didn't work on safari ()
 - [x] ~~Pagination runs on detailpage~~
 
 ## Wishlist
-- [] The ability to login/create a account
-- [] The ability to update your entries
-- [] More options in the anime/manga overview for better browsing
+- [ ] The ability to login/create a account
+- [ ] The ability to update your entries
+- [ ] More options in the anime/manga overview for better browsing
 
 
 ## Future plan

@@ -133,6 +133,7 @@ nav li:first-of-type {
 
 nav li:not(:first-of-type) {
     height: 100%;
+    margin-top: 1.5rem;
 }
 
 nav li:not(:first-of-type) a {
@@ -157,6 +158,12 @@ nav li:last-of-type a {
 nav li:last-of-type a:hover, nav li:last-of-type a:focus {
     background: var(--primary-color);
     box-shadow: var(--shadow-hover);
+}
+
+@media all and (min-width: 30rem) {
+    nav li:not(:first-of-type) {
+        margin: 0;
+    }
 }
 
 @media all and (min-width: 35em) {
@@ -226,7 +233,9 @@ main > section {
 
 .view__home--filter {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    justify-content: center;
     margin-bottom: var(--def-margin-ver);
 }
 
@@ -248,10 +257,7 @@ main > section {
 
 .view__home--filter button {
     margin-left: 1rem;
-}
-
-.view__home--filter button:first-of-type {
-    margin-left: auto;
+    margin-top: 1rem;
 }
 
 .user__view button {
@@ -263,6 +269,20 @@ main > section {
     text-transform: uppercase;
     font-weight: 500;
     text-decoration: none;
+}
+
+@media all and (min-width: 30rem) {
+    html {
+        background: red;
+    }
+
+    .view__home--filter button {
+        margin-top: 0;
+    }
+
+    .view__home--filter button:first-of-type {
+        margin-left: auto;
+    }
 }
 
 /*==========================
