@@ -9,13 +9,11 @@ const configs = {
 	overviewView: '',
 	detailView: '',
 	userId: '',
-	activeFilter: 'anime'
 };
 
 const storage = {
 	animeData: {},
 	mangaData: {},
-	userData: {},
 	userDataAnime: {},
 	userDataManga: {},
 };
