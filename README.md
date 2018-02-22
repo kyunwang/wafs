@@ -1,79 +1,78 @@
 # Web App From Scratch
 The course repo for 'Web App From Scratch' which has a duration of 3 weeks.
 
-## Advantages and disadvantages of JavaScript libraries/frameworks
-### Pro:
-- Frameworks/Libraries make development quicker and usually easier
-- Efficiency. Doing a lot with just a few lines code
-- Some frameworks, which are strict/opinionated, set practices you have to keep. This way you will have consistent codebases
-- More with Less / Save time / Not reinventing
-- A collection of general (ready made) solutions you don't have to type out every single time (also a con as we usually have specific problems)
-- Community around a framework/library can be really beneficial to you. And being part of one can make you grow as developer and person too.
 
 
-### Con:
-- The time a library/framework stays is really versatile. It can be really popular for a few year but can be 'old' afterwards and not be supported anymore.
-- Learning curve of new a new framework/library can take time and money.
-- Can give unnecessary kb the you just need a part of it. (E.g. jQuery for Ajax only)
-- A framework is hard to transition away from. You will be heavily dependant of the framework if you need to maintain a project for a long time (E.g. years)
-- You are dependant to the maintainers
-- Usually really reliant to the hype around it
+Challenges:
+- Use vanilla Javascript only
+- Try to use CSS Grid as main layout tool
+- Microlibs may be used for templating and routing
+- Implement BEM CSS class naming
 
-### Sources:
-- https://www.planningforaliens.com/blog/2016/06/09/when-to-use-a-js-framework/
-- https://opensource.com/article/17/6/javascript-frameworks 
-- https://code.tutsplus.com/tutorials/should-you-use-a-php-framework-five-pros-and-cons--cms-28905
-- https://jaxenter.com/pros-cons-using-framework-135901.html
-- https://blog.hellojs.org/javascript-frameworks-why-and-when-to-use-them-43af33d0608d
-- https://davidwalsh.name/6-reasons-to-use-javascript-libraries-frameworks
-- https://code.tutsplus.com/tutorials/should-you-use-a-php-framework-five-pros-and-cons--cms-28905
 
-## Advantages and disadvantages of client-side single page web apps
-### Pro
-- Emulates a natural flow because no reloads/extra wait time of whole page loads of the browser is needed
-- (Can feel) Feels like a native application
-- Can utilise the backend(API) for both the SPA and Native/Mobile apps (self standing)
-- No need to download multiple pages 
-- Files are only loaded once throughout the visit - makes it feel quick
-- No server renders needed
-- Easier to deploy in production as you will only need three files: index.html, bundled css and bundled js (frontend)
+## The used API
+This application makes use of the [Kitsu API](https://kitsu.docs.apiary.io/).
 
-### Con
-- Heavily reliant to Javascript
-- Hard to integrate SEO (client side)
-- First loads can take some time depending on the application size (code splitting can help here)
-- Danger of XSS. Attackers can inject client side script
-- Too many choices for frameworks/libraries to choose from (Can be good and bad)	
-- Memoryleaks in js can impact performance or crash the whole application 
-- Larger applications may be harder to maintain & maintaining between SPA and Backend
-- Debugging can be hell & tracing code can be hard as you probably will be using multiple third party dependencies
-- You will be reliant to third-party dependencies
+**Citation**
+```
+Kitsu is a modern anime discovery platform that helps you track the anime you're watching, discover new anime and socialize with other fans.With the Kitsu API you can do everything the client can do and much more.API path: https://kitsu.io/api/edge
+```
 
-### Sources
-- https://medium.com/@NeotericEU/single-page-application-vs-multiple-page-application-2591588efe58 
-- https://www.youtube.com/watch?v=F_BYg2QGsC0
-- https://blog.angular-university.io/why-a-single-page-application-what-are-the-benefits-what-is-a-spa/
-- https://www.scalablepath.com/blog/single-page-applications/
+It was really easy to get basic `GET` requests but a lot of the documentation as unclear. Like how to make `POST` requests, as the required header and data has not been documented. The time taken to understand and implemment the API could have been much less if it had been beter documentated or more varied exampled were given.
 
-## Best practices
+At the time of using the API authorization was also not possible (At the time of writing a *Password grant has been documented*).
 
-- Don't use global variables/objects
-- Declare variables at top of scope
-- Use short clear meaningful names (English)
-- Work in strict mode
-- camelCase your code if(code != Constructor || CONSTANTS)
-- Place external scripts at the bottom of the page
-- Indent your code
-- Always code comment
-- Share and show off your work!
 
-## PR 
-We had to make PR's for each other (People from the minor)
-Here I will list the PR's I have made.
+## Microlibs used
 
-Week 1:
-- https://github.com/baskager/wafs/pull/5
-- https://github.com/IIYAMA12/wafs/pull/2
+### Routing - Routie
+*Put link to routie here*
 
-Week 2:
-- https://github.com/niyorn/wafs/pull/8
+### Templating - Transparency
+*Put link to transparency here*
+
+// short
+Really abstract and needed time get used to the way it works
+Needed to be dynamic so template engines like `Pug` won't cut it
+
+Documentation can't be said to be clear, but the it certainly helps, especially the examples.
+
+*Should I use `template literals` for for custom templates instead?*
+Maybe
+
+
+
+## Actor and Flow diagram
+These diagrams give a overview of the available methods and how the (data)flow goes of the application.
+
+### Actor diagram
+The actor diagram shows all our *Actors* to give a clear overview of where all the possible methods and properties live and are called.
+![The actor diagram of the application](https://github.com/kyunwang/wafs/blob/develop/images/actor-diagram.jpg)
+
+### Flow diagram
+These diagrams show a the data flow of the application. In this case it has been divided in three sections.
+
+**The initial flow**
+Initializing the application
+![A diagram of the initial flow of the application. The initialization](https://github.com/kyunwang/wafs/blob/develop/images/flow-diagram-initial.jpg)
+
+**The flow on the overview page**
+![A diagram of the flow on the overview page](https://github.com/kyunwang/wafs/blob/develop/images/flow-diagram-overview.jpg)
+
+**The flow on the user library page**
+![A diagram of the flow on the user library page](https://github.com/kyunwang/wafs/blob/develop/images/flow-diagram-library.jpg)
+
+### Need to do
+- [x] Clean the templates because I was pretty WET, but want to be DRY (You get it? 😏)
+- [x] Add pagination
+
+
+### Known issues
+- Not all api failures have been catched yet
+- Pagination in a filtered view does not work correctly yet. (e.g. after selecting *completed* in the user library)
+
+### Future plan
+Recreate a similar app but with a **React** or **Vue** and a different API. Preferably one which keeps itself synced with MyAnimeList
+
+# License
+MIT - Kang Yun Wang (Kevin Wang)
