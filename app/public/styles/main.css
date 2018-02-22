@@ -272,10 +272,6 @@ main > section {
 }
 
 @media all and (min-width: 30rem) {
-    html {
-        background: red;
-    }
-
     .view__home--filter button {
         margin-top: 0;
     }
