@@ -61,6 +61,8 @@ The packages used are:
 
 These packages are ok for small applications but not suitable for anything bigger than that.
 
+Had to include `babel-polyfil` because the compiled code wouldn't work otherwise.
+
 ### Routing - Routie
 A really simple hash router.
 It does the job as a super simple light-weight router. A caveat is that internal linking can happen because of the hash linking. (The jumping to id's).

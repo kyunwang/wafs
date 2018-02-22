@@ -11,9 +11,14 @@
   "author": "Kang Yun Wang (Kevin Wang)",
   "license": "MIT",
   "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2017": "^6.24.1",
     "browser-sync": "^2.23.6",
     "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.1",
     "gulp-cssbeautify": "^1.0.0",
-    "gulp-sass": "^3.1.0"
+    "gulp-sass": "^3.1.0",
+    "gulp-uglify": "^3.0.0"
   }
 }
