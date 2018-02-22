@@ -131,6 +131,9 @@ const router = {
 				helpers.renderTemplate('.detail', 'detail', singleAnime[0]);
 
 				configs.detailView.classList.add('anim__view--show');
+
+				// Remove the onscrollevent here
+				window.onscroll = function() {};
 			},
 			'manga': function() {
 				console.log('Manga Overview');
@@ -160,6 +163,9 @@ const router = {
 				helpers.renderTemplate('.detail', 'detail', singleManga[0]);
 				
 				configs.detailView.classList.add('anim__view--show');
+
+				// Remove the onscrollevent here
+				window.onscroll = function() {};
 			},
 		});
 	},

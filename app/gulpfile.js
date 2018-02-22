@@ -26,7 +26,8 @@ gulp.task('browser-sync', function() {
 
 // Quick transpile the bundle ES6+ JS to ES5
 gulp.task('scripts', function() {
-	return gulp.src('public/scripts/bundle.js')
+	// return gulp.src('public/scripts/bundle.js')
+	return gulp.src('bundle.js')
 		.pipe(babel({
 			presets: ['babel-preset-env'],
 			plugins: ['babel-plugin-transform-object-rest-spread']

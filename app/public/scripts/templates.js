@@ -30,7 +30,7 @@
 			// Because the index of [0] is the user
 			if (data.length < 2) {
 				console.log('no stuff');
-				return this.errorPage('Nothing to see here');
+				return this.errorPage('Oops the user has nothing in here');
 			}
 
 			// Get the user from our includes

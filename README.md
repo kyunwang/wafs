@@ -116,17 +116,23 @@ Initializing the application
 ![A diagram of the flow on the user library page](https://github.com/kyunwang/wafs/blob/develop/images/flow-diagram-library.jpg)
 
 ## Todo
-- [x] Clean the templates because I was pretty WET, but want to be DRY (You get it? 😏)
-- [x] Add pagination
+- [x] ~~Clean the templates because I was pretty WET, but want to be DRY (You get it? 😏)~~
+- [x] ~~Add pagination~~
 - [] Some more info on the initial library view
-- [] Transpile the JS to ES5
+	- Added a example in the placeholder for now
+- [x] ~~Transpile the JS to ES5~~
+- [] Show the loader on pagination
 
 ## Known issues
+Mostly just small issues
 - [] Not all api failures have been catched yet
 - [] Pagination in a filtered view does not work correctly yet. (e.g. after selecting *completed* in the user library)
-- [] Does not work on most browser (because of ES6 spread operator) - Transpite to ES5
+- [x] ~~Does not work on most browser (because of ES6 spread operator) - Transpite to ES5~~
 - Some styling (the buttons) is not consistent across browsers (safari, windows chrome) 
 - [] The detailpage is not really *done/made*
+- [] The pagination should't have animation
+- [] Pagination didn't work on safari ()
+- [x] ~~Pagination runs on detailpage~~
 
 ## Wishlist
 - [] The ability to login/create a account
