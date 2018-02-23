@@ -25,6 +25,17 @@ import { debug } from './helpers.js';
 			.then((res, err) => res.json())
 			.catch(err => debug.error(err));
 		},
+		getTrending: async function(kind = 'anime', limit = 10, offset = 0) {
+			return await fetch(`https://kitsu.io/api/edge/trending/${kind}`, 
+			{ headers: this.baseHeader })
+			.then(res => res.json())
+			.then(res => {
+				console.log(res);
+				return res;
+			})
+			.catch(err => debug.error(err))
+
+		},
 		searchForUser: async function(userName = '') {
 			return await fetch(`https://kitsu.io/api/edge/users?filter%5Bname%5D=${userName}`, {
 				headers: this.baseHeader // Is required for the api
