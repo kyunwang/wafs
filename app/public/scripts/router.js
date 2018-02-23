@@ -104,15 +104,16 @@ const router = {
 			'anime': function() {
 				console.log('Anime overview');
 				router.toggle('overview'); // Toggle to ...				
+				// api.getTrending('anime', 40, 0);
 
 				const animeData = helpers.getData('animeData');
 
-				helpers.renderTemplate('.view__overview .items', 'overview', animeData);
+				helpers.renderTemplate('.view__overview', 'overview', animeData);
 
 				configs.overviewView.classList.add('anim__view--show');
 
 				// Initialize pagination on route enter
-				router.onScrollBottom('anime', 'animeData', '.view__overview .items', 'overview');
+				router.onScrollBottom('anime', 'animeData', '.view__overview', 'overview');
 			},
 			'anime/:slug': function(slug) {
 				console.log('Anime slug: ', slug);
@@ -141,12 +142,12 @@ const router = {
 
 				const mangaData = helpers.getData('mangaData');
 
-				helpers.renderTemplate('.view__overview .items', 'overview', mangaData);
+				helpers.renderTemplate('.view__overview', 'overview', mangaData);
 
 				configs.overviewView.classList.add('anim__view--show');
 
 				// Initialize pagination on route enter
-				router.onScrollBottom('manga', 'mangaData', '.view__overview .items', 'overview');
+				router.onScrollBottom('manga', 'mangaData', '.view__overview', 'overview');
 			},
 			'manga/:slug': function(slug) {
 				console.log('Manga slug: ', slug);

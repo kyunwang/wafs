@@ -92,27 +92,35 @@
 		},
 		overview(data) {
 			const items = data.data;
+			const type = data.data[0].type;
+
+			// console.log(data.data[0].type);
 			
 			// Return a template in a array for Transparency
-			const overview = items.map(item => ({
-				id: item.id,
-				slug: item.attributes.slug,
-				item__type: item.type,
-				item__rating: item.attributes.averageRating ? Math.floor(item.attributes.averageRating) : '-',
-				item__link: {
-					item__name: item.attributes.canonicalTitle,
-					item__image: '',
-				},
-				...item.attributes,
-			}));
+			const overview = {
+				['page-title']: type === 'anime' ? 'Check some anime' : 'Check some manga',
+				items: items.map(item => ({
+					id: item.id,
+					slug: item.attributes.slug,
+					item__type: item.type,
+					item__rating: item.attributes.averageRating ? Math.floor(item.attributes.averageRating) : '-',
+					item__link: {
+						item__name: item.attributes.canonicalTitle,
+						item__image: '',
+					},
+					...item.attributes,
+				}))
+			}
 
 			const directives = {
-				item__link: {
-					href: function() { return `#${this.item__type}/${this.slug}` },
-				},
-				item__image: {
-					src: function() {
-						if (this.posterImage) { return this.posterImage.medium; }
+				items: {
+					item__link: {
+						href: function() { return `#${this.item__type}/${this.slug}` },
+					},
+					item__image: {
+						src: function() {
+							if (this.posterImage) { return this.posterImage.medium; }
+						}
 					}
 				}
 			};
