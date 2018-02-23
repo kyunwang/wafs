@@ -93,8 +93,6 @@
 		overview(data) {
 			const items = data.data;
 			const type = data.data[0].type;
-
-			// console.log(data.data[0].type);
 			
 			// Return a template in a array for Transparency
 			const overview = {
