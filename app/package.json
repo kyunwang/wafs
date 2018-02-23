@@ -4,7 +4,8 @@
   "description": "Listing anime using Kitsu API",
   "main": "index.js",
   "scripts": {
-    "start": "gulp",
+	 "start": "gulp",
+	 "build": "gulp build",
     "push": "git push && git checkout master && git merge develop && git push && git checkout develop",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,13 +13,12 @@
   "license": "MIT",
   "devDependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-es2017": "^6.24.1",
+    "babel-preset-es2015-rollup": "^3.0.0",
     "browser-sync": "^2.23.6",
     "gulp": "^3.9.1",
-    "gulp-babel": "^7.0.1",
     "gulp-cssbeautify": "^1.0.0",
     "gulp-sass": "^3.1.0",
-    "gulp-uglify": "^3.0.0"
+    "rollup": "^0.56.2",
+    "rollup-plugin-babel": "^3.0.3"
   }
 }

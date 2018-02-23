@@ -4,8 +4,6 @@ const helpers = {
 	getHash() { return location.hash; },
 	getElement(element) { return document.querySelector(element); },
 	getElements(element) { return document.querySelectorAll(element); },
-	// getAllRoutes () { return helpers.getElements('section') },
-	shortenString(text, start, end) { return end ? text.substr(start, end) : text.substr(start); },
 	toInt(item) { return parseInt(item, 10); },
 	
 	stringify(data) { return JSON.stringify(data); },
