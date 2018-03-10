@@ -127,7 +127,7 @@ Initializing the application
 Mostly just small issues
 - [ ] Not all api failures have been catched yet
 - [ ] Pagination in a filtered view does not work correctly yet. (e.g. after selecting *completed* in the user library)
-- [x] ~~Does not work on most browser (because of ES6 spread operator) - Transpite to ES5~~
+- [x] ~~Does not work on most browser (because of ES6 spread operator) - Transpile to ES5~~
 - Some styling (the buttons) is not consistent across browsers (safari, windows chrome) 
 - [ ] The detailpage is not really *done/made*
 - [ ] The pagination should't have animation
