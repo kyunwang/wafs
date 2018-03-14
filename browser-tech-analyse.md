@@ -38,16 +38,22 @@ The other found problems:
 - Does not work without javascript (It is a Small PWA which is dependant on Javascript)
 - The context of buttons and a tags are not clear when spoken by screen readers.
 - The maximum items are fetched from the api (limit 40)
+- 'Nothing' shows up when images are disabled
 
+Not sure wether it is necessary to add alt text to the images.
 
 ## Fixes
 
 What has been done:
 - Adding titles to buttons and a tags for clarity for screen readers.
 - Reducing the fetched limit for users to decrease the initial image loading. (decreases ~800kb)
+- Added a minimum height to display the images, albeit empty.
+- Upped the contrast to pass the lighthouse audit
+- Pressing the `enter` key now searches/ initiates the search function
 
 Want to fix:
 
-Make the calls server side to be able to enable compress fetched images to decrease the load time.
+- Make the calls server side to be able to enable compress fetched images to decrease the load time.
+- Fetch the data server side to be able to render all the items when javascript is disabled
 
 

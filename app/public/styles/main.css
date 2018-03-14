@@ -2,7 +2,7 @@
     --primary-color: #00B0FF;
     --white: #fff;
     --black: #3a3939;
-    --black2: #858585;
+    --black2: #6e6e6e;
     --grey: #eee;
     --overlay-dark: rgba(0, 0, 0, 0.5);
     --primary-font: 'Work Sans', sans-serif;
@@ -58,7 +58,7 @@ img {
     width: 100%;
 }
 
-[type="button"],
+[type="submit"],
 [type="button"],
 button,
 button a {
@@ -71,7 +71,7 @@ button a {
     transition: var(--def-transition);
 }
 
-[type="button"]:hover, [type="button"]:focus,
+[type="submit"]:hover, [type="submit"]:focus,
   [type="button"]:hover,
   [type="button"]:focus,
   button:hover,
@@ -209,7 +209,8 @@ main > section {
     margin-bottom: var(--def-margin-ver2);
 }
 
-.view__home form [type="button"] {
+.view__home form [type="submit"],
+  .view__home form [type="button"] {
     margin-left: 1rem;
 }
 
@@ -294,6 +295,7 @@ main > section {
     display: flex;
     position: relative;
     height: 100%;
+    min-height: 14rem;
     overflow: hidden;
     box-shadow: var(--shadow-normal);
     transition: var(--def-transition);

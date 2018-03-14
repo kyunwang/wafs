@@ -133,6 +133,7 @@ Mostly just small issues
 - [ ] The pagination should't have animation
 - [ ] Pagination didn't work on safari ()
 - [x] ~~Pagination runs on detailpage~~
+- [x] Search on enter doesn't work
 
 ## Wishlist
 - [ ] The ability to login/create a account
