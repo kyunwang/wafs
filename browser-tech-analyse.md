@@ -37,12 +37,14 @@ The other found problems:
 - There is no skip to mian content (There is no main content if none is loaded)
 - Does not work without javascript (It is a Small PWA which is dependant on Javascript)
 - The context of buttons and a tags are not clear when spoken by screen readers.
+- The maximum items are fetched from the api (limit 40)
 
 
 ## Fixes
 
 What has been done:
 - Adding titles to buttons and a tags for clarity for screen readers.
+- Reducing the fetched limit for users to decrease the initial image loading. (decreases ~800kb)
 
 Want to fix:
 

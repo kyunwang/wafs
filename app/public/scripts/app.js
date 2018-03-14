@@ -38,8 +38,8 @@ import { configs, storage } from './config.js';
 
 
 					const [userData, userDataManga] = await Promise.all([
-						api.getUserData(user.data[0].id, null, 40),
-						api.getUserData(user.data[0].id, 'manga', 40)
+						api.getUserData(user.data[0].id, null, 20),
+						api.getUserData(user.data[0].id, 'manga', 20)
 					]);
 					
 					// Save the userid for the session
