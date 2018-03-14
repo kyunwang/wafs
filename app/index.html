@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
-	<link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="preload">
 	<link rel="stylesheet" href="public/styles/main.css">
 </head>
 
@@ -14,18 +14,18 @@
 		<nav>
 			<ul>
 				<li>
-					<a href="#library">
+					<a href="#library" title="Go to the user library">
 						<h1>A/M Listing</h1>
 					</a>
 				</li>
 				<li>
-					<a href="#anime">Anime</a>
+					<a href="#anime" title="Go to the anime overview">Anime</a>
 				</li>
 				<li>
-					<a href="#manga">Manga</a>
+					<a href="#manga" title="Go to the manga overview">Manga</a>
 				</li>
 				<li>
-					<a href="#library">Library</a>
+					<a href="#library" title="Go to the user library">Library</a>
 				</li>
 				<!-- <li>
 					<a href="#profile">Profile</a>
@@ -49,8 +49,8 @@
 		<section id="library" class="view view__home">
 
 			<form>
-				<input id="search-user-input" type="text" name=""  placeholder="Search on username. e.g. subspacer or lazygrey" />
-				<input id="search-user-btn" type="button" value="Search" />
+				<input id="search-user-input" type="text" name=""  placeholder="Search on username. e.g. subspacer or lazygrey" title="Insert username to search for" />
+				<input id="search-user-btn" type="button" value="Search" title="Search for user" />
 			</form>
 
 			<h1 data-bind="home-title">Hi, Welcome! Look up a user for content</h1>
@@ -59,16 +59,16 @@
 			
 			<div id="user-view" class="user__view anim__view">
 				<div class="view__home--filter">
-					<a data-bind="show-all" href="#library">All</a>
-					<a data-bind="show-current" href="#library/current">Current</a>
-					<a data-bind="show-completed" href="#library/completed">Completed</a>
-					<a data-bind="show-planned" href="#library/planned">Want to see</a>
+					<a title="View all user entries" data-bind="show-all" href="#library">All</a>
+					<a title="View currently watching user entries" data-bind="show-current" href="#library/current">Current</a>
+					<a title="View completed user entries" data-bind="show-completed" href="#library/completed">Completed</a>
+					<a title="View planned to watch user entries" data-bind="show-planned" href="#library/planned">Want to see</a>
 
 					<button>
-						<a href="#library">Anime</a>
+						<a href="#library" title="Go to user anime">Anime</a>
 					</button>
 					<button>
-						<a href="#library/manga">Manga</a>
+						<a href="#library/manga" title="Go to user manga">Manga</a>
 					</button>
 				</div>
 

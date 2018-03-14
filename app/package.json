@@ -4,12 +4,12 @@
   "description": "Listing anime using Kitsu API",
   "main": "index.js",
   "scripts": {
-	 "start": "gulp",
-	 "build": "gulp build",
+    "start": "gulp",
+    "build": "gulp build",
     "push": "git push && git checkout master && git merge develop && git push && git checkout develop",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Kang Yun Wang (Kevin Wang)",
+  "author": "Kang Yun Wang (Kevin Wang) <kevinwang8011@hotmail.com>",
   "license": "MIT",
   "devDependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
