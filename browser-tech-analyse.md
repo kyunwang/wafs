@@ -56,6 +56,8 @@ They take a lot of (unnecessary data) and may or may not be necessary for contex
 ### Local Storage
 An in browser storage, named `Local Storage`. In here data can be stored and saved.
 
+I am using `Local Storage` to save the data for a certain period of time.
+
 ### Color
 Color usage is usually about color contrast. It is important to keep accessibility for color impaired in mind.
 
