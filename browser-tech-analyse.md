@@ -22,6 +22,10 @@ A analyse for the minor subject Browser Technologies.
 - local storage
 - Mouse/Trackpad
 
+
+![][]
+
+
 ### Cookies
 
 Small files? living in the browser which you can send to the server instead of using localstorage.
