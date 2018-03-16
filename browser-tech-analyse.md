@@ -28,6 +28,8 @@ Small files? living in the browser which you can send to the server instead of u
 (Safer than LocalStorage?)
 Turning it off may block you off certain sites.
 
+**Fix:** Not using cookies
+
 ### Mouse/Trackpad
 
 If there is no access or less dexterity. One has to be able to navigate using other means e.g. the keyboard, screenreaders.
@@ -45,18 +47,18 @@ The application is a assignment of the course Wafs from the minor everyone web. 
 **Fix:** A fix for this is to render the application server-side
 
 
-
-
 ### Images
 More and more images are used on the web.
 They take a lot of (unnecessary data) and may or may not be necessary for context.
 
-
+**Fix:** Compress the images server-side can reduce data usage and improve speed
 
 ### Local Storage
 An in browser storage, named `Local Storage`. In here data can be stored and saved.
 
 I am using `Local Storage` to save the data for a certain period of time.
+
+**Fix:** 
 
 ### Color
 Color usage is usually about color contrast. It is important to keep accessibility for color impaired in mind.
@@ -79,7 +81,7 @@ The images also are fetched through a cdn, but is not necessary as the cards are
 ### Font
 A google font is used but the fall-back `sans-serif` does not differ too much. Downloading and caching the font may be the best option to save data and speed up the network. Subsetting it may also help. No font icons are used so that is not an issue.
 
-**Fix:** Cache the font
+**Fix:** Cache the font & Use a subset of the font
 
 ## Problems
 
