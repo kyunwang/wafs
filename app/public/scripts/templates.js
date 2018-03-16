@@ -82,6 +82,11 @@
 								return this.posterImage.medium;
 							}
 							// Return a default image
+						},
+						alt: function() {
+							console.log(this);
+							
+							return this.slug;
 						}
 					}
 				}
@@ -118,7 +123,7 @@
 					item__image: {
 						src: function() {
 							if (this.posterImage) { return this.posterImage.medium; }
-						}
+						},
 					}
 				}
 			};
