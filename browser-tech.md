@@ -8,13 +8,13 @@ A analyse for the minor subject Browser Technologies.
 - [Audit](#audit)
 - [Color](#color)
 - [Images](#images)
+- [Local Storage](#local-storage)
 
 
+- [Cookies](#cookies)
 - [Javascript](#javascript)
-- [](#problems)
-- [](#fixes)
-- [](#)
-- [](#)
+- []()
+- [Device Lab](#device-lab)
 
 ## The points
 
@@ -151,6 +151,31 @@ Not serving the images is not an option, but there are a few simple fixes to com
 
 **After**
 ![][i-img]
+
+
+### Local Storage
+I am using `Local Storage` to save the data for a certain period of time to save data usage. Doing this allows offline usage too (well under the condition that there was connection at time of entering the app)
+
+**Problems**
+1. No expire date can be set like cache
+2. Local storage is not supported in many older phones
+3. It is **NOT** secure
+	- [Source](https://www.rdegges.com/2018/please-stop-using-local-storage/)
+
+**Solutions**
+1. Use cache instead
+2. Choose another alternative (cache or cookies)
+3. Again use something else like cache or cookies
+
+Cookies have a limit of 4kb max so that not an option if the data is large. Local storage has a max limit of 5MB across major browsers.
+
+Local storage can be used for saving public data, but **NOT** sensitive data.
+
+
+
+
+
+
 
 
 [nav]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/nav.png
