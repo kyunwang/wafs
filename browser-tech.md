@@ -13,24 +13,8 @@ A analyse for the minor subject Browser Technologies.
 - [Fonts](#fonts)
 - [Cookies](#cookies)
 - [Javascript](#javascript)
-
-
-- [](#)
-- [](#)
 - [Device Lab](#device-lab)
-
-## The points
-
-- cookies
-- network
-- font
-- javascript
-- local storage
-
-- Mouse/Trackpad
-- Audit
-- Color
-- Images
+- [](#)
 
 
 ## Process
@@ -227,6 +211,36 @@ This is a client-side application fully dependant on JavaScript so fixing this i
 
 ### Device Lab
 
+Tested on 7 devices with their own native browser. 1 out of the 7 seem to work.
+
+The devices where it does not work don't seem to be supporting `local storage`
+
+**Extra test**
+
+On Windows 10 IE 11.
+
+It does not seem to work. IE11 does not like the usage of comments in html and the dot notation from `min` files.
+
+There is an error in the `bundle.js`
+
+**Shots of the tests on devices**
+
+![][t-kindle]
+![][t-lg]
+![][t-nokia]
+![][t-op1]
+![][t-op2]
+![][t-samsung]
+![][t-surface]
+
+I reckon that the reason is does not work on most of the devices lies in the support of `local storage`
+
+![][t-windows]
+
+This screenshot is made on a windows 10 system using IE11.
+It seems that the way IE11 reads the `bundle.js` gives an error.
+
+
 
 
 [nav]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/nav.png
@@ -251,6 +265,15 @@ This is a client-side application fully dependant on JavaScript so fixing this i
 
 [i-noImg]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/image/noShow.png
 [i-img]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/image/shown.png
-[]:
-[]:
-[]:
+
+[windows]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/windows.png
+
+
+[t-windows]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/test/windows.png
+[t-kindle]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/test/.jpg
+[t-lg]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/test/.jpg
+[t-nokia]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/test/.jpg
+[t-op1]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/test/.jpg
+[t-op2]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/test/.jpg
+[t-samsung]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/test/.jpg
+[t-surface]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/test/.jpg
