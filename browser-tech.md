@@ -86,6 +86,30 @@ This progmra simulates how people with the following impairements see color:
 - Monochromacy
 - Partial monochromacy
 
+**Deuteranomaly**
+![][c-deuteranomaly]
+
+**Deuteranompia**
+![][c-deuteranompia]
+
+**Protanopia**
+![][c-protanopia]
+
+**Protanomaly**
+![][c-protanomaly]
+
+**Tritanopia**
+![][c-tritanopia]
+
+**Tritanomaly**
+![][c-tritanomaly]
+
+**Monochromacy**
+![][c-monochromacy]
+
+**Partial Monochromacy**
+![][c-partialMono]
+
 
 
 
@@ -104,7 +128,13 @@ This progmra simulates how people with the following impairements see color:
 [b-pwa2]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/audit/before/pwa2.png
 
 [a-access]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/audit/after/access.png
-[a-]:
-[a-]:
-[]:
+
+[c-deuteranomaly]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/color/deuteranomaly.png
+[c-deuteranompia]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/color/deuteranompia.png
+[c-protanopia]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/color/protanopia.png
+[c-protanomaly]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/color/protanomaly.png
+[c-tritanopia]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/color/tritanopia.png
+[c-tritanomaly]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/color/tritanomaly.png
+[c-monochromacy]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/color/monochromacy.png
+[c-partialMono]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/color/partialMono.png
 []:
