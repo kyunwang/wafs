@@ -87,13 +87,21 @@ A google font is used but the fall-back `sans-serif` does not differ too much. D
 
 **Fix:** Cache the font & Use a subset of the font
 
+
+
+### Device Lab
+Many of the devices do not work. I reckon that the issue lies within the compatability with `Local storage`, because disabling it gives the same result in a working chrome browser.
+
+
+
+
 ## Problems
 
 Lighthouse accessibility score: 77
 
 Lighthouse audit:
 - There is no label for the textinput
-- Color contrast is satisfactory - four elements fail
+- Color contrast is satisfactory - four elements fail (Anime, Manga, Library and Search button)
 - There is no service worker present for offline usage / bad network
 
 The other found problems:
