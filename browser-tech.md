@@ -9,11 +9,14 @@ A analyse for the minor subject Browser Technologies.
 - [Color](#color)
 - [Images](#images)
 - [Local Storage](#local-storage)
+- [Network](#network)
+- [Fonts](#fonts)
 
 
 - [Cookies](#cookies)
 - [Javascript](#javascript)
-- []()
+- [](#)
+- [](#)
 - [Device Lab](#device-lab)
 
 ## The points
@@ -172,6 +175,38 @@ Cookies have a limit of 4kb max so that not an option if the data is large. Loca
 Local storage can be used for saving public data, but **NOT** sensitive data.
 
 
+### Network
+The network equal performance in my opinion, thus I checked the performance with Google Light House again.
+
+
+**Test result**
+![][b-perf]
+
+
+**Problems**
+1. The first meaningfull paint takes a pretty long
+2. There are render-blocking `link` tags (stylesheets)
+3. CSS is nog minified and there are unused CSS rules
+4. Text is not compressed (gzipped)
+
+**Solutions**
+1. Use Critical CSS, Async font loading and assets loading for example.
+2. Load the css async
+3. Minify and clean the Css before bundling the production package
+4. Compress the assets before serving (server-side)
+
+
+### Fonts
+A google font called `Work Sans` is used for this application.
+
+**Problems**
+1. Slows down the site loading
+2. Makes a extra call for the font (render-blocking)
+
+**Solution**
+1. Cache the font
+2. Subset the font to save data
+3. Load the font in asynchronously
 
 
 
