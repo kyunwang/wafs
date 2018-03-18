@@ -5,7 +5,12 @@ A analyse for the minor subject Browser Technologies.
 # Table of Content
 
 - [Mouse/Trackpad](#mouse/trackpad)
-- [](#javascript)
+- [Audit](#audit)
+- [Color](#color)
+- [Images](#images)
+
+
+- [Javascript](#javascript)
 - [](#problems)
 - [](#fixes)
 - [](#)
@@ -17,12 +22,12 @@ A analyse for the minor subject Browser Technologies.
 - network
 - font
 - javascript
-- images
 - local storage
 
 - Mouse/Trackpad
 - Audit
 - Color
+- Images
 
 
 ## Process
@@ -111,12 +116,41 @@ This progmra simulates how people with the following impairements see color:
 ![][c-partialMono]
 
 
+**Problems**
+1. The images may have low contrast
+
+**Solution**
+1. None as this depends on the api
+
+Except for the images the contrast is a big problem.
 
 
-<!-- ![][b-perf] -->
-<!-- ![][b-pwa1] -->
-<!-- ![][b-pwa2] -->
+### Images
+The application uses a lot of images as it is about anime(Japanese Animation) and manga(Japanese Comics).
 
+Not serving the images is not an option, but there are a few simple fixes to combat data-usage.
+
+**Problem**
+1. A lot of images are called from the API taking lots of data
+2. Nothing shows up when Images are disabled or not fetched correctly
+3. Images are fetches from an CDN
+
+**Solutions**
+
+1. Fetching the images server-side
+	1. Compressing the images server-side before serving them
+	2. Caching the images
+2. Added a minimum height.
+3. Caching the images can help save data and eventually when the CDN is down
+4. Maybe use svg (masks) to decrease image size
+	- Source: [*SVG can do that?! - talk by Sarah Drasner*](https://www.youtube.com/watch?v=4laPOtTRteI)
+	- [jpng.svg](https://codepen.io/shshaw/full/LVKEdv)
+
+**Before when images are blocked or not fetched**
+![][i-noImg]
+
+**After**
+![][i-img]
 
 
 [nav]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/nav.png
@@ -137,4 +171,10 @@ This progmra simulates how people with the following impairements see color:
 [c-tritanomaly]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/color/tritanomaly.png
 [c-monochromacy]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/color/monochromacy.png
 [c-partialMono]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/color/partialMono.png
+
+
+[i-noImg]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/image/noShow.png
+[i-img]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/image/shown.png
+[]:
+[]:
 []:
