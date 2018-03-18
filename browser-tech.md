@@ -241,6 +241,9 @@ This screenshot is made on a windows 10 system using IE11.
 It seems that the way IE11 reads the `bundle.js` gives an error.
 
 
+**Solution**
+1. Use an alternative for `Local Storage`
+2. Play with the bundle settings to try to get the result we want in the `bundle.js`
 
 
 [nav]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/nav.png
