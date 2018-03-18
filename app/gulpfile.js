@@ -53,7 +53,6 @@ gulp.task('build', function() {
 				babelrc: false,
 				plugins: [
 					'transform-object-rest-spread',
-					'external-helpers',
 				],
 				exclude: 'node_modules/**'
 			}),
