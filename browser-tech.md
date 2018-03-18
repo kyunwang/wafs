@@ -11,10 +11,10 @@ A analyse for the minor subject Browser Technologies.
 - [Local Storage](#local-storage)
 - [Network](#network)
 - [Fonts](#fonts)
-
-
 - [Cookies](#cookies)
 - [Javascript](#javascript)
+
+
 - [](#)
 - [](#)
 - [Device Lab](#device-lab)
@@ -209,7 +209,23 @@ A google font called `Work Sans` is used for this application.
 3. Load the font in asynchronously
 
 
+### Cookies
+No cookies are used so no problems for now
 
+### Javascript
+This is a client-side application fully dependant on JavaScript so fixing this is not possible for now.
+
+**Problems**
+1. The app doesn't work when Javascript is turend off
+2. The app doesn't work when ES+ syntax is used
+
+**Solution**
+1. Server0side render the app / The Javascript functions
+2. Bundle and transpile the application with babel
+
+
+
+### Device Lab
 
 
 
