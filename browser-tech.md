@@ -18,13 +18,16 @@ A analyse for the minor subject Browser Technologies.
 - font
 - javascript
 - images
-- color
 - local storage
+
 - Mouse/Trackpad
+- Audit
+- Color
 
 
 ## Process
 
+### Mouse/Trackpad
 I started the research by checking accessibility for the visualy impaired. By using the `tab` key to navigate with the `VoiceOver` function from Mac. These problems came out from the test:
 
 **Problems**
@@ -39,3 +42,69 @@ I started the research by checking accessibility for the visualy impaired. By us
 *Note*
 The images do not contain a `alt=""` attribute as it contains a `h3` tag.
 
+### Audit
+
+After checking the screenreader accessibility, I did a Google Light House audit for accessibility. The following came out of it.
+
+**Audit before changes**
+![][b-access1]
+<!-- ![][b-access2] -->
+
+**Problems**
+A score of 77 out of 100 has been given for accessibility.
+1. The input does not have a `label` associated with it
+2. The contrast of few elements are not high enough.
+
+**Solutions**
+1. A label has to be added for the element
+2. The contrast has been increased with one exception, the *Library* button, because the constrast between the white label and white background is not high enough...... Well sherlock
+
+*The nav with the button*
+
+![The nav with the button][nav]
+
+*Audit after the changes*
+
+![Audit after the changes][access]
+
+### Color
+To be able to test for people with color impairments I will be using the Mac program called `Sim Daltonism`.
+
+This progmra simulates how people with the following impairements see color:
+
+**Red-Green**
+- Deuteranopia (no green cones)
+- Deuteranomaly (anomalous green cones)
+- Protanopia (no red cones)
+- Protanomaly (anomalous red cones)
+
+**Blue-Yellow**
+- Tritanopia (no blue cones)
+- Tritanomaly (anomalous blue cones)
+
+**All colors**
+- Monochromacy
+- Partial monochromacy
+
+
+
+
+<!-- ![][b-perf] -->
+<!-- ![][b-pwa1] -->
+<!-- ![][b-pwa2] -->
+
+
+
+[nav]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/nav.png
+
+[b-access1]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/audit/before/access1.png
+[b-access2]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/audit/before/access2.png
+[b-perf]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/audit/before/perf.png
+[b-pwa1]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/audit/before/pwa1.png
+[b-pwa2]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/audit/before/pwa2.png
+
+[a-access]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/audit/after/access.png
+[a-]:
+[a-]:
+[]:
+[]:
