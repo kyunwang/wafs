@@ -119,22 +119,22 @@ This progmra simulates how people with the following impairements see color:
 
 
 
-[nav]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/nav.png
+[nav]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/nav.png
 
 [b-access1]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/audit/before/access1.png
 [b-access2]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/audit/before/access2.png
-[b-perf]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/audit/before/perf.png
-[b-pwa1]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/audit/before/pwa1.png
-[b-pwa2]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/audit/before/pwa2.png
+[b-perf]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/audit/before/perf.png
+[b-pwa1]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/audit/before/pwa1.png
+[b-pwa2]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/audit/before/pwa2.png
 
-[a-access]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/audit/after/access.png
+[a-access]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/audit/after/access.png
 
-[c-deuteranomaly]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/color/deuteranomaly.png
-[c-deuteranompia]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/color/deuteranompia.png
-[c-protanopia]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/color/protanopia.png
-[c-protanomaly]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/color/protanomaly.png
-[c-tritanopia]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/color/tritanopia.png
-[c-tritanomaly]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/color/tritanomaly.png
-[c-monochromacy]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/color/monochromacy.png
-[c-partialMono]: https://github.com/kyunwang/web-app-from-scratch/tree/browser-tech/images/color/partialMono.png
+[c-deuteranomaly]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/color/deuteranomaly.png
+[c-deuteranompia]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/color/deuteranompia.png
+[c-protanopia]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/color/protanopia.png
+[c-protanomaly]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/color/protanomaly.png
+[c-tritanopia]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/color/tritanopia.png
+[c-tritanomaly]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/color/tritanomaly.png
+[c-monochromacy]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/color/monochromacy.png
+[c-partialMono]: https://github.com/kyunwang/web-app-from-scratch/blob/browser-tech/images/color/partialMono.png
 []:
